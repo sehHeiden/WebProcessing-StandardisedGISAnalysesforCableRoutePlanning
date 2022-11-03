@@ -9,7 +9,7 @@ from brackettree import Node
 from geocube.api.core import make_geocube
 from geocube.rasterize import rasterize_image
 from geopandas import read_file, GeoDataFrame
-from pandas import read_excel, DataFrame, concat, Series
+from pandas import read_excel, DataFrame, concat, merge
 from rioxarray import open_rasterio
 from rioxarray.merge import merge_arrays
 
@@ -20,8 +20,8 @@ def write_compress(r, save: Path) -> None:
 
 
 def filter_gdf(_gdf: GeoDataFrame, columns: list, values: list):
-
     # STARTSWITH
+    is_negative = False
     new_values = []
     for value in values:
         is_negative = True if 'NOT' in value else False  # TODO will cause troubles
@@ -32,7 +32,8 @@ def filter_gdf(_gdf: GeoDataFrame, columns: list, values: list):
                 new_values.append(value.split[' OR '])
             else:
                 new_values.append([value])
-    values = [x1 for x in new_values for x1 in x]
+            values = [x1 for x in new_values for x1 in x]
+    # TODO replace new_values with old, but only when necessary
 
     if len(columns) == len(values):
         return concat([_gdf[is_negative * _gdf[column] == value]] for column, value in zip(columns, values))
@@ -77,51 +78,8 @@ def _split_col(split_str: str | float | int):
         return [split_str]
 
 
-def _make_splits(ser: Series, is_file_split) -> list[Series]:
-    n_splits = len(ser.Directory)
-    split_data = [ser, ]
-    split_data = split_data * n_splits
-
-    # add number to LINE
-    # remove the doubles
-    for itr in range(n_splits):
-        for idx, col in dict(split_data[itr]).items():
-            if idx == 'Layer' and is_file_split:
-                pass
-            elif idx == 'LineNum':
-                split_data[itr][idx] + itr * (10 << is_file_split)
-            else:
-                split_data[itr][idx] = col[itr] if len(col) == n_splits else col
-    return split_data
-
-
-def _split_line(ser: Series) -> list[Series]:
-    # is a [n:n] split
-    if len(ser.Directory) > 1 or len(ser.FileName) > 1:
-        split = _make_splits(ser, True)
-    else:
-        split = [ser]
-    if len(ser.Layer) > 1:
-        split = [s2 for s in split for s2 in _make_splits(s, False)]
-    #     pass
-    # # is a [n:1] split
-    # else:
-    #     name_parts = [len(named_tuple.Directory), len(named_tuple.FileName), ]
-    #     n_splits = np.max(name_parts)
-    #     max_col = np.argmax(name_parts)
-    #
-    #     split_data = []
-    #     for i in range(n_splits):
-    #         tmp_named_tuple = named_tuple
-    #         tmp_named_tuple[max_col] = named_tuple[max_col]  # TODO TOTALLY BROKEN
-    #         split_data.append(named_tuple)
-
-    return split
-
-
 def make_processable(_df: DataFrame, main_path: Path) -> DataFrame:
     _df = _df.copy()
-    _df['LineNum'] = (_df.index + 2) * 100
 
     # drop Lines not usable (Use == NO), or lines without a path (dir AND FileName)
     _df = _df.loc[~_df['Directory'].isna() | ~_df['FileName'].isna()]
@@ -129,42 +87,31 @@ def make_processable(_df: DataFrame, main_path: Path) -> DataFrame:
     assert np.any(_df['Use'] == 'Yes')
 
     # SPLIT OR into list
-    # split combinations of directories, FileName, Layer consisting of lists into several rules
-    # when column or buffer is a list split it 1:1 for each (dir, file, layer) combination
     for col in _df.columns:
         _df[col] = _df[col].apply(lambda x: _split_col(x))
 
-    del_itr_num = []
-    split_rules = []
-    for idx, _rule in _df.iterrows():
-        if len(_rule.Directory) > 1 or len(_rule.FileName) > 1 or len(_rule.Layer) > 1:
-            del_itr_num.append(idx)
-            split_rules.append(DataFrame(_split_line(_rule)))
-
-    _df = _df.drop(del_itr_num)
-    _df = concat([_df, *split_rules])
-
     _df['Path'] = _df.apply(lambda x: (main_path / x.Directory[0]) / x.FileName[0], axis=1)
-    _df['Layer'] = _df['Layer'].apply(lambda x: x[0])
-    return _df.loc[:, ['LineNum', 'Path', 'Description', 'Layer', 'Column', 'ColumnValue', 'Level', 'Buffer']]
+    _df['Level'] = _df['Level'].apply(lambda x: x[0])
+    _df['Description'] = _df['Description'].apply(lambda x: x[0])
+    _df['LineNum'] = (_df.index + 2)
+
+    return _df.loc[:, ['LineNum', 'Path', 'Description', 'Layer', 'Level', 'Column', 'ColumnValue', 'Buffer']]
 
 
 def process_default_rule(df: DataFrame, resolution: float | tuple[float, list], crs: int,
-                         _save_dir: Path, _all_touched: bool) -> Path:
-
-    named_tuple = df.copy().loc[df['Description'] == 'Basis']
-    return process_rule(named_tuple, resolution, crs, _save_dir, _all_touched)[0]
+                         _save_dir: Path, _all_touched: bool) -> list[str | Path]:
+    named_tuple = list((df.copy().loc[df['Description'] == 'Base']).itertuples())[0]
+    return process_rule(named_tuple, resolution, crs, _save_dir, _all_touched)
 
 
 def process_rule(named_tuple, resolution: float | tuple[float, list], crs: int,
                  _save_dir: Path, _all_touched: bool) -> list[str | Path]:
-
-    gdf = read_file(named_tuple.Path) if named_tuple.Layer.isna() else read_file(named_tuple.Path,
-                                                                                 layer=named_tuple.Layer)
+    gdf = read_file(named_tuple.Path) if len(named_tuple.Layer) == 0 else read_file(named_tuple.Path,
+                                                                                    layer=named_tuple.Layer[0])
     gdf = gdf.to_crs(epsg=crs)
 
-    if not named_tuple.Column.isna():
-        gdf = filter_gdf(gdf, named_tuple.Column, named_tuple.ColumValue)
+    if len(named_tuple.Column) > 0:
+        gdf = filter_gdf(gdf, named_tuple.Column, named_tuple.ColumnValue)
     gdf = buffer(gdf, named_tuple.Buffer)
 
     save_path = _save_dir / named_tuple.Path
@@ -189,8 +136,8 @@ if __name__ == '__main__':
     pprint(fiona.supported_drivers)
     rules = read_excel(args.config_file_path, sheet_name='ProcessingRules')
     weights = read_excel(args.config_file_path, sheet_name='Weights')
-    rules = make_processable(rules, Path(args.config_file_path))
-    rules = rules.join(weights, on='Level').drop(columns='Level')
+    rules = make_processable(rules, Path(args.vectors_main_folder))
+    rules = merge(rules, weights, on='Level').drop(columns='Level')
 
     save_dir = Path(args.save_dir)
     default_save = process_default_rule(rules, args.resolution, args.crs, save_dir, args.all_touched)
