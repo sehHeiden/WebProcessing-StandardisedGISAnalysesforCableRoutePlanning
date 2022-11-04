@@ -6,6 +6,7 @@ from pprint import pprint
 import fiona
 import numpy as np
 from brackettree import Node
+from brackettree.nodes import TextNode, RoundNode
 from geocube.api.core import make_geocube
 from geocube.rasterize import rasterize_image
 from geopandas import read_file, GeoDataFrame
@@ -19,26 +20,30 @@ def write_compress(r, save: Path) -> None:
     r.rio.to_raster(save, tiled=True, compress='ZSTD', num_threads='ALL_CPUS', predictor=predict, zstd_level=1)
 
 
-def filter_gdf(_gdf: GeoDataFrame, columns: list, values: list):
-    # STARTSWITH
-    is_negative = False
-    new_values = []
-    for value in values:
-        is_negative = True if 'NOT' in value else False  # TODO will cause troubles
-        value = value.replace('NOT ', '')
-        if 'STARTSWITH(' in value:
-            value = value[11:-1]
-            if ' OR ' in value:
-                new_values.append(value.split[' OR '])
-            else:
-                new_values.append([value])
-            values = [x1 for x in new_values for x1 in x]
-    # TODO replace new_values with old, but only when necessary
+def __filter(total_gdf: GeoDataFrame, column: str, _rule: Node, ) -> GeoDataFrame:
 
-    if len(columns) == len(values):
-        return concat([_gdf[is_negative * _gdf[column] == value]] for column, value in zip(columns, values))
-    elif len(columns) == 1 and len(values) > 1:
-        return _gdf[is_negative * _gdf[columns[0]].isin(values)]
+    child_results = concat([__filter(total_gdf, column, item) for item in rule.items if isinstance(item, RoundNode)])
+
+    command = str(_rule).split(' ')
+    operator = command[0]
+
+    if operator == 'NOT':
+        return total_gdf - child_results
+    elif operator == 'OR':
+        if len(command) > 1:
+            new_results = total_gdf[total_gdf[column].isin(*command[1:])]
+        else:
+            new_results = [total_gdf[total_gdf[column]] == item for item in _rule.items if isinstance(item, TextNode)]
+        return concat[child_results, new_results]
+
+    elif operator == 'STARTSWITH':
+        return total_gdf[total_gdf[column].apply(lambda x: x.startswith(command[1]))]
+
+
+def filter_gdf(_gdf: GeoDataFrame, column: str, values: str):
+    # decompose the value
+    start_node = Node(values)
+    return __filter(_gdf, column, values)
 
 
 def buffer(_gdf: GeoDataFrame, distance: float | str) -> GeoDataFrame:
@@ -86,13 +91,7 @@ def make_processable(_df: DataFrame, main_path: Path) -> DataFrame:
     _df = _df.loc[~(_df['Use'] == 'No')]
     assert np.any(_df['Use'] == 'Yes')
 
-    # SPLIT OR into list
-    for col in _df.columns:
-        _df[col] = _df[col].apply(lambda x: _split_col(x))
-
-    _df['Path'] = _df.apply(lambda x: (main_path / x.Directory[0]) / x.FileName[0], axis=1)
-    _df['Level'] = _df['Level'].apply(lambda x: x[0])
-    _df['Description'] = _df['Description'].apply(lambda x: x[0])
+    _df['Path'] = _df.apply(lambda x: (main_path / x.Directory) / x.FileName, axis=1)
     _df['LineNum'] = (_df.index + 2)
 
     return _df.loc[:, ['LineNum', 'Path', 'Description', 'Layer', 'Level', 'Column', 'ColumnValue', 'Buffer']]
@@ -106,11 +105,11 @@ def process_default_rule(df: DataFrame, resolution: float | tuple[float, list], 
 
 def process_rule(named_tuple, resolution: float | tuple[float, list], crs: int,
                  _save_dir: Path, _all_touched: bool) -> list[str | Path]:
-    gdf = read_file(named_tuple.Path) if len(named_tuple.Layer) == 0 else read_file(named_tuple.Path,
-                                                                                    layer=named_tuple.Layer[0])
+    gdf = read_file(named_tuple.Path) if np.isnan(named_tuple.Layer) else read_file(named_tuple.Path,
+                                                                                    layer=named_tuple.Layer)
     gdf = gdf.to_crs(epsg=crs)
 
-    if len(named_tuple.Column) > 0:
+    if isinstance(named_tuple.Column, str):
         gdf = filter_gdf(gdf, named_tuple.Column, named_tuple.ColumnValue)
     gdf = buffer(gdf, named_tuple.Buffer)
 
