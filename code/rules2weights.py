@@ -137,7 +137,7 @@ def process_base_rule(df: DataFrame, _resolution: float | tuple[float, list], _c
                       _save_dir: Path, _all_touched: bool) -> DataArray:
     named_tuple = list((df.copy().loc[df['Description'] == 'Base']).itertuples())[0]
     vec = __vector_processing(named_tuple, _crs)
-    save_path = _save_dir / f"rule_{named_tuple.LineNum}_{named_tuple.Description}.tif"
+    save_path = _save_dir / f"rule_{named_tuple.LineNum}_{named_tuple.Description}_res_{resolution}_all_touched_{all_touched}.tif"
     raster = make_geocube(vec, ['Weights', ], resolution=resolution, fill=999,
                           rasterize_function=partial(rasterize_image, all_touched=_all_touched))
     raster = raster['Weights']
@@ -149,11 +149,12 @@ def process_rule(named_tuple, example_da: DataArray, _crs: int,
                  _save_dir: Path, _all_touched: bool, bbox) -> list[str | Path]:
     vec = __vector_processing(named_tuple, _crs, bbox)
 
-    save_path = _save_dir / f"rule_{named_tuple.LineNum}_{named_tuple.Description}.tif"
+    save_path = _save_dir / f"res_{resolution}/all_touched_{all_touched}/rule_{named_tuple.LineNum}_{named_tuple.Description}.tif"
     raster = make_geocube(vec, ['Weights'], like=example_da, fill=999,
                           rasterize_function=partial(rasterize_image, all_touched=_all_touched))
     raster = raster['Weights']
     raster.data[example_da == example_da.rio.nodata] = raster.rio.nodata
+    save_path.parent.mkdir(parents=True, exist_ok=True)
     write_compress(raster, save_path)
     return [save_path, ]
 
