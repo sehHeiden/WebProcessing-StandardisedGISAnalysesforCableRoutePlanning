@@ -1,5 +1,6 @@
 from argparse import ArgumentParser
 from functools import partial
+from os import cpu_count
 from pathlib import Path
 from pprint import pprint
 
@@ -9,8 +10,9 @@ from brackettree import Node
 from brackettree.nodes import TextNode, RoundNode
 from geocube.api.core import make_geocube
 from geocube.rasterize import rasterize_image
-from geopandas import read_file, GeoDataFrame
+from geopandas import read_file, GeoDataFrame, GeoSeries
 from pandas import read_excel, DataFrame, concat, merge, Series
+from ray.util.multiprocessing import Pool
 from rioxarray import open_rasterio
 from rioxarray.merge import merge_arrays
 from tqdm import tqdm
@@ -110,11 +112,24 @@ def buffer(_gdf: GeoDataFrame, distance: float | str) -> GeoDataFrame:
 
     if isinstance(distance, str):
         distance = __estimate_buffer_size(_gdf, Series(np.zeros(len(_gdf)), index=_gdf.index), Node(distance))
+        distance = distance.values
     else:
-        distance = distance if not np.isnan(distance) else 0
+        distance = np.full(len(_gdf), distance if not np.isnan(distance) else 0,)
 
-    # TODO ray multi processing
-    _gdf['geometry'] = _gdf['geometry'].buffer(distance)
+    if len(_gdf) > 5_000:  # ray multiprocessing the buffer
+        geometry_arrays = np.array_split(_gdf['geometry'].values, cpu_count() - 1)
+        distances = np.array_split(distance, cpu_count() - 1)
+
+        def single_buffer(geometry_array, distance_array):
+            s = GeoSeries(geometry_array)
+            return s.buffer(distance_array)
+        with Pool(cpu_count()-1) as p:
+            geometries = p.starmap(single_buffer, zip(geometry_arrays, distances))
+        p.close()
+        _gdf['geometry'] = concat(geometries).values
+        p.terminate()
+    else:
+        _gdf['geometry'] = _gdf['geometry'].buffer(distance)
     return _gdf
 
 
@@ -123,7 +138,7 @@ def __estimate_buffer_size(data: GeoDataFrame, _buffer: Series, _rule: Node, ) -
     estimate the size of the Buffer for every GeoObject in the GeoDataFrame
     :param data: GeoDataFrame
     :param _buffer: Series with the current buffer distances
-    :param _rule: rule to estimate the size of the buffer as Node
+    :param _rule: rule to estimate the size of the buffer as a Node
     :return: Series
     """
     child_results: list[Series | np.ndarray] = []
@@ -165,7 +180,7 @@ def get_command(_rule):
 
 def make_processable(_df: DataFrame, main_path: Path) -> DataFrame:
     """
-    change the DataFrame, so that it can be used to further process the rules it holdes
+    change the DataFrame, so that it can be used to further process the rules it provides
     :param _df: DataFrame
     :param main_path: Path of the main folder from the input data
     :return: DataFrame
@@ -192,8 +207,11 @@ def __vector_processing(named_tuple, _crs: int, base_extent: tuple | None = None
     :return: GeoDataFrame
     """
     layer_name = named_tuple.Layer if isinstance(named_tuple.Layer, str) else None
-    gdf: GeoDataFrame = read_file(named_tuple.Path, bbox=base_extent, layer=layer_name)
+    gdf: GeoDataFrame = read_file(named_tuple.Path, layer=layer_name)
     gdf = gdf.to_crs(epsg=_crs)
+    if base_extent is not None:  # filter by the
+        x_min, y_min, x_max, y_max = base_extent
+        gdf = gdf.cx[x_min:x_max, y_min:y_max]
     gdf['Weights'] = named_tuple.Weight
 
     if isinstance(named_tuple.Column, str):
@@ -217,10 +235,12 @@ def process_base_rule(df: DataFrame, _res: float | tuple[float, float], _crs: in
     """
     nmd_tpl = df.copy().loc[df['Description'] == 'Base'].iloc[0]
     vec = __vector_processing(nmd_tpl, _crs)
-    save_path = _save_dir / f"rule_{nmd_tpl.LineNum}_{nmd_tpl.Description}_res_{_res}_all_touched_{_all_touched}.tif"
+    save_path = _save_dir / f"res_{_res}/all_touched_{_all_touched}/rule_{nmd_tpl.LineNum}_{nmd_tpl.Description}.tif"
     raster = make_geocube(vec, ['Weights', ], resolution=_res, fill=999,
                           rasterize_function=partial(rasterize_image, all_touched=_all_touched))
     raster = raster['Weights']
+
+    save_path.parent.mkdir(parents=True, exist_ok=True)
     write_compress(raster, save_path)
     return raster
 
@@ -234,11 +254,11 @@ def process_rule(nmd_tpl, example_da: DataArray, _crs: int,
     :param example_da: example raster as DataArray
     :param _crs: crs as EPSG-Code
     :param _save_dir: save dir of the raster
-    :param _all_touched: Bool process with all_touched?
+    :param _all_touched: Bool process with all_touched
     :param bbox: bounding box, a tuple of 4 floats
     :return: list[str| Path]
     """
-    # TODO resolution from example_Data
+    # resolution from example_Data
     res = int(abs(example_da.rio.transform()[0]))
 
     save_path = _save_dir / f"res_{res}/all_touched_{_all_touched}/rule_{nmd_tpl.LineNum}_{nmd_tpl.Description}.tif"
@@ -260,8 +280,8 @@ if __name__ == '__main__':
     parser.add_argument('save_dir', type=str, help='Path where this projects raster files can the saved')
     parser.add_argument('-r', '--resolution', type=int, default=1000, help='Resolution to use.')
     parser.add_argument('-at', '--all_touched', action='store_true', help='Select those pixels, those CENTER  is '
-                                                                          'covered by the Polygone (False) or any '
-                                                                          'part overlaps with the Polygone (True).')
+                                                                          'covered by the Polygon (False) or any '
+                                                                          'part overlaps with the Polygon (True).')
     parser.add_argument('--crs', type=int, default=3157, help='Reference system. Default: Google Pseudo Mercator.')
 
     args = parser.parse_args()

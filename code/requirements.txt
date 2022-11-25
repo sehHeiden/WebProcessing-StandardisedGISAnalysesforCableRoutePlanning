@@ -11,3 +11,4 @@ brackettree  # not in conda
 geocube
 rioxarray
 xarray
+ray

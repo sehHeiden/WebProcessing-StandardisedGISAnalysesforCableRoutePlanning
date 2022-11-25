@@ -1,5 +1,8 @@
-\documentclass[acmsmall]{acmart}
+% !TeX spellcheck = en_US
 
+\documentclass[acmtog]{acmart}
+\usepackage[acronym]{glossaries}
+	
 \AtBeginDocument{%
 	\providecommand\BibTeX{{%
 			Bib\TeX}}}
@@ -10,6 +13,8 @@
 \acmDOI{XXXXXXX.XXXXXXX}
 
 
+
+
 %%
 %% These commands are for a JOURNAL article.
 \acmJournal{JACM}
@@ -18,11 +23,13 @@
 \acmArticle{111}
 \acmMonth{8}
 
+\newacronym{wfs}{wfs}{Web Feature Service}
+
 \begin{document}
 	\title{Web Processing - Standardised GIS Analyses for Cable Route Planning}
 	
 	\author{Sebastian Heiden}
-	\email{u38XXX@hs-harz.de}
+	\email{u38439@hs-harz.de}
 	\affiliation{%
 		\institution{Harz University of Applied Sciences}
 		\streetaddress{Friedrichstrasse 57-59}
@@ -89,68 +96,19 @@
 	
 	\section{Introduction}
 
-	
-	\section{Template Overview}
+	\section{Methods}
+	We retrieve a set of different spacial data-sets from  public sources as a basis to create the cost raster. Field of study are the counties of Cuxhaven and Osterholz in the state of Lower Saxony, Germany.
+	Areas protected by different European and National conservation laws are provided by the German Environment Agency as \acrfull{wfs}~\cite{noauthor_schutzgebiete_nodate}.
+	\section{Results}
+	\section{Discussion}
+	\section{Related Works}
+	\section{Conclusion}
 
-	
-	\subsection{Template Styles}
-	
 
-	
-	\subsection{Template Parameters}
-	
-
-	
-	\section{Modifications}
 	
 
 	
-	\section{Typefaces}
-	
 
-	
-	\section{Title Information}
-	
-
-	
-	\section{Authors and Affiliations}
-	
-
-	
-	\section{Rights Information}
-	
-
-	
-	\section{CCS Concepts and User-Defined Keywords}
-	
-
-	
-	\section{Sectioning Commands}
-	
-
-	
-	\section{Tables}
-	
-
-	
-	\section{Math Equations}
-
-	
-	\subsection{Inline (In-text) Equations}
-
-	
-	\subsection{Display Equations}
-
-	
-	\section{Figures}
-	
-	
-	\section{Citations and Bibliographies}
-	
-
-	\section{Acknowledgments}
-
-\section{Multi-language papers}
 
 
 
@@ -163,7 +121,7 @@
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 \bibliographystyle{ACM-Reference-Format}
-\bibliography{sample-base}
+\bibliography{Web_Processing.bib}
 
 
 %%
