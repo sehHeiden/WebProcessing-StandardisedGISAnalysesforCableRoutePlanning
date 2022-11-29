@@ -2,6 +2,7 @@
 \documentclass[usenames,dvipsnames,aspectratio=169]{beamer}
 \usetheme{Szeged}
 \usecolortheme{beaver}
+\usepackage{tikz}
 \setbeamertemplate{navigation symbols}{}
 \usepackage{xcolor}
 
@@ -11,7 +12,7 @@
 \title{Web Processing - Standardized GIS Analyses for Cable Route Planning}
 \author{Sebastian Heiden}
 \institute{Harz University of Applied Sciences}
-\date{December $02^{nd}$, 2022}
+\date{December 02, 2022}
 \begin{document}
 
     
@@ -31,14 +32,15 @@
 	Topic
 	\begin{itemize}
 		\item route planning, e.g. connection of offshore wind farms to the power grid
-		\item conflicts with land usage, land coverage, regulation
+		{\item \color{gray} conflicts with land usage, land coverage, regulation}
 		\item routing cables from landing point to final position
 		\item offer a standard web service for the routing
-
 	\end{itemize}
 	\vspace{0.5cm}
-	Motivation
+	
+	\color{gray} Motivation
 	\begin{itemize}
+	\color{gray}
 		\item Energy Security
 		\item Contribution to important real world problems
 	\end{itemize}
@@ -54,58 +56,120 @@
 \begin{frame}{Timetable}
 \begin{center}
 	\begin{small}
-	\begin{tabular}{ | c | c | l| }
-		\hline
-		Start Date & End Date &  \\ 
-		\hline\hline
-		09/23/2022 & 					& \color{gray}{Project Start}\\
-		09/23/2022 & 10/10/2022 	& \color{gray}{Initial Literature Study}\\
-		10/01/2022 & 10/23/2022 	& \color{gray}{Initial Data Search}\\
-		\hline
-		10/14/2022 & 					& \color{gray}{Kick-Off Presentation}\\
-		\hline
+	\begin{tabular}{  c  c l }
+		
+		  Start Date & End Date &  \hspace{2.5mm}\\ 
+		 \hline  
 
-		10/16/2022 & 10/28/2022 	& \color{gray}{Data Conversion/Costs/test execution}\\
-		10/28/2022 & 12/31/2022 	& \color{red}{provide WPS/implement LCP}\\
-		\hline
-		12/02/2022 & 					& \color{gray}{Midterm  Presentation}\\
-		\hline
-		12/14/2022 & 02/01/2022 	& Optimization/Research Issue\\
-		02/01/2022 & 					& Feature Freeze \\ 
-		02/01/2022 & 02/28/2023 	& Finalizing Report\\ 
-		\hline
-		02/28/2023 & 					& Submission  \\
-		03/15/2023 & 					& Final Presentation  \\
-		\hline   
+		09/23/2022 & 					& \hspace{2.5mm} \color{gray}{Project Start}\\
+		09/23/2022 & 10/10/2022 	&  \hspace{2.5mm} \color{gray}{Initial Literature Study}\\
+		10/01/2022 & 10/23/2022 	&  \hspace{2.5mm} \color{gray}{Initial Data Search}\\
+		\hline  
+		10/14/2022 & 					& \hspace{2.5mm} \color{gray}{Kick-Off Presentation}\\
+
+		10/16/2022 & 10/28/2022 	&  \hspace{2.5mm} \color{gray}{Data Conversion/Costs/test execution}\\
+		10/28/2022 & 12/31/2022 	&  \hspace{2.5mm} \color{red}{provide WPS/implement LCP}\\
+		\hline  
+		12/02/2022 & 					& \hspace{2.5mm} \color{gray}{Midterm  Presentation}\\
+		
+		12/14/2022 & 02/01/2022 	& \hspace{2.5mm} Optimization/Research Issue\\
+		02/01/2022 & 					& \hspace{2.5mm} Feature Freeze \\ 
+
+		02/01/2022 & 02/28/2023 	& \hspace{2.5mm} Finalizing Report\\ 
+		\hline  
+		02/28/2023 & 					& \hspace{2.5mm} Submission  \\
+		03/15/2023 & 					& \hspace{2.5mm} Final Presentation  \\
+		   
 	\end{tabular}
 	\end{small}
 \end{center}
 \end{frame}
 
+
 \section{Create the cost raster}
 \begin{frame}{Get Land coverage/ usage planning}
-	Method
+	Area Under Study:
 	\begin{itemize}
-		\item Least cost path (LCP)
-		\begin{enumerate}
-			\item input: Destination and Cost Raster
-		%\item Computes: Aggregated Cost Raster/ Backlink Raster
-			\item Aggregated Cost and Backlink $\rightarrow$ Route
-		\end{enumerate}
-		\item Web Processing Service (WPS)
-		\begin{itemize}
-			\item standardized GIS\footnote{Geographic information system} web service
-			\item processing spatial data (Raster and Vector)
-		\end{itemize}
+		\item Cuxhaven county
+		\item Osterholz county
 	\end{itemize}
-Research Issue
-\begin{itemize}
-\item optimization of rasterization
-\item reduce area of high resolution raster
-\end{itemize}
+	
+	Sources
+	\begin{itemize}
+		\item Protected Areas - German Environment Agency
+		\item land usage - Federal Agency for Cartography and Geodesy
+		\item planning land usage - 'Metropolplaner' (Planing data Lower Saxony \& Bremen)
+		\item transformers and power lines, off-shore wind parks  - OpenStreetMap
+	\end{itemize}
 \end{frame}
 
 
+\begin{frame}{Rasterization}
+	\begin{itemize}
+		\item vector (point, line, polygon) --> raster
+		\item all touched <-- false
+	\end{itemize}
+	\vspace{5.0mm}
+	\resizebox{11cm}{!}{
+	\begin{tikzpicture}
+	\draw[step=1cm,gray,very thin] (-1.9,-1.9) grid (5.9,5.9);
+	\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.2,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
+	
+	\draw[ultra thick,->, red] (6.5, 2) -- (7.5, 2);
+	
+	\draw[step=1cm,gray,very thin] (8.1,-1.9) grid (15.9,5.9);
+	\draw[fill=blue] (10,0)--(10,2)--(9,2)--(9,3)--(10,3)--(10,4)--(11,4)--(11,3)--(12,3)--(12,4)--(13,4)--(13,2)--(12,2)--(12,1)--(11,1)--(11,0)--cycle;
+	\end{tikzpicture}
+}
+\end{frame}
+
+
+\begin{frame}{Rasterization}
+	\begin{itemize}
+		\item vector (point, line, polygon) --> raster
+		\item all touched <-- true
+	\end{itemize}
+	\vspace{5.0mm}
+	\resizebox{11cm}{!}{
+	\begin{tikzpicture}
+	\draw[step=1cm,gray,very thin] (-1.9,-1.9) grid (5.9,5.9);
+	\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.2,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
+	
+	\draw[ultra thick,->, red] (6.5, 2) -- (7.5, 2);
+
+	\draw[step=1cm,gray,very thin] (8.1,-1.9) grid (15.9,5.9);
+	\draw[fill=blue] (9,0)--(9,5)--(10,5)--(10,4)--(14,4)--(14,1)--(12,1)--(12,0)--cycle;
+	\end{tikzpicture}
+	}
+\end{frame}
+
+\begin{frame}{Configuration tool options}
+	TODO OPTIONAL
+\end{frame}
+
+\begin{frame}{Costs}
+	
+	\vspace{5.0mm}
+	
+	\begin{tabular}{ l  r  l }
+		Cost Level & Cost (numeric) &  Example\\
+		\hline
+		Prohibited & 500					& National Parks, Buildings \\
+		strongly Restricted & 10 	& Bird Sanctuary \\
+		Restricted & 5	& industrial areas \\
+		No Restriction & 0.5					& \color{green}{default}\\
+		Preferential & 0.1					& power grid, motorways buffers\\
+	\end{tabular}
+\end{frame}
+
+\begin{frame}{Cost Raster}
+	TODO show examples
+\end{frame}
+
+\section{web processing server}
+\begin{frame}{web processing server}
+	TODO current state
+\end{frame}
 
 
 \end{document}
