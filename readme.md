@@ -7,4 +7,4 @@ The cost rasters are calculated for with `rules2weight.py` [Documentation](/code
 
 WPS Shall be implemented with PyWPS.
 
-The [Presentations](/presentations/20121014_seh_kickoff.pdf) and [Paper](/paper/paper-CableRoute.pdf) can be found here.
+The [Presentations](/presentations/20221202_seh_midterm.pdf) and [Paper](/paper/paper-CableRoute.pdf) can be found here.
