@@ -88,19 +88,21 @@
 
 \section{Create the cost raster}
 \begin{frame}{Get Land coverage/ usage planning}
-	Area Under Study:
-	\begin{itemize}
-		\item Cuxhaven county
-		\item Osterholz county
-	\end{itemize}
+	%Area Under Study:
+	%\begin{itemize}
+	%	\item Cuxhaven county
+	%	\item Osterholz county
+	%\end{itemize}
 	
-	Sources
-	\begin{itemize}
-		\item Protected Areas - German Environment Agency
-		\item land usage - Federal Agency for Cartography and Geodesy
-		\item planning land usage - 'Metropolplaner' (Planing data Lower Saxony \& Bremen)
-		\item transformers and power lines, off-shore wind parks  - OpenStreetMap
-	\end{itemize}
+	\begin{tabular}{ l  p{75mm} }
+		Datatype & Sources\\
+		\hline 
+		Protected Areas 	& German Environment Agency\footnote{https://geodienste.bfn.de/schutzgebiete?lang=de}\\
+		land usage & Federal Agency for Cartography and Geodesy\footnote{https://gdz.bkg.bund.de/index.php/default/open-data.html} \\
+		planning land usage & 'Metropolplaner' (Planing data Lower Saxony \& Bremen)\footnote{https://metropolplaner.de/metropolplaner/}\\
+		Houses (Level of Detail 1) &State Office for Geoinformation and \newline Land Surveying of Lower Saxony\footnote{https://opengeodata.lgln.niedersachsen.de/}\\
+		transformers, power lines  & OpenStreetMap\\
+	\end{tabular}
 \end{frame}
 
 
@@ -143,32 +145,74 @@
 	}
 \end{frame}
 
-\begin{frame}{Configuration tool options}
-	TODO OPTIONAL
-\end{frame}
 
-\begin{frame}{Costs}
-	
+
+\begin{frame}{Costs and Configuration}
+	Configuration
+	\begin{itemize}
+		\item resolution, all touched
+		\item calculate by layer:
+		\begin{itemize}
+			\item filtering by attribute values
+			\item buffering by value or/and attribute value
+		\end{itemize}
+		\item cost calculation: maximum of al layers
+	\end{itemize}
+
 	\vspace{5.0mm}
-	
 	\begin{tabular}{ l  r  l }
-		Cost Level & Cost (numeric) &  Example\\
-		\hline
-		Prohibited & 500					& National Parks, Buildings \\
-		strongly Restricted & 10 	& Bird Sanctuary \\
-		Restricted & 5	& industrial areas \\
-		No Restriction & 0.5					& \color{green}{default}\\
-		Preferential & 0.1					& power grid, motorways buffers\\
-	\end{tabular}
+	Cost Level & Cost (numeric) &  Example\\
+	\hline
+	Prohibited & 500					& National Parks, Buildings \\
+	strongly Restricted & 10 	& Bird Sanctuary \\
+	Restricted & 5	& industrial areas \\
+	No Restriction & 0.5					& \color{green}{default}\\
+	Preferential & 0.1					& power grid, motorways buffers\\
+\end{tabular}
+
 \end{frame}
 
 \begin{frame}{Cost Raster}
-	TODO show examples
+	\begin{columns}[T] % align columns
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_False.png}
+				\caption{100 m Resolution with all touched false.}
+			\end{figure}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Cost Raster}
+	\begin{columns}[T] % align columns
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_False.png}
+				\caption{100 m Resolution with all touched false.}
+			\end{figure}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_True.png}
+				\caption{100 m Resolution with all touched true.}
+			\end{figure}
+		\end{column}
+	\end{columns}
 \end{frame}
 
 \section{web processing server}
 \begin{frame}{web processing server}
-	TODO current state
+	\begin{itemize}
+		\item goal: calculate path from cost with web service
+		\item current: 
+		\begin{itemize}
+			\item testing pywps\footnote{https://pywps.readthedocs.io/en/latest/index.html}
+			\item cost path (open Dijkstra implementation - QGIS-plugin)\footnote{https://github.com/Gooong/LeastCostPath}
+		\end{itemize}
+	\end{itemize}
 \end{frame}
 
 
