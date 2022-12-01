@@ -148,6 +148,7 @@
 
 
 \begin{frame}{Costs and Configuration}
+		%TODO show grid with  numbers as cost
 	Configuration
 	\begin{itemize}
 		\item resolution, all touched
@@ -203,15 +204,54 @@
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Cost Raster}
+	\begin{columns}[T] % align columns
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_False.png}
+				\caption{50 m Resolution with all touched false.}
+			\end{figure}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_True.png}
+				\caption{50 m Resolution with all touched true.}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
+\begin{frame}{Cost Paths}
+	\begin{columns}[T] % align columns
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_True_with_path.png}
+				\caption{100 m Resolution with all touched false.}
+			\end{figure}
+		\end{column}
+		\begin{column}{.48\textwidth}
+			\begin{figure}[htb]
+				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_True_with_path.png}
+				\caption{50 m Resolution with all touched true.}
+			\end{figure}
+		\end{column}
+	\end{columns}
+\end{frame}
+
 \section{web processing server}
 \begin{frame}{web processing server}
 	\begin{itemize}
-		\item goal: calculate path from cost with web service
+		\item goals: 
+		\begin{itemize}
+			\item use wps as a simple easy to use way calculate the cost path
+			\item optimize search algorithm
+		\end{itemize}
 		\item current: 
 		\begin{itemize}
 			\item testing pywps\footnote{https://pywps.readthedocs.io/en/latest/index.html}
 			\item cost path (open Dijkstra implementation - QGIS-plugin)\footnote{https://github.com/Gooong/LeastCostPath}
 		\end{itemize}
+		\item	
 	\end{itemize}
 \end{frame}
 
