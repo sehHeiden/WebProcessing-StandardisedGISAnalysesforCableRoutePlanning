@@ -25,32 +25,32 @@
 %    \tableofcontents    
 %\end{frame}
 
-\section{Topic and Motivation}
-\begin{frame}{Topic and Motivation}
-\begin{columns}[T] % align columns
-\begin{column}{.68\textwidth}
-	Topic
-	\begin{itemize}
-		\item route planning, e.g. connection of offshore wind farms to the power grid
-		{\item \color{gray} conflicts with land usage, land coverage, regulation}
-		\item routing cables from landing point to final position
-		\item offer a standard web service for the routing
-	\end{itemize}
-	\vspace{0.5cm}
+%\section{Topic and Motivation}
+%\begin{frame}{Topic and Motivation}
+%\begin{columns}[T] % align columns
+%\begin{column}{.68\textwidth}
+%	Topic
+%	\begin{itemize}
+%		\item route planning, e.g. connection of offshore wind farms to the power grid
+%		{\item \color{gray} conflicts with land usage, land coverage, regulation}
+%		\item routing cables from landing point to final position
+%		\item offer a standard web service for the routing
+%	\end{itemize}
+%	\vspace{0.5cm}
 	
-	\color{gray} Motivation
-	\begin{itemize}
-	\color{gray}
-		\item Energy Security
-		\item Contribution to important real world problems
-	\end{itemize}
-\end{column}%
-\hfill
-\begin{column}{.28\textwidth}
-\includegraphics[scale=0.2]{icon_offshore_wind_turbine.png}
-\end{column}%
-\end{columns}
-\end{frame}
+%	\color{gray} Motivation
+%	\begin{itemize}
+%	\color{gray}
+%		\item Energy Security
+%		\item Contribution to important real world problems
+%	\end{itemize}
+%\end{column}%
+%\hfill
+%\begin{column}{.28\textwidth}
+%\includegraphics[scale=0.2]{icon_offshore_wind_turbine.png}
+%\end{column}%
+%\end{columns}
+%\end{frame}
 
 \section{Timetable}
 \begin{frame}{Timetable}
@@ -147,28 +147,28 @@
 
 
 
-\begin{frame}{Costs and Configuration}
+\begin{frame}{Costs}
 		%TODO show grid with  numbers as cost
-	Configuration
-	\begin{itemize}
-		\item resolution, all touched
-		\item calculate by layer:
-		\begin{itemize}
-			\item filtering by attribute values
-			\item buffering by value or/and attribute value
-		\end{itemize}
-		\item cost calculation: maximum of al layers
-	\end{itemize}
+	%Configuration
+	%\begin{itemize}
+	%	\item resolution, all touched
+	%	\item calculate by layer:
+	%	\begin{itemize}
+	%		\item filtering by attribute values
+	%		\item buffering by value or/and attribute value
+	%	\end{itemize}
+	%	\item cost calculation: maximum of al layers
+	%\end{itemize}
 
 	\vspace{5.0mm}
 	\begin{tabular}{ l  r  l }
 	Cost Level & Cost (numeric) &  Example\\
 	\hline
 	Prohibited & 500					& National Parks, Buildings \\
-	strongly Restricted & 10 	& Bird Sanctuary \\
-	Restricted & 5	& industrial areas \\
-	No Restriction & 0.5					& \color{green}{default}\\
-	Preferential & 0.1					& power grid, motorways buffers\\
+	strongly Restricted & 10 	& Bird Reserve \\
+	Restricted & 5	& Industrial Areas \\
+	No Restriction & 0.5					& \color{green}{Default}\\
+	Preferential & 0.1					& Power Grid, Motorway Buffers\\
 \end{tabular}
 
 \end{frame}
@@ -178,7 +178,7 @@
 		\begin{column}{.48\textwidth}
 			\begin{figure}[htb]
 				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_False.png}
-				\caption{100 m Resolution with all touched false.}
+				\caption{100 m resolution, all touched false.}
 			\end{figure}
 		\end{column}
 		\begin{column}{.48\textwidth}
@@ -192,47 +192,47 @@
 		\begin{column}{.48\textwidth}
 			\begin{figure}[htb]
 				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_False.png}
-				\caption{100 m Resolution with all touched false.}
+				\caption{100 m resolution, all touched false.}
 			\end{figure}
 		\end{column}
 		\begin{column}{.48\textwidth}
 			\begin{figure}[htb]
 				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_True.png}
-				\caption{100 m Resolution with all touched true.}
+				\caption{100 m resolution, all touched true.}
 			\end{figure}
 		\end{column}
 	\end{columns}
 \end{frame}
 
-\begin{frame}{Cost Raster}
-	\begin{columns}[T] % align columns
-		\begin{column}{.48\textwidth}
-			\begin{figure}[htb]
-				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_False.png}
-				\caption{50 m Resolution with all touched false.}
-			\end{figure}
-		\end{column}
-		\begin{column}{.48\textwidth}
-			\begin{figure}[htb]
-				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_True.png}
-				\caption{50 m Resolution with all touched true.}
-			\end{figure}
-		\end{column}
-	\end{columns}
-\end{frame}
+%\begin{frame}{Cost Raster}
+%	\begin{columns}[T] % align columns
+%		\begin{column}{.48\textwidth}
+%			\begin{figure}[htb]
+%				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_False.png}
+%				\caption{50 m Resolution with all touched false.}
+%			\end{figure}
+%		\end{column}
+%		\begin{column}{.48\textwidth}
+%			\begin{figure}[htb]
+%				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_True.png}
+%				\caption{50 m Resolution with all touched true.}
+%			\end{figure}
+%		\end{column}
+%	\end{columns}
+%\end{frame}
 
 \begin{frame}{Cost Paths}
 	\begin{columns}[T] % align columns
 		\begin{column}{.48\textwidth}
 			\begin{figure}[htb]
 				\includegraphics[scale=0.2]{../results/images/result_res_100_all_touched_True_with_path.png}
-				\caption{100 m Resolution with all touched false.}
+				\caption{100 m resolution, all touched true.}
 			\end{figure}
 		\end{column}
 		\begin{column}{.48\textwidth}
 			\begin{figure}[htb]
 				\includegraphics[scale=0.2]{../results/images/result_res_50_all_touched_True_with_path.png}
-				\caption{50 m Resolution with all touched true.}
+				\caption{50 m resolution, all touched true.}
 			\end{figure}
 		\end{column}
 	\end{columns}
@@ -243,15 +243,14 @@
 	\begin{itemize}
 		\item goals: 
 		\begin{itemize}
-			\item use wps as a simple easy to use way calculate the cost path
+			\item use wps as a simple, standardized way
 			\item optimize search algorithm
 		\end{itemize}
 		\item current: 
 		\begin{itemize}
-			\item testing pywps\footnote{https://pywps.readthedocs.io/en/latest/index.html}
+			\item testing PyWPS\footnote{https://pywps.readthedocs.io/en/latest/index.html}
 			\item cost path (open Dijkstra implementation - QGIS-plugin)\footnote{https://github.com/Gooong/LeastCostPath}
 		\end{itemize}
-		\item	
 	\end{itemize}
 \end{frame}
 
