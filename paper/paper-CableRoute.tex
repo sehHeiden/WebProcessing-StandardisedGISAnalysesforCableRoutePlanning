@@ -2,7 +2,8 @@
 
 \documentclass[acmtog]{acmart}
 \usepackage[acronym]{glossaries}
-	
+\usepackage{todonotes}
+
 \AtBeginDocument{%
 	\providecommand\BibTeX{{%
 			Bib\TeX}}}
@@ -24,6 +25,7 @@
 \acmMonth{8}
 
 \newacronym{wfs}{wfs}{Web Feature Service}
+\newacronym{wps}{wps}{Web Processing Service}
 
 \begin{document}
 	\title{Web Processing - Standardised GIS Analyses for Cable Route Planning}
@@ -95,11 +97,46 @@
 	\maketitle
 	
 	\section{Introduction}
+	
+	Sometimes, finding the shortest path is not sufficient. Additional parameters play also have to be taken into consideration. As the steepness of a road or the soil,
+	play an important role for the building cost of a road or pipeline \todo{source}. For planing the additional routes for a power grid, additional aspects as legal regulations and acceptance by the local population have to be taken in consideration. Also technical aspects, as the effects on the grid stability might be further points to consider.\cite{schafer_understanding_2022}
+	\todo{what is the least cost path}
+
 
 	\section{Methods}
 	We retrieve a set of different spacial data-sets from  public sources as a basis to create the cost raster. Field of study are the counties of Cuxhaven and Osterholz in the state of Lower Saxony, Germany.
-	Areas protected by different European and National conservation laws are provided by the German Environment Agency as \acrfull{wfs}~\cite{noauthor_schutzgebiete_nodate}.
+	Areas protected by different European and National conservation laws are provided by the German Environment Agency as \acrfull{wfs}~\cite{noauthor_schutzgebiete_2015}. The nation wide land coverage (ATKIS) with a scale of 1:250000 are provided by the Federal Agency for Cartography and Geodesy\cite{noauthor_digitales_2021}. The nation wide power grid (tags: 'power': line) has been retrieved via OpenStreetMap.\cite{boeing_osmnx_2017}
+	Local data as houses at Level of Detail 1 are offered by the State Office for Geoinformation and Land Surveying of Lower Saxony\cite{noauthor_opengeodatani_2022}. In addition local planning geodata for the land usage are taken from 
+	from 'Metropolplaner' (Planing data Lower Saxony \& Bremen)\cite{noauthor_metropolplaner_2022}
+	
+	PyWPS\cite{noauthor_welcome_2016} is used to offer the least cost path algorithm as a \acrfull{wps}.
+	The for the initial implementation of the least cost path algorithm the implementation for the QGIS-Plugin 'Least Cost Path'\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} has been taken into account.
+	\todo{layers -> aggregation -> costs}
+	
+	The files form above are optionally filtered and buffered and than converted into rasters. Filtering the layers of the files for special attributes \ldots
+	\todo{add some text} Adding a buffer can be used either used to convert a line objects as power grids and streets into a polygon with the correct physical width, or to add a minimum distance from an existing of planed area to the new power grid.
+	
+	The costs has been grouped into different levels~(see table \ref{table:1}) starting from preferential areas with very low costs, via no restrictions, which is the default, used when no other layers are covering the local area, to restricted, strongly restricted and prohibited areas with high costs. These higher costs resemble the degree how much a local area should be avoided, while routing the path. The ratio of the higher costs to the lower costs directly translates into the additional diversion in pixels the algorithm is willing to go, for avoiding an area of high costs.
+	Thus, as prohibited areas describe a legal obligation, not to use these areas or only to the utmost minimum, the weight that resembles the costs for these types of areas, has to be especially high.
+	
+	\begin{table}[h!]
+		\caption{Used levels of costs, the applied numerical equivalent and and example layer this cost have been used for.}
+		\label{table:1}
+		\centering
+		\begin{tabular}{ l  r  l }
+			Cost Level & Cost &  Example\\
+			\hline
+			Prohibited & 500					& National Parks, Buildings \\
+			strongly Restricted & 10 	& Bird Reserve \\
+			Restricted & 5	& Industrial Areas \\
+			No Restriction & 0.5					& Default\\
+			Preferential & 0.1					& Power Grid, Motorway Buffers\\
+		\end{tabular}
+
+	\end{table}
+
 	\section{Results}
+	
 	\section{Discussion}
 	\section{Related Works}
 	\section{Conclusion}
