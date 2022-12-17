@@ -1,5 +1,5 @@
 # Documentation of PyWPS
-The standard testsiete runs on localhost `http://127.0.0.1:5000`
+The standard test site runs on localhost `http://127.0.0.1:5000`
 
 ## Capabilites
 

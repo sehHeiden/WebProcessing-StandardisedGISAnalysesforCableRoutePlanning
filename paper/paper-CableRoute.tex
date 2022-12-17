@@ -111,16 +111,17 @@
 	
 	PyWPS\cite{noauthor_welcome_2016} is used to offer the least cost path algorithm as a \acrfull{wps}.
 	The for the initial implementation of the least cost path algorithm the implementation for the QGIS-Plugin 'Least Cost Path'\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} has been taken into account.
-	\todo{layers -> aggregation -> costs}
 	
-	The files form above are optionally filtered and buffered and than converted into rasters. Filtering the layers of the files for special attributes \ldots
-	\todo{add some text} Adding a buffer can be used either used to convert a line objects as power grids and streets into a polygon with the correct physical width, or to add a minimum distance from an existing of planed area to the new power grid.
-	
+	The different layers from the different entities are optionally filtered, buffered and than converted into rasters. Filtering the layers of the files for special attributes enables to further differentiate further. For examples makes it possible to differentiate between heath and uncultivated land.
+	 Adding a buffer can be used either used to convert a line objects as power grids and streets into a polygon with the correct physical width, or to add minimum distance from an existing of planed area to the new power grid.
+ 	Each of theses rasterized layers are given a weight, or cost that expresses the cost of using land covered by this layer.
+ 	The costs of all layers of all layers is aggregated with the maximum function. Thus, an area covered by multiple layers is uniformly used with the highest costs. For every area in the study area. that is not covered by any layer, is given the default cost.
 	The costs has been grouped into different levels~(see table \ref{table:1}) starting from preferential areas with very low costs, via no restrictions, which is the default, used when no other layers are covering the local area, to restricted, strongly restricted and prohibited areas with high costs. These higher costs resemble the degree how much a local area should be avoided, while routing the path. The ratio of the higher costs to the lower costs directly translates into the additional diversion in pixels the algorithm is willing to go, for avoiding an area of high costs.
 	Thus, as prohibited areas describe a legal obligation, not to use these areas or only to the utmost minimum, the weight that resembles the costs for these types of areas, has to be especially high.
+	\todo{all touched}
 	
 	\begin{table}[h!]
-		\caption{Used levels of costs, the applied numerical equivalent and and example layer this cost have been used for.}
+		\caption{Used levels of costs, the applied numerical equivalent and example layer this cost have been used for.}
 		\label{table:1}
 		\centering
 		\begin{tabular}{ l  r  l }
@@ -132,12 +133,17 @@
 			No Restriction & 0.5					& Default\\
 			Preferential & 0.1					& Power Grid, Motorway Buffers\\
 		\end{tabular}
-
 	\end{table}
+	The completed list of layers and the processing applied to them, can be found in Supplement S1. \todo{create the Supplement from the processing rules}
 
 	\section{Results}
+	In this chapter we want to show the different cost rasters, that were created from the very same set of layers, but computed for different resolutions. From this different rasters the cost paths are calculated and compared. In the last step the rasters with lower resolution were used to calculate in a way, that they shall result in similar paths as if the paths were computed from a high resolution raster.
+	\subsection{Cost Rasters}
+	\subsection{Least Cost Paths}
+	\subsection{Faster Processing of the Cost Path Algorithm}
 	
 	\section{Discussion}
+	\todo{discuss aggrgation with max vs sum}
 	\section{Related Works}
 	\section{Conclusion}
 
@@ -151,7 +157,7 @@
 
 
 \begin{acks}
-	bla
+	\ldots
 \end{acks}
 
 %%
