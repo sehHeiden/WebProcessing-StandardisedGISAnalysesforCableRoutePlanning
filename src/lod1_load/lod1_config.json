@@ -1,0 +1,11 @@
+{
+  "dates": [
+    "2020-09-21",
+    "2020-11-07"
+  ],
+  "areas_vector_path": "/home/sebastian/Dokumente/Basti/Studium/HSHarz/WissenschaftlichesArbeiten/WebProcessing-StandardisedGISAnalysesforCableRoutePlanning/data/dlm250.utm32s.shape.ebenen/dlm250_ebenen/geb01_f.shp",
+  "download_page": "https://lod1.opengeodata.lgln.niedersachsen.de",
+  "mass_geojson_url": "https://single-datasets.opengeodata.lgln.niedersachsen.de/pro-download-indices/lod1/lgln-opengeodata-lod1.geojson",
+  "unzip_lod1_path": "/home/sebastian/Dokumente/Basti/Studium/HSHarz/WissenschaftlichesArbeiten/WebProcessing-StandardisedGISAnalysesforCableRoutePlanning/data/OpenGeoData_Niedersachsen/LoD1",
+  "save_result_path": "/home/sebastian/Dokumente/Basti/Studium/HSHarz/WissenschaftlichesArbeiten/WebProcessing-StandardisedGISAnalysesforCableRoutePlanning/data/OpenGeoData_Niedersachsen/LoD1.gpkg"
+}
