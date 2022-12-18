@@ -140,10 +140,52 @@
 	In this chapter we want to show the different cost rasters, that were created from the very same set of layers, but computed for different resolutions. From this different rasters the cost paths are calculated and compared. In the last step the rasters with lower resolution were used to calculate in a way, that they shall result in similar paths as if the paths were computed from a high resolution raster.
 	\subsection{Cost Rasters}
 	\subsection{Least Cost Paths}
+	
+	\begin{table}[h!]
+	\caption{Least cost paths for the different resolutions of the rasters.}
+	\label{table:2}
+	\centering
+	\begin{tabular}{ r  r  r r }
+		resolution /m & $length_{all touched false} /m$ & $length_{all touched true} /m$ & mean minimum distance /m\\
+		\hline
+		5 & 76136.27					& 78002.00 & 126.04 \\
+		10 & 75430.10 	& 77936.57 & 277.92 \\
+		50 & 76135.02	& 70619,95 & 1140.01 \\
+		100 & 76283.80	& 74120.73				& 1946.41 \\
+	\end{tabular}
+	\end{table}
 	\subsection{Faster Processing of the Cost Path Algorithm}
 	
+	The paths between the all\_touched False runs is less distinct. The mean average distance between the 100 m resolution run and the 5 m resolution run is 257.97 m. \todo{add the overall cost}
+	
+	\begin{table}[h!]
+		\caption{Ratio Category values of each least cost path.}
+		\label{table:3}
+		\centering
+		\begin{tabular}{ r  r  r  r  r  r  r }
+			resolution /m & all touched & $ r_{Preferential} \% $  & $ r_{No Restriction} \% $ & $ r_{Restricted} \% $ & $ r_{strongly Restricted}\% $ & $ r_{Prohibited} \% $ \\
+			\hline
+			5 & False &  4.29 & 59.01  & 8.88 & 0.73 & 27.08  \\
+			5 & True &  17.38 & 67.25  & 1.17 & 0.97 & 13.23\\
+			
+			10 & False &  17.90 & 68.73  & 0.92 & 0.80 & 11.64\\
+			10 & True &  17.37 & 66.42  & 1.47 & 1.38 & 13.36\\
+			
+			50 & False &  18.73 & 67.87  & 0.87 & 0.68 & 11.85\\
+			50 & True &  8.58 & 74.95  & 3.95 & 4.08 & 8.45\\
+			
+			100 & False &  18.48 & 69.82  & 1.31 & 0.90 & 9.52\\
+			100 & True &  6.16 & 71.74  & 5.75 & 9.69 & 7.04\\			
+
+		\end{tabular}
+	\end{table}
+	\todo{Check why values are so different for 5 m all touched False.}
+	\todo{Discuss WHY}
+	\subsection{Faster Processing of the Cost Path Algorithm}
+	
+	
 	\section{Discussion}
-	\todo{discuss aggrgation with max vs sum}
+	\todo{discuss aggregation with max vs sum}
 	\section{Related Works}
 	\section{Conclusion}
 
