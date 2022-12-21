@@ -1,0 +1,5 @@
+{
+  "cost_raster": "weights/result_res_100_all_touched_True.tif",
+  "start_features": "test_points/start_point.gpkg",
+  "end_features": "test_points/end_point.gpkg"
+}
