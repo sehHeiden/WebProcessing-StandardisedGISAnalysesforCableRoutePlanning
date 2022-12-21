@@ -6,7 +6,7 @@ from .processes.centroids import Centroids
 from .processes.least_cost_path import LeastCostPath
 
 
-service = pywps.Service([Buffer(), MyBuffer(), Centroids(), LeastCostPath()])
+service = pywps.Service([Buffer(), MyBuffer(), Centroids(), LeastCostPath()], ['pywps.cfg', ])
 app = flask.Flask(__name__)
 app.route('/wps', methods=['GET', 'POST'])(lambda: service)
 app.run()
