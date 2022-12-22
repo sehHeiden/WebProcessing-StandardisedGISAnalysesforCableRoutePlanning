@@ -17,8 +17,8 @@ def outputfile(filename):
         with open(target_file, mode='rb') as f:
             file_bytes = f.read()
         mime_type = None
-        if 'xml' in file_ext:
-            mime_type = 'text/xml'
+        if 'json' in file_ext:
+            mime_type = 'text/json'
         return flask.Response(file_bytes, content_type=mime_type)
     else:
         flask.abort(404)
