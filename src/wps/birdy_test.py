@@ -14,13 +14,14 @@ if __name__ == '__main__':
     with open(args.config_path, 'r') as f:
         config = load(f)
 
-    pywps = WPSClient('http://localhost:5000/wps')
+    pywps = WPSClient('http://localhost:8081/wps')
 
     cost_raster = main_path / config['cost_raster']
     start_features = main_path / config['start_features']
     end_features = main_path / config['end_features']
 
-    # print(pywps.lcp.__doc__)
+    print(pywps.lcp.__doc__)
+
     result = pywps.lcp(costs=cost_raster,
                        start=start_features,
                        end=end_features)
