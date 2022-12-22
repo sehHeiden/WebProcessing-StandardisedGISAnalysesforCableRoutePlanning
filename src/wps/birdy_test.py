@@ -2,6 +2,7 @@ from birdy import WPSClient
 from pathlib import Path
 from json import load
 from argparse import ArgumentParser
+from metalink import download
 
 if __name__ == '__main__':
     parser = ArgumentParser(description='Find the nearest cost path.')
@@ -19,8 +20,10 @@ if __name__ == '__main__':
     start_features = main_path / config['start_features']
     end_features = main_path / config['end_features']
 
-    print(pywps.lcp.__doc__)
+    # print(pywps.lcp.__doc__)
     result = pywps.lcp(costs=cost_raster,
                        start=start_features,
                        end=end_features)
     print(result.get(asobj=True)[0])  # print the geojson?
+
+    # download.get(result.get(asobj=False), path='.', segmented=False)
