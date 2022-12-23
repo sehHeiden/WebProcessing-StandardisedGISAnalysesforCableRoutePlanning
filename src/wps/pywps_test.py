@@ -11,7 +11,7 @@ app.route('/wps', methods=['GET', 'POST'])(lambda: service)
 
 @app.route('/outputs/'+'<path:filename>')
 def outputfile(filename):
-    target_file = join('outputs', filename)
+    target_file = join('tmp', filename)
     if isfile(target_file):
         file_ext = splitext(target_file)[1]
         with open(target_file, mode='rb') as f:

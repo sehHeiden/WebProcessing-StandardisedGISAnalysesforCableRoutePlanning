@@ -1,4 +1,4 @@
-from pywps import Process, ComplexInput, ComplexOutput, Format
+from pywps import Process, ComplexInput, ComplexOutput, Format, FORMATS
 from rioxarray import open_rasterio
 from geopandas import read_file
 
@@ -14,9 +14,8 @@ class LeastCostPath(Process):
                                supported_formats=[Format('application/gpkg'), Format('application/json'), ])]
         outputs = [ComplexOutput('out', 'Referenced Output',
                                  as_reference=True,
-                                 supported_formats=[
-                                     Format('application/json')
-                                 ])]
+                                 supported_formats=[FORMATS.JSON, ]
+                                 )]
 
         super(LeastCostPath, self).__init__(
             self._handler,
