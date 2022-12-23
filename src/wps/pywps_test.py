@@ -1,7 +1,7 @@
 import flask
 import pywps
-from os.path import join, splitext, isfile
 from .processes.least_cost_path import LeastCostPath
+from pathlib import Path
 
 
 service = pywps.Service([LeastCostPath()], ['./src/wps/pywps.cfg', ])
@@ -9,11 +9,12 @@ app = flask.Flask(__name__)
 app.route('/wps', methods=['GET', 'POST'])(lambda: service)
 
 
-@app.route('/outputs/'+'<path:filename>')
-def outputfile(filename):
-    target_file = join('tmp', filename)
-    if isfile(target_file):
-        file_ext = splitext(target_file)[1]
+@app.route('/tmp/'+'<path:filename>')
+def outputfile(filename: str):
+    print(filename)
+    target_file = Path('/tmp') / filename
+    if target_file.is_file():
+        file_ext = target_file.suffix
         with open(target_file, mode='rb') as f:
             file_bytes = f.read()
         mime_type = None
