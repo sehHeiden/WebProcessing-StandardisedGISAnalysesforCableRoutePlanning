@@ -4,7 +4,7 @@ from .processes.least_cost_path import LeastCostPath
 from pathlib import Path
 
 
-service = pywps.Service([LeastCostPath()], ['./src/wps/pywps.cfg', ])
+service = pywps.Service([LeastCostPath()], ['./src/wps/pywps_flask.cfg', ])
 app = flask.Flask(__name__)
 app.route('/wps', methods=['GET', 'POST'])(lambda: service)
 
