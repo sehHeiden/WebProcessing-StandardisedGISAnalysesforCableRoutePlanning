@@ -6,9 +6,9 @@ from metalink import download
 
 
 if __name__ == '__main__':
-    parser = ArgumentParser(description='Find the nearest cost path with a wps using birdy.')
+    parser = ArgumentParser(description='Find the nearest cost path with a wps (flask) using birdy.')
     parser.add_argument('config_path', type=str, help='Full path to the config file. Containing relative paths.')
-    parser.add_argument('main_path', type=str, help='Main path for the files in the config.')
+    parser.add_argument('main_path', type=str, help='Main path for the files in the config. The generate full paths.')
     args = parser.parse_args()
 
     main_path = Path(args.main_path)

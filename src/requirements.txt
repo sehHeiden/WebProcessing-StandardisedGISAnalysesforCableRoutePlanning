@@ -12,3 +12,6 @@ geocube
 rioxarray
 xarray
 ray
+birdy
+pywps
+

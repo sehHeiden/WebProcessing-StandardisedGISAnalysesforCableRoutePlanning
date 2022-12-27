@@ -11,7 +11,13 @@ from argparse import ArgumentParser
 
 
 # TODO comment for function descriptions
-def _point_to_row_col(point_xy: Point, raster_layer: DataArray):
+def _point_to_row_col(point_xy: Point, raster_layer: DataArray) -> tuple[int, int]:
+    """
+    Convert a point from Shapely Point, to index coordinates of the point in `raster_layer`
+    :param point_xy: Shapely Point
+    :param raster_layer: Raster as DataArray
+    :return: tuple[int, in]
+    """
     affine = raster_layer.rio.transform()
     x_res = affine.a
     y_res = abs(affine.e)
@@ -23,8 +29,13 @@ def _point_to_row_col(point_xy: Point, raster_layer: DataArray):
     return row, col
 
 
-def features_to_tuples(point_features: GeoSeries, raster_layer: DataArray) -> list[tuple]:
-    # TODO check data type
+def features_to_tuples(point_features: GeoSeries, raster_layer: DataArray) -> list[tuple[tuple[int, int], Point, int]]:
+    """
+    Convert all Points in `point_features` into a list of the points as tuple-coordinates, original Coords, and Index
+    :param point_features: GeoSeries of Shapley Points
+    :param raster_layer: DataArray
+    :return: list[tuple[tuple[int, int], Point, int]] list of tuple of Point coord as tuple, Shapely Point and  index
+    """
     row_cols = []
 
     extent = box(*raster_layer.rio.bounds())
@@ -46,7 +57,13 @@ def features_to_tuples(point_features: GeoSeries, raster_layer: DataArray) -> li
     return row_cols
 
 
-def _row_col_to_point(row_col, raster_layer: DataArray):
+def _row_col_to_point(row_col: tuple[int], raster_layer: DataArray) -> Point:
+    """
+    Convert tuple coordinates into Shapely Points (with correct offset)
+    :param row_col: tuple[int, int], relative coordinates
+    :param raster_layer: DataArray
+    :return: Point
+    """
     affine = raster_layer.rio.transform()
     x_res = affine.a
     y_res = abs(affine.e)
@@ -58,6 +75,11 @@ def _row_col_to_point(row_col, raster_layer: DataArray):
 
 
 def raster2matrix(block: DataArray) -> tuple[list[list[None | float]], bool]:
+    """
+    Convert the raster to a 2D-List
+    :param block: DataArray
+    :return: tuple[list[list[None | float]], bool]
+    """
     _contains_negative = False
     _matrix = [[None if block.data[i, j] == block.rio.nodata else block.data[i, j] for j in range(block.rio.width)]
                for i in range(block.rio.height)]
@@ -71,7 +93,16 @@ def raster2matrix(block: DataArray) -> tuple[list[list[None | float]], bool]:
     return _matrix, _contains_negative
 
 
-def create_points_from_path(_cost_raster, min_cost_path, start_point, end_point):
+def create_points_from_path(_cost_raster: DataArray, min_cost_path: list[tuple[int, int]], start_point: Point,
+                            end_point: Point) -> list[Point]:
+    """
+    Convert Path form 2D-List format to a list of Shapley Points
+    :param _cost_raster: DataArray
+    :param min_cost_path: list[tuple[int, int]]
+    :param start_point: Point
+    :param end_point: Point
+    :return: list[Point]
+    """
     path_points = list(map(lambda row_col: _row_col_to_point(row_col, _cost_raster), min_cost_path))
     path_points[0] = start_point
     path_points[-1] = end_point
@@ -79,7 +110,14 @@ def create_points_from_path(_cost_raster, min_cost_path, start_point, end_point)
     return path_points
 
 
-def create_path_feature_from_points(_path_points: list[Point], attr_vals):
+def create_path_feature_from_points(_path_points: list[Point], attr_vals: tuple[int, int, float]) -> GeoDataFrame:
+    """
+    Convert Path form 2D-List format to a GeoDataFrame containing the path as Shapley LineString and MetaData
+    from attr_vals
+    :param _path_points: list[Point]
+    :param attr_vals: tuple[int, int, float]
+    :return: GeoDataFrame
+    """
     polyline = LineString(_path_points)
     feature = GeoDataFrame(data={'geometry': [polyline, ],
                                  'start point id': [attr_vals[0], ],
@@ -92,11 +130,22 @@ def create_path_feature_from_points(_path_points: list[Point], attr_vals):
 
 def find_least_cost_path(cost_raster: DataArray, cost_raster_band: int, is_nearest: bool, start_features: GeoDataFrame,
                          end_features: GeoDataFrame) -> GeoDataFrame:
+    """
+    Compute the Least Cost Path with Dijkstra Algorithm
+    :param cost_raster: DataArray
+    :param cost_raster_band: int
+    :param is_nearest: bool
+    :param start_features: GeoSeries
+    :param end_features: GeoSeries
+    :return: GeoDataFrame
+    """
     raster_2d = cost_raster[cost_raster_band]
 
     start_tuples = features_to_tuples(start_features.geometry, cost_raster)
     end_tuples = features_to_tuples(end_features.geometry, cost_raster)
     matrix, contains_negative = raster2matrix(raster_2d)
+    if contains_negative:
+        return GeoDataFrame()
     result = dijkstra(start_tuples[0], end_tuples, matrix, is_nearest)
 
     _path_features = []

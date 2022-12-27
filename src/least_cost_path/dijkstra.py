@@ -5,53 +5,69 @@ import collections
 from shapely.geometry import Point
 
 
-def dijkstra(start_tuple: tuple[tuple[int, int], Point, int], end_tuples: tuple[tuple[tuple[int, int], Point, int]],
-             block: list[list[None | float]], find_nearest: bool):
+def dijkstra(start_tuple: tuple[tuple[int, int], Point, int],
+             end_tuples: list[tuple[tuple[int, int], Point, int]],
+             block: list[list[float | None]],
+             find_nearest: bool) -> list[tuple[list[tuple[int, int]], list[float | None], list]]:
+    """
+    compute the distance between the starting point and any point of he
+    :param start_tuple: Starting point (2-tuple of int, in coords of `block`) of the aggregation/length calculation
+    :param end_tuples: Ending points(list of 2-tuple of ints) that should be reached
+    :param block: The costs/weights as 2S-List of float | None (None == nodata)
+    :param find_nearest: bool, True: only compute the path for the nearest point, False: Compute all points
+    :return: list of the path, of costs (per path) and end point id
+    """
     class Grid:
-        def __init__(self, matrix: list[list[None | float]]):
+        def __init__(self, matrix: list[list[float]]):
             self.map = matrix
             self.h = len(matrix)
             self.w = len(matrix[0])
-            self.manhattan_boundary = None
-            self.curr_boundary = None
 
-        def _in_bounds(self, _id: tuple[int, int]):
+        def _in_bounds(self, _id: tuple[int, int]) -> bool:
+            """
+            Is the tuple inside the `block` coordinates
+            :param _id: tuple[int, int] coords of the point in `block` coords
+            :return: bool
+            """
             x, y = _id
             return 0 <= x < self.h and 0 <= y < self.w
 
-        def _passable(self, _id: tuple[int, int]):
+        def _passable(self, _id: tuple[int, int]) -> bool:
+            """
+            Can this point be reached (is a valid point, with valid weight?)
+            :param _id: tuple[int, int] coords of the point in `block` coords
+            :return: bool
+            """
             x, y = _id
             return self.map[x][y] is not None
 
-        def is_valid(self, _id: tuple[int, int]):
+        def is_valid(self, _id: tuple[int, int]) -> bool:
+            """
+            Can this inside the block and can be reached
+            :param _id:tuple[int, int] coords of the point in `block` coords
+            :return: bool
+            """
             return self._in_bounds(_id) and self._passable(_id)
 
-        def neighbors(self, _id: tuple[int, int]):
+        def neighbors(self, _id: tuple[int, int]) -> list[tuple[int, int]]:
+            """
+            Compute all valid neighbors of the current point
+            :param _id: tuple[int, int] coords of the point in `block` coords
+            :return: list[tuple[int, int]]
+            """
             x, y = _id
             results = [(x + 1, y), (x, y - 1), (x - 1, y), (x, y + 1),
                        (x + 1, y - 1), (x + 1, y + 1), (x - 1, y - 1), (x - 1, y + 1)]
             results = list(filter(self.is_valid, results))
             return results
 
-        @staticmethod
-        def manhattan_distance(id1: tuple[int, int], id2: tuple[int, int]):
-            x1, y1 = id1
-            x2, y2 = id2
-            return abs(x1 - x2) + abs(y1 - y2)
-
-        @staticmethod
-        def min_manhattan(curr_node, end_nodes):
-            return min(map(lambda node: Grid.manhattan_distance(curr_node, node), end_nodes))
-
-        @staticmethod
-        def max_manhattan(curr_node, end_nodes):
-            return max(map(lambda node: Grid.manhattan_distance(curr_node, node), end_nodes))
-
-        @staticmethod
-        def all_manhattan(curr_node, end_nodes):
-            return {end_node: Grid.manhattan_distance(curr_node, end_node) for end_node in end_nodes}
-
-        def simple_cost(self, current: tuple[int, int], _next: tuple[int, int]):
+        def simple_cost(self, current: tuple[int, int], _next: tuple[int, int]) -> float:
+            """
+            Compute the euclidean distance between current and _next point
+            :param current: tuple[int, int] coords of the point in `block` coords
+            :param _next: tuple[int, int] coords of the point in `block` coords
+            :return: float
+            """
             cx, cy = current
             nx, ny = _next
             current_value = self.map[cx][cy]
