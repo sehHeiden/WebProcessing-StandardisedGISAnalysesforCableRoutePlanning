@@ -3,8 +3,8 @@
 Finding Cable Routes with the Least Coast Path Algorithmus (Dijkstra's Algorithm on Raster)
 on a web processing service (WPS).
 
-The cost rasters are calculated for with `rules2weight.py` [Documentation](/code/documentation_cost_raster_generation.md).
+The cost rasters are calculated for with `rules2weight.py` [Documentation](/src/documentation_cost_raster_generation.md).
 
-WPS Shall be implemented with PyWPS.
+WPS [Documentation](/src/pywps_docu.md) is implemented with PyWPS.
 
 The [Presentations](/presentations/20221202_seh_midterm.pdf) and [Paper](/paper/paper-CableRoute.pdf) can be found here.
