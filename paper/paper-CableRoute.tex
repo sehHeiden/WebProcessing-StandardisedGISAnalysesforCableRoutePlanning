@@ -148,7 +148,7 @@
  	The costs of all layers of is aggregated with the maximum function.
 	Thus, an area covered by multiple layers is uniformly used with the highest costs.
 	For every area in the study area, that is not covered by any layer, is given the default cost.
-	The costs has been grouped into different levels~(see table~\ref{table:1}) starting from preferential areas with
+	The costs has been grouped into different levels~(see table~\ref{tab:1}) starting from preferential areas with
 	very low costs, via no restrictions, which is the default, used when no other layers are covering the local area,
 	to restricted, strongly restricted and prohibited areas with high costs.
 	These higher costs resemble the degree how much a local area should be avoided, while routing the path.
@@ -156,15 +156,15 @@
 	the algorithm is willing to go, for avoiding an area of high costs.
 	Thus, as prohibited areas describe a legal obligation, not to use these areas or only to the utmost minimum,
 	the weight that resembles the costs for these types of areas, has to be especially high. \\
-	The rasterziation transforms a vector into a raster.
+	The rasterization transforms a vector into a raster.
 	The rasterization can be executed in to different ways.
 	In both ways, the rasterization can be imaged, as the old vector is layered over the new raster grid with the new
 	given resolution and the new affine transformation and the coordinate reference system of the vector.
 	Both rasterization techniques differ  in who the pixels are selected, that describe, that a geo-object overlays the pixel.
-	The pixels can either be described as overlayed with a geo-object, when either the center of that pixel is overlayed
-	by the geo-object, or any part of the pixel is overlayed.
-	Hence, the version with any part overlayed is called all touched True.
-	The version where a overlayed pixel center is require is thus called all touched False.
+	The pixels can either be described as overlaid with a geo-object, when either the center of that pixel is overlaid
+	by the geo-object, or any part of the pixel is overlaid.
+	Hence, the version with any part overlaid is called all touched True.
+	The version where a overlaid pixel center is require is thus called all touched False.
 	All touched False is considered the default (see figure~\ref{fig:alltouched}).
 	\begin{figure}[!ht]
 		\centering
@@ -201,7 +201,7 @@
 	
 	\begin{table}[h!]
 		\caption{Used levels of costs, the applied numerical equivalent and example layer this cost have been used for.}
-		\label{table:1}
+		\label{tab:1}
 		\centering
 		\begin{tabular}{ l  r  l }
 			Cost Level & Cost &  Example\\
@@ -227,9 +227,9 @@
 	and all\_touched True.
 	The distance of both paths is calculated with the mean minimum distance.
 	For every vertex $P_i$ in the path $L_1$ the minimum between the vertex and the path $L_2$
-	is computed and afterwards the minimum distances are averaged (see equation~\ref{equ:1}).
+	is computed and afterwards the minimum distances are averaged (see equation~\ref{eq:1}).
 	\begin{equation}
-		\label{equ:1}
+		\label{eq:1}
 		d_{mean} = \frac{\sum_{i=1}^{n} d_{min}(p_i, L_2)}{n} \bigg\vert p_i \in L_1
 	\end{equation}
 
@@ -325,12 +325,18 @@
 	For the calculation of the least cost paths.
 	The finally least costs paths should between the least cost paths of the lower resolution, with a tendency to be nearer
 	The first step to optimize the calculation speed is, only the calculated the least cost paths for this smaller area. 
-	\subsubsection{Apply a minimum sized bounding box around least cost paths}
-	\subsubsection{Apply a convex hull round a the last cost paths}
-	\subsubsection{Remove unreachable points}
+	\subsubsection{Compare least cost paths, for overlay of both rasterizations}
+	\subsubsection{Restrict search to a minimum sized bounding box}
+	\subsubsection{Restrict search to a convex hull}
+	\subsubsection{Restrict search to reachable points}
+
+	\subsubsection{Compare the different Solutions}
+	\subsubsection{Check solution for least cost path between different points}
 	
 	\section{Discussion}
 	\todo{discuss aggregation with max vs sum}
+	\todo{discuss other methods. Off algorithmic speed-ups}
+	\todo{discuss other technical methods of speed-ups, as precompilation, JIT, vector units, multi-core}
 	\section{Related Works}
 	\section{Conclusion}
 
