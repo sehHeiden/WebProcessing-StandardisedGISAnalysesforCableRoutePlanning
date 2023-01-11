@@ -7,6 +7,7 @@
 \usepackage[acronym]{glossaries}
 \usepackage{todonotes}
 \usepackage{tikz}
+\usepackage{graphicx}
 
 
 \AtBeginDocument{%
@@ -236,8 +237,9 @@
 
 	Hence, the mean minimum euclidean distance between the two paths can used to compute
 	the similarity.
-	As different table~\ref{table:2} shows the distance between the two paths decreases
-	with increasing resolution. In addition, this tendency is depicted in figure~\ref{fig:paths_alltouched} for the calculated cost paths of 5m and 100 m resolutions.
+	As different table~\ref{tab:2} shows the distance between the two paths decreases
+	with increasing resolution.
+	In addition, this tendency is depicted in figure~\ref{fig:paths_resolution} for the calculated cost paths of 5m and 100 m resolutions.
 	
 	At the same time the differences in the aggregated costs stay constant.
 	\todo{Interpretation} When normalize the aggregated costs by the resolution.
@@ -270,7 +272,7 @@
 	
 	\begin{table*}[t]
 	\caption{Least cost paths as length for the different \acrfull{res} of the rasters, including the \acrfull{mmd} and the \acrfull{agg} costs. From the \acrshort{agg} costs the differences of the \acrshort{agg} costs and the \acrfull{corr} \acrshort{agg} by resolution are given.} 
-	\label{table:2}
+	\label{tab:2}
 	\centering
 	\begin{tabular}{ r  r  r  r  r  r  r  r  r}
 		\acrshort{res} /m & $length_{\acrshort{al}=\acrshort{f}} /m$ & $length_{\acrshort{al}=\acrshort{t}} /m$ & \acrshort{mmd} /m & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{f}}$ & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{t}}$ &  $\Delta $ costs & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{f}}$ & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{t}} $ \\
@@ -290,7 +292,8 @@
 	The similarity of all all\_touched False runs is higher than, the similar between the all\_touched False and all\_touched True runs with the same resolution, except for the highest resolution.
 	
 	Hence, in an overall perspective paths of the all\_touched False runs stay in a
-	similar region, while paths of the all\_touched True coverage strongly to the paths all\_touched False runs. This behaviour is depicted in figure~\ref{fig:paths_alltouched}. 
+	similar region, while paths of the all\_touched True coverage strongly to the paths all\_touched False runs.
+	This behaviour is depicted in figure~\ref{fig:paths_alltouched}.
 	On a more detailed level, it can be seen, that also the Paths of all\_touched 	converges the all\_touched True path.
 	But the extent is smaller.
 	The length of the the paths only differs to a maximum of about 10 \%.
@@ -358,6 +361,7 @@
 	
 	\section{Discussion}
 	\todo{discuss aggregation with max vs sum}
+	\todo{Scaling with multiple endpoints.}
 	\todo{discuss other methods. Off algorithmic speed-ups}
 	\todo{discuss other technical methods of speed-ups, as precompilation, JIT, vector units, multi-core}
 	\section{Related Works}
