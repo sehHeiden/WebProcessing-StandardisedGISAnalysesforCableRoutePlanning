@@ -3,6 +3,7 @@
 \documentclass[acmtog]{acmart}
 \usepackage{amsmath}
 \usepackage{multirow}
+\usepackage{subfig}
 \usepackage[acronym]{glossaries}
 \usepackage{todonotes}
 \usepackage{tikz}
@@ -236,7 +237,8 @@
 	Hence, the mean minimum euclidean distance between the two paths can used to compute
 	the similarity.
 	As different table~\ref{table:2} shows the distance between the two paths decreases
-	with increasing resolution.
+	with increasing resolution. In addition, this tendency is depicted in figure~\ref{fig:paths_alltouched} for the calculated cost paths of 5m and 100 m resolutions.
+	
 	At the same time the differences in the aggregated costs stay constant.
 	\todo{Interpretation} When normalize the aggregated costs by the resolution.
 	Than On one hand it can be seen, that the all\_touched False under estimate the costs and that this tendency scales
@@ -244,6 +246,27 @@
 	On the other hand, the all\_touched True least cost over estimates the aggregated costs on a linear scale of
 	the resolution.
 	Therefore, the difference for the normalized least cost paths is reduced on scale by the resolution.\todo{show map}
+	
+	\begin{figure}
+		\centering
+		
+		\subfloat[\centering resolution of 5 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_5m.pdf} }}%
+		\qquad
+		\subfloat[\centering resolution of 100 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_100m.pdf} }}%
+		\caption{Figures of the least cost paths. Contrasting the paths for different resolutions. Using OpenStreetMaps as base map.}
+		\label{fig:paths_resolution}
+	\end{figure}
+
+	\begin{figure}
+	\centering
+	
+	\subfloat[\centering all touched false.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_F.pdf} }}%
+	\qquad
+	\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T.pdf} }}%
+
+	\caption{Figures of the least cost paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all\_touched. Using OpenStreetMaps as base map.}
+	\label{fig:paths_alltouched}
+\end{figure}
 	
 	\begin{table*}[t]
 	\caption{Least cost paths as length for the different \acrfull{res} of the rasters, including the \acrfull{mmd} and the \acrfull{agg} costs. From the \acrshort{agg} costs the differences of the \acrshort{agg} costs and the \acrfull{corr} \acrshort{agg} by resolution are given.} 
@@ -262,12 +285,12 @@
 	
 	Comparing the all\_touched True rasterization and all\_touched False for the same resolution in contrast with the paths of all\_touched False rasterization at the
 	different resolutions the later paths are more similar.
-	The mean average distance between the 100 m resolution run and the 5 m resolution run is 257.97 m.
+	The mean average distance between the 100 m resolution run and the 5 m resolution run is 257.97 m. \todo{Option add 2.5 m and 25 m}
 	
 	The similarity of all all\_touched False runs is higher than, the similar between the all\_touched False and all\_touched True runs with the same resolution, except for the highest resolution.
 	
 	Hence, in an overall perspective paths of the all\_touched False runs stay in a
-	similar region, while paths of the all\_touched True coverage strongly to the paths all\_touched False runs.
+	similar region, while paths of the all\_touched True coverage strongly to the paths all\_touched False runs. This behaviour is depicted in figure~\ref{fig:paths_alltouched}. 
 	On a more detailed level, it can be seen, that also the Paths of all\_touched 	converges the all\_touched True path.
 	But the extent is smaller.
 	The length of the the paths only differs to a maximum of about 10 \%.
@@ -275,7 +298,7 @@
 	in higher resolution can open.
 	On the other side the length of the paths can increase, because with higher resolution more vertices will be used.
 	
-	The zonal stat (see table\ref{table:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
+	The zonal stat (see table~\ref{table:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
 	percentage of which costs levels are around the path.
 	When using all\_touched True rasterization with higher resolution the tendency is to use a higher percentage of the
 	Preferential Level and less the NoRestriction Level.\todo{Interpretation:}
@@ -290,7 +313,7 @@
 	\setlength{\tabcolsep}{10pt}
 	
 	\begin{table*}[t]
-		\caption{\acrfull{r} Category percentages of each least cost path for a buff of 100 m (5 m) around the least cost path.}
+		\caption{\acrfull{r} of Category percentages of each least cost path for a buff of 100 m (5 m) around the least cost path.}
 		\label{table:3}
 		\centering
 		\begin{tabular}{ r  r  r r  r r  r r  r r  r r}
