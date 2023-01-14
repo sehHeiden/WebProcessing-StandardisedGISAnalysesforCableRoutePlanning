@@ -39,8 +39,8 @@ process the data.
 
 ## Sending receiving data
 
-The sending and receiving data has sucessfully been tested with the python library [birdy](https://birdy.readthedocs.io/en/latest/).
-which builds on-top of the libary owslab.wps. Sending/Receiving the data with owslab.wps did not work. To complicated to
+The sending and receiving data has successfully been tested with the python library [birdy](https://birdy.readthedocs.io/en/latest/).
+which builds on-top of the library owslab.wps. Sending/Receiving the data with owslab.wps did not work. To complicated to
 send own data?
 I also tested the QGIS Plug-in [WPSCLient](https://plugins.qgis.org/plugins/wps/) The last stable release was 2017
 only works with QGIS 2. The last QGIS2 release was 2019. I tried The plug-in but was not able to send my own files to

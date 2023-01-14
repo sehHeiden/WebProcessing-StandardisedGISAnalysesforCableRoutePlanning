@@ -1,0 +1,15 @@
+jupyter
+pywps
+rioxarray
+geopandas
+birdy
+flask
+numpy
+fiona
+pandas
+requests
+shapely
+tqdm
+xarray
+brackettree
+geocube
