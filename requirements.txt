@@ -1,5 +1,6 @@
 jupyter
 pywps
+pymetalink
 rioxarray
 geopandas
 birdy
@@ -13,3 +14,4 @@ tqdm
 xarray
 brackettree
 geocube
+ray

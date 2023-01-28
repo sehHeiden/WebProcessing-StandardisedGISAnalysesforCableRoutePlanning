@@ -10,7 +10,7 @@ def dijkstra(start_tuple: tuple[tuple[int, int], Point, int],
              block: list[list[float | None]],
              find_nearest: bool) -> list[tuple[list[tuple[int, int]], list[float | None], list]]:
     """
-    compute the distance between the starting point and any point of he
+    compute the distance between the starting point and any point of the end_list
     :param start_tuple: Starting point (2-tuple of int, in coords of `block`) of the aggregation/length calculation
     :param end_tuples: Ending points(list of 2-tuple of ints) that should be reached
     :param block: The costs/weights as 2S-List of float | None (None == nodata)
@@ -106,7 +106,7 @@ def dijkstra(start_tuple: tuple[tuple[int, int], Point, int],
             continue
         decided.add(current_node)
 
-        # reached destination
+        # reached destination, potential break
         if current_node in end_row_cols:
             path = []
             costs = []
@@ -129,7 +129,7 @@ def dijkstra(start_tuple: tuple[tuple[int, int], Point, int],
             if len(end_row_cols) == 0 or find_nearest:
                 break
 
-        # relax distance
+        # relax distance, aggregate the costs
         for nex in grid.neighbors(current_node):
             new_cost = cost_so_far[current_node] + grid.simple_cost(current_node, nex)
             if nex not in cost_so_far or new_cost < cost_so_far[nex]:

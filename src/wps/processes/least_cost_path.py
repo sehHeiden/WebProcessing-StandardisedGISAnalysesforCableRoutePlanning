@@ -10,7 +10,7 @@ class LeastCostPath(Process):
     Process Class to compute the least cost path from input.
     __init__ describes the data.
     _handle computes the least cost path.
-    Class instiacted by server.
+    Class instanced by server.
     """
     def __init__(self):
         inputs = [ComplexInput('costs', 'Cost Raster', supported_formats=[Format('image/tiff'), ]),

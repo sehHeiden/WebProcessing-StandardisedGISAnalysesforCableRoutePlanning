@@ -7,15 +7,19 @@ Ubuntu (renamed?)
 
 ## Server
 When using flask the standard test site runs on localhost using port 5000: `http://127.0.0.1:5000`.
-Also, it not in the dependencies flask has to be installed via pip or conda.
+Although flask is not in the dependencies, it has to be installed via pip or conda.
+Pro for flask is: it worked ony LINUX from receiving data to sending the correct reply. 
+Not on Windows. On Windows the temporary folder for pywps receiving the data is empty.
 Alternative to flask is using WSGI.
-PyWPS documentation describes Apache and gunicorn.  Apache is not ot working for me. 
-The Gunicorn is not named gunicorn3 anymore (after Ubuntu 16). In contrast to the documentation it's better to 
-install gunicorn from pip/conda, so that it can be used inside the conda environment.
-Perhaps, it's different when docker and not conda environment.
-Gunicorn can easily bind a Layer 4 address. I used  `http://127.0.0.1:8081`.
+PyWPS documentation describes Apache and gunicorn.  
+Apache is not working for me. 
+The Gunicorn package is not named gunicorn3 anymore (after Ubuntu 16). 
+In contrast to the documentation it's better to install gunicorn from pip/conda, so that it can be used inside the conda environment.
+Perhaps, it's different in docker and using a conda environment.
+Gunicorn can easily bind to a Layer 4 address. I used  `http://127.0.0.1:8081`. 
+But I did get it sending a reply running.
 
-For Flask routes have to be creates for downloading and running the server. The used routes are /tmp/{filename.json}
+For Flask, routes have to be creates for downloading and running the server. The used routes are /tmp/{filename.json}
 and /wps. For configuration of the server PyWPS uses .cfg-Files for flask and WSGI. 
 When using the `/tmp`-directory to save the output files and send these:
 

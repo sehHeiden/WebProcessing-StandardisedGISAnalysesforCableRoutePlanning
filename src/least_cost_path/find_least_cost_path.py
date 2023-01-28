@@ -135,8 +135,8 @@ def find_least_cost_path(cost_raster: DataArray, cost_raster_band: int, is_neare
     :param cost_raster: DataArray
     :param cost_raster_band: int
     :param is_nearest: bool
-    :param start_features: GeoSeries
-    :param end_features: GeoSeries
+    :param start_features: GeoDataFrame
+    :param end_features: GeoDataFrame
     :return: GeoDataFrame
     """
     raster_2d = cost_raster[cost_raster_band]

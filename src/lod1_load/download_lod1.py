@@ -37,7 +37,7 @@ def concat_vector_files(in_dir: Path) -> GeoDataFrame:
     for f in shp_files:
         try:
             lod1_vectors.append(read_file(f))
-        except UnsupportedGeometryTypeError as e:
+        except UnsupportedGeometryTypeError:
             error_counter = error_counter + 1
     if error_counter > 0:
         warn(f'{error_counter} could not be concatenated.')

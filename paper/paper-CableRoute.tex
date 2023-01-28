@@ -241,7 +241,7 @@
 		\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alT.png} }}%
 		\qquad
 		\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alF.png} }}%
-		\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 100~m.}
+		\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 5~m.}
 		\label{fig:costs_5m}
 	\end{figure}
 	
@@ -274,7 +274,7 @@
 	is computed and afterwards the minimum distances are averaged (see equation~\ref{eq:1}).
 	\begin{equation}
 		\label{eq:1}
-		d_{mean} = \frac{\sum_{i=1}^{n} d_{min}(p_i, L_2)}{n} \bigg\vert p_i \in L_1
+		d_{mean} = \frac{1}{|L_1|} \sum_{i=1}^{n} d_{min}(p_i, L_2) \bigg\vert p_i \in L_1
 	\end{equation}
 
 	Hence, the mean minimum euclidean distance between the two paths can used to compute
@@ -302,29 +302,29 @@
 	\end{figure}
 
 	\begin{figure}
-	\centering
+		\centering
+		
+		\subfloat[\centering all touched false.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_F.pdf} }}%
+		\qquad
+		\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T.pdf} }}%
 	
-	\subfloat[\centering all touched false.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_F.pdf} }}%
-	\qquad
-	\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T.pdf} }}%
-
-	\caption{Figures of the least cost paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all\_touched. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
-	\label{fig:paths_alltouched}
-\end{figure}
+		\caption{Figures of the least cost paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all\_touched. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
+		\label{fig:paths_alltouched}
+	\end{figure}
 	
 	\begin{table*}[t]
-	\caption{Least cost paths as length for the different \acrfull{res} of the rasters, including the \acrfull{mmd} and the \acrfull{agg} costs. From the \acrshort{agg} costs the differences of the \acrshort{agg} costs and the \acrfull{corr} \acrshort{agg} by resolution are given.} 
-	\label{tab:2}
-	\centering
-	\begin{tabular}{ r  r  r  r  r  r  r  r  r}
-		\acrshort{res} /m & $length_{\acrshort{al}=\acrshort{f}} /m$ & $length_{\acrshort{al}=\acrshort{t}} /m$ & \acrshort{mmd} /m & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{f}}$ & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{t}}$ &  $\Delta $ costs & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{f}}$ & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{t}} $ \\
-		\hline
-		5 	& 76136.27	& 78002.00 &  126.04 & 18665.923 & 19616.756 & -850.00 & 93329.60 &  97584.77 \\
-		10 	& 75430.10 	& 77936.57 &  277.92 &  8931.245 &  9731.175 & -799.95 & 89312.45 &  97311.75 \\
-		50 	& 76135.02	& 70619,95 & 1140.01 &  1409.023 &  2300.073 & -891.05 & 70451.15 & 115003.65 \\
-		100 & 76283.80	& 74120.73 & 1946.41 &   640.516 &  1572.268 & -931.70 & 64051.60 & 167226.80 \\
-
-	\end{tabular}
+		\caption{Least cost paths as length for the different \acrfull{res} of the rasters, including the \acrfull{mmd} and the \acrfull{agg} costs. From the \acrshort{agg} costs the differences of the \acrshort{agg} costs and the \acrfull{corr} \acrshort{agg} by resolution are given.} 
+		\label{tab:2}
+		\centering
+		\begin{tabular}{ r  r  r  r  r  r  r  r  r}
+			\acrshort{res} /m & $length_{\acrshort{al}=\acrshort{f}} /m$ & $length_{\acrshort{al}=\acrshort{t}} /m$ & \acrshort{mmd} /m & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{f}}$ & \acrshort{agg}  $ cost_{\acrshort{al}=\acrshort{t}}$ &  $\Delta $ costs & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{f}}$ & \acrshort{corr} \acrshort{agg} $costs_{\acrshort{al}=\acrshort{t}} $ \\
+			\hline
+			5 	& 76136.27	& 78002.00 &  126.04 & 18665.923 & 19616.756 & -850.00 & 93329.60 &  97584.77 \\
+			10 	& 75430.10 	& 77936.57 &  277.92 &  8931.245 &  9731.175 & -799.95 & 89312.45 &  97311.75 \\
+			50 	& 76135.02	& 70619,95 & 1140.01 &  1409.023 &  2300.073 & -891.05 & 70451.15 & 115003.65 \\
+			100 & 76283.80	& 74120.73 & 1946.41 &   640.516 &  1572.268 & -931.70 & 64051.60 & 167226.80 \\
+	
+		\end{tabular}
 	\end{table*}
 	
 	Comparing the all\_touched True rasterization and all\_touched False for the same resolution in contrast with the paths of all\_touched False rasterization at the
@@ -427,9 +427,9 @@
 
 
 
-	\begin{acks}
-	\ldots
-   	\end{acks}
+\begin{acks}
+	$\ldots$
+\end{acks}
 
 %%
 %% The next two lines define the bibliography style to be used, and
