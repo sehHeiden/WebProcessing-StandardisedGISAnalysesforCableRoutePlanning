@@ -1,2 +1,13 @@
 src/
 pypws-flask/
+/**/.idea/
+/cache/
+*.zip
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+*.nav
+*snm
+*.bbx

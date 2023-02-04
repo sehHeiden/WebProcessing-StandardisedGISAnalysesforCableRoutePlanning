@@ -19,7 +19,7 @@ from tqdm import tqdm
 from xarray import DataArray
 
 
-def write_compress(r: DataArray, save: Path) -> None:
+def write_compressed(r: DataArray, save: Path) -> None:
     """
     Saving the raster r at save
     :param r: raster as DataArray
@@ -52,7 +52,7 @@ def __filter(total_gdf: GeoDataFrame, column: str, _rule: Node, ) -> GeoDataFram
     :param total_gdf: original GeoDataFrame
     :param column: column name (str) from which the attributes will be used
     :param _rule: rule (as Node) that applies for the values in the column of the GeoDataFrame
-    :return: GeoDataFrame
+    :return: GeoDataFrame with the filter applied
     """
     child_results: list[GeoDataFrame] = []
     for item in _rule.items:
@@ -241,7 +241,7 @@ def process_base_rule(df: DataFrame, _res: float | tuple[float, float], _crs: in
     raster = raster['Weights']
 
     save_path.parent.mkdir(parents=True, exist_ok=True)
-    write_compress(raster, save_path)
+    write_compressed(raster, save_path)
     return raster
 
 
@@ -259,7 +259,7 @@ def process_rule(nmd_tpl, example_da: DataArray, _crs: int,
     :return: list[str| Path]
     """
     # resolution from example_Data
-    res = int(abs(example_da.rio.transform()[0]))
+    res = float(abs(example_da.rio.transform()[0]))
 
     save_path = _save_dir / f"res_{res}/all_touched_{_all_touched}/rule_{nmd_tpl.LineNum}_{nmd_tpl.Description}.tif"
     if not save_path.exists():  # reuse existing results
@@ -269,7 +269,7 @@ def process_rule(nmd_tpl, example_da: DataArray, _crs: int,
         raster = raster['Weights']
         raster.data[example_da == example_da.rio.nodata] = raster.rio.nodata
         save_path.parent.mkdir(parents=True, exist_ok=True)
-        write_compress(raster, save_path)
+        write_compressed(raster, save_path)
     return [save_path, ]
 
 
@@ -278,7 +278,7 @@ if __name__ == '__main__':
     parser.add_argument('config_file_path', type=str, help='Full path to the .xlsx config file.')
     parser.add_argument('vectors_main_folder', type=str, help='Main Path to the vector files.')
     parser.add_argument('save_dir', type=str, help='Path where this projects raster files can the saved')
-    parser.add_argument('-r', '--resolution', type=int, default=1000, help='Resolution to use.')
+    parser.add_argument('-r', '--resolution', type=float, default=1000, help='Resolution to use.')
     parser.add_argument('-at', '--all_touched', action='store_true', help='Select those pixels, those CENTER  is '
                                                                           'covered by the Polygon (False) or any '
                                                                           'part overlaps with the Polygon (True).')
@@ -309,5 +309,5 @@ if __name__ == '__main__':
     finalized_rules = merge_arrays([open_rasterio(x, cache=False) for x in finalized_rules], method='max')
 
     finalized_rules.data = np.where(finalized_rules == finalized_rules.rio.nodata, base_raster, finalized_rules)
-    write_compress(finalized_rules, save_dir / f'result_res_{resolution}_all_touched_{all_touched}.tif')
+    write_compressed(finalized_rules, save_dir / f'result_res_{resolution}_all_touched_{all_touched}.tif')
     write_png(finalized_rules, save_dir / f'result_res_{resolution}_all_touched_{all_touched}.png')

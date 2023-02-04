@@ -1,12 +1,15 @@
 from math import floor
 
+import numpy as np
 from geopandas import read_file, GeoSeries, GeoDataFrame
 from pandas import concat
+from pathlib import Path
 from rioxarray import open_rasterio
 from shapely.geometry import Point, LineString, MultiPoint, box
 from xarray import DataArray
 
-from src.least_cost_path.dijkstra import dijkstra
+from src.least_cost_path.dijkstra import dijkstra, backtrack_path
+from src.rules2weights import write_compressed
 from argparse import ArgumentParser
 
 
@@ -93,6 +96,25 @@ def raster2matrix(block: DataArray) -> tuple[list[list[None | float]], bool]:
     return _matrix, _contains_negative
 
 
+def matrix2raster(matrix: dict, alike_raster: DataArray, nodata: None | float = None) -> DataArray:
+    """
+    Convert the 2D-List back into the original raster format
+    :param matrix: list[list[None | float]] the 2D-List to convert
+    :param alike_raster: the raster with the correct crs, shape, nodata
+    :param nodata: if given: value to use as nodata
+    :return: DataArray
+    """
+    return_raster = alike_raster.copy()
+    return_raster = return_raster.rio.write_nodata(nodata)
+    return_raster.data = np.full_like(return_raster.data, fill_value=return_raster.rio.nodata)
+
+    for i in range(alike_raster.rio.height):
+        for j in range(alike_raster.rio.width):
+            if (i, j) in matrix:
+                return_raster[i, j] = matrix[(i, j)]
+    return return_raster
+
+
 def create_points_from_path(_cost_raster: DataArray, min_cost_path: list[tuple[int, int]], start_point: Point,
                             end_point: Point) -> list[Point]:
     """
@@ -129,14 +151,15 @@ def create_path_feature_from_points(_path_points: list[Point], attr_vals: tuple[
 
 
 def find_least_cost_path(cost_raster: DataArray, cost_raster_band: int, is_nearest: bool, start_features: GeoDataFrame,
-                         end_features: GeoDataFrame) -> GeoDataFrame:
+                         end_features: GeoDataFrame, aggregated_save: None | str = None) -> GeoDataFrame:
     """
     Compute the Least Cost Path with Dijkstra Algorithm
     :param cost_raster: DataArray
     :param cost_raster_band: int
     :param is_nearest: bool
-    :param start_features: GeoDataFrame
-    :param end_features: GeoDataFrame
+    :param start_features: GeoDataFrame of the single starting POINT
+    :param end_features: GeoDataFrame of at least one END POINTS
+    :param aggregated_save: optional str: path to save the aggregate raster, if given
     :return: GeoDataFrame
     """
     raster_2d = cost_raster[cost_raster_band]
@@ -146,25 +169,27 @@ def find_least_cost_path(cost_raster: DataArray, cost_raster_band: int, is_neare
     matrix, contains_negative = raster2matrix(raster_2d)
     if contains_negative:
         return GeoDataFrame()
-    result = dijkstra(start_tuples[0], end_tuples, matrix, is_nearest)
 
     _path_features = []
+    for itr, (_map, _indexes,  _end_node) in enumerate(dijkstra(start_tuples[0], end_tuples, matrix, is_nearest)):
+        (path, costs), terminal_tuple = *backtrack_path(_map, _indexes, _end_node, start_tuples[0]), end_tuples[itr]
+        if aggregated_save:
+            aggregated_raster = matrix2raster(_map, raster_2d, -9999)
+            write_compressed(aggregated_raster, Path(aggregated_save))
 
-    for path, costs, terminal_tuples in result:
-        for terminal_tuple in terminal_tuples:
-            path_points = create_points_from_path(cost_raster,
-                                                  path,
-                                                  start_tuples[0][1],
-                                                  terminal_tuple[1])
+        path_points = create_points_from_path(cost_raster,
+                                              path,
+                                              start_tuples[0][1],
+                                              terminal_tuple[1])
 
-            total_cost = costs[-1]
+        total_cost = costs[-1]
 
-            _path_features.append(create_path_feature_from_points(path_points,
-                                                                  (start_tuples[0][2],
-                                                                   terminal_tuple[2],
-                                                                   total_cost)
-                                                                  )
-                                  )
+        _path_features.append(create_path_feature_from_points(path_points,
+                                                              (start_tuples[0][2],
+                                                               terminal_tuple[2],
+                                                               total_cost)
+                                                              )
+                              )
 
     _path_features = concat(_path_features, )
     _path_features = _path_features.set_crs(start_features.crs)
@@ -178,10 +203,12 @@ if __name__ == '__main__':
 
     parser.add_argument('start_features', type=str, help='Main Path to the vector files.')
     parser.add_argument('end_features', type=str, help='Path where this projects raster files can the saved')
-    parser.add_argument('save_name', type=str, help='Path where this projects raster files can the saved')
+    parser.add_argument('save_name', type=str, help='Path where this projects vector file can the saved')
+    parser.add_argument('-aggregated_name', type=str, help='Path where this aggregated raster file can the saved')
 
     args = parser.parse_args()
 
     path_features = find_least_cost_path(open_rasterio(args.cost_raster), args.cost_raster_band, False,
-                                         read_file(args.start_features), read_file(args.end_features))
+                                         read_file(args.start_features), read_file(args.end_features),
+                                         args.aggregated_name)
     path_features.to_file(args.save_name)
