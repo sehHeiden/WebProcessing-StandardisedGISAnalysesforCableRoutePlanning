@@ -22,8 +22,8 @@ Filtering the layers of the files for special attributes enables to further diff
 For examples makes it possible to differentiate between heath and uncultivated land.
 Adding a buffer can be used either used to convert a line objects as power grids and streets into a polygon with the
 correct physical width, or to add minimum distance from an existing of planed area to the new power grid.
-	Each of theses rasterized layers are given a weight, or cost that expresses the cost of using land covered by this layer.
-	The costs of all layers of is aggregated with the maximum function.
+Each of theses rasterized layers are given a weight, or cost that expresses the cost of using land covered by this layer.
+The costs of all layers of is aggregated with the maximum function.
 Thus, an area covered by multiple layers is uniformly used with the highest costs.
 For every area in the study area, that is not covered by any layer, is given the default cost.
 The costs have been grouped into different levels~(see table~\ref{tab:1}) starting from preferential areas with
@@ -92,3 +92,19 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 	\end{tabular}
 \end{table}
 The completed list of layers and the processing applied to them, can be found in Supplement S1. \todo{create the Supplement from the processing rules}
+
+The whole stack of the cost raster, via the aggregated costs to the resulting least cost path can is shown with an example for a starting cost raster of 50~m resolution and a rasterization with all touched False (see \ref{fig:costs2path}).
+Because of the early stopping strategy used in the aggregation sub-paths with high costs have not been fully computed.Instead the execution stops early after reaching the end point. Because the end point ends at a power transformer, which is a building type, the paths ends at in a Prohibited Area. Therefore areas even farther away from the starting point have been explored first.
+
+\begin{figure}
+	\centering
+	
+	\subfloat[\centering Cost Raster.]{{\includegraphics[width=.25\linewidth]{./images/CostRasterExample.png} }}%
+	\qquad
+	\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.25\linewidth]{./images/AggregatedCosts.png} }}%
+	\qquad
+	\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.25\linewidth]{./images/LeastCostPathExample.png} }}%
+
+	\caption{Figures of Cost raster and the resulting aggregated Costs and the least cost path for a resolution of 50~m.}
+	\label{fig:costs2path}
+\end{figure}

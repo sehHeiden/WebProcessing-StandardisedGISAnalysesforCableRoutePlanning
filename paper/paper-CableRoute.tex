@@ -122,6 +122,11 @@
 	Also technical aspects, as the effects on the grid stability might be further points to consider.\cite{schafer_understanding_2022}
 	\todo{what is the least cost path}
 
+	The aggregation is implemented in a priority queue. 
+	Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.
+	The aggregation is implemented with early stopping. 
+	After the last end point has been has got an aggregated cost the aggregation stops and the back tracking starts.
+	
 
 	\section{Methods}\label{sec:methods}
 	\input{methods}
@@ -139,10 +144,10 @@
 	As a any buffer around buildings are describes as protected areas, power poles are also included.
 	In further works, these should be excluded.
 	
-	\todo{discuss aggregation with max vs sum}
-	\todo{Scaling with multiple endpoints.}
-	\todo{discuss other methods. Off algorithmic speed-ups}
-	\todo{discuss other technical methods of speed-ups, as precompilation, JIT, vector units, multi-core}
+	Difference aggregation of the rule of a cost raster with max vs sum
+	
+	Scaling with multiple endpoints.
+	Not algorithmic speed-ups as precompilation, JIT, vector units, multi-core
 	\section{Related Works}\label{sec:related-works}
 
 

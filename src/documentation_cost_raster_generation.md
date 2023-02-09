@@ -56,15 +56,15 @@ Optional (named) Parameters:
 * '--crs' - Optional integer of the EPSG-CODE of the Reference system. Will be set to EPSG:3157  (Google Pseudo Mercator) when not set.
 
 all_touched describes the which Part of the (Multi-)Polygon overlays the square of a pixel of the new raster.
-If all_touched is set to True, then a pixel is viewed as overlaying, if any part of the pixel's square is covered by any polygone.
-If all_touched is set to False, then a pixel is viewed as overlaying, if the center of the pixels square is covered by any part of any polygone.
+If all_touched is set to True, then a pixel is viewed as overlaying, if any part of the pixel's square is covered by any polygon.
+If all_touched is set to False, then a pixel is viewed as overlaying, if the center of the pixels square is covered by any part of any polygon.
 
 For any pixel that is viewed as overlay, then a valid value is set for that pixel. If the pixel is viewed as not covered,
 then a NODATA value is set.
 
 The heuristic is: if only the center point is used for selecting a valid pixel, 
 the probability for selecting the pixel is low, if the pixel size is huge compared to vector size, than the probability
-that a part of the polygone is covering the centre is low. In this case the probability of using base layer rises.
+that a part of the polygon is covering the centre is low. In this case the probability of using base layer rises.
 The base layer does describe the standard value, which is relatively low, but not the lowest value. Hence, all-touched
 True thus results is HIGHER weights than all_touched False.
 
@@ -74,6 +74,6 @@ Consequences are:
 
 
 # Computation
-Each Rule will be converted into a rule wise layer raster. After computing the Raster for each Rule. The Maximum value for all Rasters (except for the BASE-Raster) is computed.
+Each Rule will be converted into a rule wise layer raster. After computing the Raster for each Rule. The Maximum value for all Raster (except for the BASE-Raster) is computed.
 This Maximum-Values are written on top of the Result-Raster of the Basis-Rule. This result is taken as cost raster.
 

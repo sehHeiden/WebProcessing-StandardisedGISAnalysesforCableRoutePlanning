@@ -172,7 +172,8 @@ def find_least_cost_path(cost_raster: DataArray, cost_raster_band: int, is_neare
 
     _path_features = []
     for itr, (_map, _indexes,  _end_node) in enumerate(dijkstra(start_tuples[0], end_tuples, matrix, is_nearest)):
-        (path, costs), terminal_tuple = *backtrack_path(_map, _indexes, _end_node, start_tuples[0]), end_tuples[itr]
+        (path, costs) = backtrack_path(_map, _indexes, _end_node, start_tuples[0])
+        terminal_tuple = end_tuples[itr]
         if aggregated_save:
             aggregated_raster = matrix2raster(_map, raster_2d, -9999)
             write_compressed(aggregated_raster, Path(aggregated_save))

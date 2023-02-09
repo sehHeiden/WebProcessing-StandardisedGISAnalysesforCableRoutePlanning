@@ -50,6 +50,9 @@ Thus, with having larger areas and more objects, with higher costs, all touched 
 \subsection{Least Cost Paths}\label{subsec:least-cost-paths}
 For each resolution the costs paths were estimated for the rasterization with setting all\_touched False
 and all\_touched True.
+
+The hypothetical path starts at a transformer about 6~km north the container terminal Bremerhaven and then end at a transformer in the south east of the Osterholz county. 
+
 The distance of both paths is calculated with the mean minimum distance.
 For every vertex $P_i$ in the path $L_1$ the minimum between the vertex and the path $L_2$
 is computed and afterwards the minimum distances are averaged (see equation~\ref{eq:1}).
@@ -67,7 +70,12 @@ Hence, the mean minimum euclidean distance between the two paths can used to com
 the similarity.
 As different table~\ref{tab:2} shows the distance between the two paths decreases
 with increasing resolution.
-In addition, this tendency is depicted in figure~\ref{fig:paths_resolution} for the calculated cost paths of 5m and 100 m resolutions.
+In addition, this tendency is depicted in figure~\ref{fig:paths_resolution} for the calculated cost paths of 5~m and 100~m resolutions.
+
+In contrast the largest distance between the paths (see equation~\ref{eq:2}) will be used, to estimate the minimum distance to the areas that still should be examined to grantee a, that at least cost path found in this limited space is still likely to be optimal.
+
+
+
 
 At the same time the differences in the aggregated costs stay constant.
 \todo{Interpretation} When normalize the aggregated costs by the resolution.
@@ -146,7 +154,7 @@ Hence, the order of magnitude
 
 The total execution time consists of two parts. 
 The aggregation of the costs and the back tracking of the least cost to find the path.
-\todo{Find out whether back tacking scales linear or square.}
+\todo{back tacking scales with number of points.}
 
 
 
@@ -191,16 +199,30 @@ A weighted mean will describe the real costs more precise.
 As present work indicates, that the weight should favor the all touched false raster.
 The best weight should be the percentage of the pixel, which is covered by the object, but this can not be computed in this work.
 Thus, the best weight has to be searched.
-An alternative might be to compute the cost raster in higher resolution, but than to reproject the to a smaller resolution with a using a (linear) interpolation of the of the weights.\todo{test this idea}
+An alternative might be to compute the cost raster in higher resolution, but than to reproject the to a smaller resolution with a using a (linear) interpolation of the of the weights.
+
+While the aggregated thus can be speed up.
+The time needed for the back tracking stays unchanged.
+
 \subsubsection{Compare least cost paths, for down sampled cost paths}
 As an alternative to the super position of the all touched true and false raster for the same resolution, the all touched false raster was down sampled to 10~m, 25~m, 50~m and 100~m with bi-linear interpolation.
 With this method smaller structures still can be seen in the cost raster, although the resolution is reduced.
 
 % \subsubsection{Restrict search to a minimum sized bounding box}
-\subsubsection{Restrict search to a convex hull}
-\todo{Construct a polygon form the two lines. Buffer the polygon.}
-\todo{max minimum path distance}
-\todo{crossing points of two paths}
+\subsubsection{Restrict search to a buffered around the least cost paths}
+Construct a polygon form the two lines.
+Buffer the polygon with twice the max minimum path distance.
+
+
+This enabled the possibility  to run a 2.5~m resolution cost raster and clip it to the extent of the polygon. 
+This clipped 2.5~m raster for all touched true did only slightly change the path. 
+While the all touched False raster, leads to a totally new segment at the end of the path. 
+Due to the small resolution, that a small path with the extent of about 2.5 m width became passable. This small path is a power line next to road between which build a cone in a protected landscape area.
+The street and the protected landscape area are both restricted areas, while the power line is preferential.
+This showing, that the way the cost raster is created in the first place can play a vital role, in the end result. So that a nuance, can cause a detour.
+When this behavior occurs, the polygon can not grantee to include the least cost path.
+Therefore this polygon should be overlayed with a polygon around the shortest path.
+
 \subsubsection{Restrict search to reachable points}
 For this purpose the aggregated cost as to converted back into a raster.
 
