@@ -114,44 +114,53 @@
 	\section{Introduction}\label{sec:introduction}
 
 	Sometimes, finding the shortest path is not sufficient.
-	Additional parameters play also have to be taken into consideration.
+	Additional parameters also have to be taken into consideration.
 	As the steepness of a road or the soil, play an important role for the building cost of a road or pipeline
-	\todo{source}.
+	\cite{suleiman_optimal_2015}.
 	For planing the additional routes for a power grid, additional aspects as legal regulations and acceptance
 	by the local population have to be taken in consideration.
 	Also technical aspects, as the effects on the grid stability might be further points to consider.\cite{schafer_understanding_2022}
-	\todo{what is the least cost path}
+	
+	Due to the increasing need for renewable energy wind off shore wind turbines are source which currently supplies 5.5~\% annual percentage in 2020 of the German energy mix.~\cite{noauthor_nettostromerzeugung_2021}
+	For wind energy in general highest efficiency can only be archived with high wind speeds. Highest wind speeds are reached along the cost lines in the north of Germany.
+	In contrast, most consumers, as industry are situated in south Germany.
+	Source and consumer have to be linked via new power lines.
 
+	Other methods as the multi-criteria decision analysis take further aspects and stakeholder as experts, public and decision maker and into consideration.\cite{bertsch_participatory_2016}
+	
+	For planning a possible route for a power line the least cost path algorithm is applied.
+	The least cost path algorithm is a Dijkstra algorithm applied on a raster map.
+	The vertices of the graph are the centers on neighboring pixels in al possible eight directions.
+	The weights of the edges are the local costs to travel from one pixel to the neighboring pixel.
+	The costs might be physical costs, as the local slope, but also can be composed on other factors as the acceptance rate for the land usage of a given class.
+	The least cost path algorithm consists of at least two sequential steps. 1) The first steps is to aggregate the costs of traveling from the starting point to a given set of end points. This steps generates the aggregated cost raster of the total cost that are needed to travel to a point, from the cost raster.
+	2) In the next step the back tracking, the route of the actual least cost path is calculated. For each ending point the path via the lowest cost neighbor is taken until arriving at the starting point.
+	
+	\todo{Were to put the following part?}
 	The aggregation is implemented in a priority queue. 
 	Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.
 	The aggregation is implemented with early stopping. 
 	After the last end point has been has got an aggregated cost the aggregation stops and the back tracking starts.
 	
+	
 
 	\section{Methods}\label{sec:methods}
+	
 	\input{methods}
 
 	\section{Results}\label{sec:results}
+	
 	\input{results}
 
 	\section{Discussion}\label{sec:discussion}
-	As shown need of computation power increases with the power of two with the resolution.
-	While the error only scales linear with the resolution.
-	
-	As the original least cost path QGIS plug-in the used algorithm stops the least aggregation of the costs after the final end point has been found.
-	This early stopping might result in sub optimal paths around the end points.
-	
-	As a any buffer around buildings are describes as protected areas, power poles are also included.
-	In further works, these should be excluded.
-	
-	Difference aggregation of the rule of a cost raster with max vs sum
-	
-	Scaling with multiple endpoints.
-	Not algorithmic speed-ups as precompilation, JIT, vector units, multi-core
+	\input{discussion}
+
 	\section{Related Works}\label{sec:related-works}
 
 
 	\section{Conclusion}\label{sec:conclusion}
+	When using the researched strategies, the on medium resolution raster, the computation for high resolution results might successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
+	\todo{Befragung: local population, relative weights per district?}
 
 
 

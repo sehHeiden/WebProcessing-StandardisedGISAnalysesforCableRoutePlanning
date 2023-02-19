@@ -91,19 +91,22 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 		Preferential 		& 0.1					& \makecell[lt]{Power Grid,\\ Motorway and Railway Buffers}\\
 	\end{tabular}
 \end{table}
-The completed list of layers and the processing applied to them, can be found in Supplement S1. \todo{create the Supplement from the processing rules}
+The completed list of layers and the processing applied to them, can be found in \textbf{Supplement S1}.
 
 The whole stack of the cost raster, via the aggregated costs to the resulting least cost path can is shown with an example for a starting cost raster of 50~m resolution and a rasterization with all touched False (see \ref{fig:costs2path}).
-Because of the early stopping strategy used in the aggregation sub-paths with high costs have not been fully computed.Instead the execution stops early after reaching the end point. Because the end point ends at a power transformer, which is a building type, the paths ends at in a Prohibited Area. Therefore areas even farther away from the starting point have been explored first.
+Because of the early stopping strategy used in the aggregation sub-paths with high costs have not been fully computed.
+Instead, the execution stops early after reaching the end point.
+Because the end point ends at a power transformer, which is a building type, the paths ends at in a Prohibited Area.
+Therefore, areas even farther away from the starting point have been explored first.
 
 \begin{figure}
 	\centering
 	
-	\subfloat[\centering Cost Raster.]{{\includegraphics[width=.25\linewidth]{./images/CostRasterExample.png} }}%
+	\subfloat[\centering Cost Raster.]{{\includegraphics[width=.45\linewidth]{./images/CostRasterExample.png} }}%
 	\qquad
-	\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.25\linewidth]{./images/AggregatedCosts.png} }}%
+	\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.45\linewidth]{./images/AggregatedCosts.png} }}%
 	\qquad
-	\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.25\linewidth]{./images/LeastCostPathExample.png} }}%
+	\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPathExample.png} }}%
 
 	\caption{Figures of Cost raster and the resulting aggregated Costs and the least cost path for a resolution of 50~m.}
 	\label{fig:costs2path}
