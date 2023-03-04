@@ -9,13 +9,13 @@ The nationwide land coverage (ATKIS) with a scale of 1:250000 are provided by th
 and Geodesy~\cite{noauthor_digitales_2021}.
 The nationwide power grid (tags: 'power': line) has been retrieved via OpenStreetMap~\cite{boeing_osmnx_2017}.
 Local data as houses at Level of Detail 1 are offered by the State Office for Geoinformation and Land Surveying of
-Lower Saxony\cite{noauthor_opengeodatani_2022}.
+Lower Saxony~\cite{noauthor_opengeodatani_2022}.
 In addition, local planning geodata for the land usage are taken
-from 'Metropolplaner' (Planing data Lower Saxony \& Bremen)\cite{noauthor_metropolplaner_2022}
+from 'Metropolplaner' (Planing data Lower Saxony \& Bremen)~\cite{noauthor_metropolplaner_2022}.
 
-PyWPS\cite{noauthor_welcome_2016} is used to offer the least cost path algorithm as a \acrfull{wps}.
+PyWPS~\cite{noauthor_welcome_2016} is used to offer the least cost path algorithm as a \acrfull{wps}.
 The initial implementation of the least cost path algorithm is based on the implementation for the QGIS-Plugin
-'Least Cost Path'\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} in version 1.0.
+'Least Cost Path'~\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} in version 1.0.
 
 The different layers from the different entities are optionally filtered, buffered and then rasterized.
 Filtering the layers of the files for special attributes enables to further differentiate.
@@ -26,13 +26,13 @@ Each of theses rasterized layers are given a weight, or cost that expresses the 
 The costs of all layers of is aggregated with the maximum function.
 Thus, an area covered by multiple layers is uniformly used with the highest costs.
 For every area in the study area, that is not covered by any layer, is given the default cost.
-The costs have been grouped into different levels~(see table~\ref{tab:1}) starting from preferential areas with
-very low costs, via no restrictions, which is the default, used when no other layers are covering the local area,
-to restricted, strongly restricted and prohibited areas with high costs.
+The costs have been grouped into different levels~(see table~\ref{tab:1}) starting from \textit{preferential} areas with
+very low costs, via \textit{no restriction}s, which is the default, used when no other layers are covering the local area,
+to \textit{restricted}, \textit{strongly restricted} and \textit{prohibited} areas with high costs.
 These higher costs resemble the degree how much a local area should be avoided, while routing the path.
 The ratio of the higher costs to the lower costs directly translates into the additional diversion in pixels
 the algorithm is willing to go, for avoiding an area of high costs.
-Thus, as prohibited areas describe a legal obligation, not to use these areas or only to the utmost minimum,
+Thus, as \textit{prohibited} areas describe a legal obligation, not to use these areas or only to the utmost minimum,
 the weight that resembles the costs for these types of areas, has to be especially high. \\
 The rasterization transforms a vector into a raster.
 The rasterization can be executed in to different ways.
@@ -96,7 +96,7 @@ The completed list of layers and the processing applied to them, can be found in
 The whole stack of the cost raster, via the aggregated costs to the resulting least cost path can is shown with an example for a starting cost raster of 50~m resolution and a rasterization with all touched False (see \ref{fig:costs2path}).
 Because of the early stopping strategy used in the aggregation sub-paths with high costs have not been fully computed.
 Instead, the execution stops early after reaching the end point.
-Because the end point ends at a power transformer, which is a building type, the paths ends at in a Prohibited Area.
+Because the end point ends at a power transformer, which is a building type, the paths ends at in a \textit{Prohibited} Area.
 Therefore, areas even farther away from the starting point have been explored first.
 
 \begin{figure}

@@ -141,7 +141,7 @@ On the other side the length of the paths can increase, because with higher reso
 The zonal stat (see table~\ref{tab:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
 percentage of which costs levels are around the path.
 When using all\_touched True rasterization with higher resolution the tendency is to use a higher percentage of the
-Preferential Level and less the NoRestriction Level.\todo{Interpretation:}
+\textit{Preferential Level} and less the\textit{NoRestriction} Level.\todo{Interpretation:}
 The ratio of the 100 m buffered least cost path, strongly shifted  to Levels lower costs.
 
 There is no strong tendency for the all\_touched False least cost paths.
@@ -277,4 +277,50 @@ Therefore this polygon should be overlayed with a polygon around the shortest pa
 %\subsubsection{Restrict search to reachable points}
 %For this purpose the aggregated cost as to converted back into a raster.
 
-\subsubsection{Check solution for least cost path between different points}
+\subsubsection{Examine the proposed solutions}
+To broaden the view and verify the current result, four different routes should be found with the presented strategies applied.
+Two paths form the starting point to two new points in the south east of the investigated area and two paths from the north, north east of the investigates area to the ending point.
+
+
+For three of the four routes the least cost path computation from the clipped raster, was able to compute the expected result.
+For the forth path, the
+least cost path from the 5~m resolution raster was out side of the buffer around the least cost path from the 50~m resolution raster.
+The speed up from the clipping of the higher resolution raster depends on the amount of pixels that, have been clipped. 
+Bi-linear down sampling the of the high resolution raster to a medium resolution, did not result in any benefits compared to an original medium resolution raster.
+The resolution corrected aggregated costs of the least cost path from the down sampled raster are higher, than those, from the higher 5~m resolution raster and the medium 10~m resolution raster.
+In addition, is the distance, from this path to the path from the high resolution raster much higher, than the distance of path from the original 10~m resolution raster to the path from the 5~m resolution raster (see table~\ref{tab:6}).
+\todo{interpretation Why, down sampling so different???}
+
+\begin{table}[h!]
+	\caption{Length of the path, the resolution corrected costs and the mean distance to the path created from the 5~m resolution all touched false raster for the four control routes, for the reference path of constructed from the 5~m  and 10~m raster and the down 5~m to 10~m down sampled raster and the 5~m clipped raster.}
+	\label{tab:6}
+	\centering
+	\begin{tabular}{ r  r  r  r  r}
+		Route & Method & $length /m$ & $costs_{al=f}$ & $d_{mean}$ /m \\
+		\hline
+		P1-E & 5~m 			& 107889.58 & 208547.79 &        \\
+		 	 & Clipped 		& 107889.58 & 208547.79 &   0.0  \\
+		 	 & Down			&  96754.20 & 212910.95 & 628.05 \\
+		 	 & 10~m 		& 107232.94 & 203010.15 & 103.49 \\
+		\hline
+		P2-E & 5~m 			& 103706.41 & 155567.86 &        \\
+		 	 & Clipped 		& 103706.41 & 155567.86 &   0.00 \\
+		 	 & Down 	    &  92403.29 & 158238.58	& 639.88 \\
+		 	 & 10~m 		& 104249.94 & 149899.72 & 177.68 \\
+		\hline
+		S-P3 & 5~m 			& 102187.09 & 34503.81 	&         \\
+			 & Clipped 		&  90377.39 & 37926.14 	& 4465.37 \\
+			 & Down 	    &  94125.55 & 37574.93 	&  742.41 \\
+			 & 10~m 		& 102461.58 & 32445.96 	&   81.18 \\
+		\hline
+		S-P4 & 5~m 			& 96449.22 	& 33865.53 	&  		\\
+		 	 & Clipped 		& 96449.22 	& 33865.53 	& 0.00 	\\
+			 & Down 		& 87861.12 	& 36462.72 	& 796.40\\
+			 & 10~m 		& 96739.47 	& 31899.31	& 83.46 \\
+
+		
+	\end{tabular}
+\end{table}
+
+
+

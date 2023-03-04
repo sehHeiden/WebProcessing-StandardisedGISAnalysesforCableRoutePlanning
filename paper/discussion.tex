@@ -1,14 +1,15 @@
+% !TeX spellcheck = en_US
 As shown, the need for computation time increases with the power of two with the resolution. 
 Similarly, the usage of main memory increases. 
 Which in tern limits the processable data points and resolution.
 On the error only scales linear with the resolution. 
 Hence, there is a diminishing return of smaller errors, compared to compute time and resources used.
 
-Therefore, this worked tries a) to reduce the needed compute power and b) decrease the deviation for a given resolution.
+Therefore, this worked tries a) to reduce the needed to compute power and b) decrease the deviation for a given resolution.
 
 For b), two methods have been used to increase the similarity of the paths computed from medium resolution raster, to the path of the highest resolution raster.
 These methods can be used as surrogates for the more complex calculation of the least cost path with the higher resolution.
-In the first method a bi-linear down sampling of the higher resolution raster has been applied and in the second method, the all touched false and true raster where averaged in different ratios, to computed the optimum mixed raster, for the used costs.
+In the first method a bi-linear down sampling of the higher resolution raster has been applied and in the second method, the all touched false and true raster where averaged in different ratios, to compute the optimum mixed raster, for the used costs.
 While the second method of using an averaged raster, a higher similarity to the path from the highest resolution raster, the down sampling method is more
 simple and does not need to be optimized for the given costs.
 Hence, it is easier and widely applicable.
@@ -19,10 +20,17 @@ While this method reduces the calculation time and usage of main memory, the bac
 
 
 As the original least cost path QGIS plug-in the used algorithm stops the least aggregation of the costs after the final end point has been found.
-This early stopping might result in sub-optimal paths around the end points for some edge cases, where the connection via another neighbor might be more optimal.
+This early stopping might result in suboptimal paths around the end points for some edge cases, where the connection via another neighbor might be more optimal.
 
-The set of rules that are used create the cost raster, includes a rule for creating a buffer around buildings  which is set to the level \textbf{prohibited} areas.
-While the used data set for buildings, also includes power poles, the area of the level \textbf{preferential} power grid, includes isles of high costs. 
+The set of rules that are used create the cost raster, includes a rule for creating a buffer around buildings  which is set to the level \textit{prohibited} areas.
+The resolution of the medium level raster needs to be high enough to crudely show every detail, Hence at least in the magnitude of the minimum object size plus twice its buffer, in this example in the range of at least 25~m or 10~m.
+Although the overall result can change, due super position of objects and there buffer.
+Nevertheless, does higher resolution resemble, the geography more precise, but in addition show paths that are too small, to be taken.
+On the other hand, as the run from the starting point to the end point at a resolution of 2.5~m shows, new ways, that could not not be reached before, do hint inconsistencies of the rules that construct the cost raster.
+
+Object and there buffer might leave a  path that, is smaller than 10~m resolution.
+So a second rule to find a good resolution, that is should be in the magnitude of the size of the structure  to be build.
+While the used data set for buildings, also includes power poles, the area of the level \textit{preferential} power grid, includes isles of high costs. 
 In further works, these should be excluded.
 
 In this work, the effect of computation costs and deviation of the results, is examined for a very limited set of points.
@@ -30,18 +38,22 @@ Also, only the costs of finding the least cost path from one starting point, to 
 When, multiple endpoints are used, the computation cost for the aggregated cost raster has only to computed once.
 On the other hand the effect early stopping is not as dramatic, because the algorithm would only stop early for the last end point with the highest cost.
 When calculating several paths from one raster, the benefits of chapter~\ref{subsec:faster-processing-of-the-cost-path-algorithm} is reduced.
-Especially, the pre-calculation on lower resolution raster and buffering of the resulting paths as a restricted search area decreases in it effectivity.
+Especially, the pre-calculation on lower resolution raster and buffering of the resulting paths as a restricted search area decreases in its effectivity.
 As the number of paths rises, fewer of points in higher resolution cost raster will be deselected for the final estimation of the least cost path.
+The least cost algorithm does only select the most cost-effective path.
+Therefore, paths of similar, but slightly worse cost are stay unknown.
+An end-user might be interested in selecting a path from a set of possible paths of similar aggregated costs and apply an adapted set evaluation criteria.
+This can be achieved a by adapting the backtracking, to get an array of paths or by applying perturbation on the costs.
 
 In this work, the single cost raster layers aggregated with the maximum function. 
 Another possible aggregation function is the sum.
 Each aggregation function can be justified, by a different interpretation of the costs and its scale.
 The reasoning of selection the maximum function is, limiting the maximum costs.
-When the \textbf{prohibited} level is used as the highest level.
-Than higher levels are prohibited within the concept.
-This an area even more prohibited, when it is included in two different rules of the level?
+When the \textit{prohibited} level is used as the highest level.
+Then higher levels are \textit{prohibited} within the concept.
+This an area even more \textit{prohibited}, when it is included in two different rules of the level?
 On the other side, This aggregation is unable to differentiate between these nuances, as  the sum function is.
-This way, one can differential between, different sub-levels.
+This way, one can differential between, different sublevels.
 One consequence is, that a small mediation between high and low single cost raster, in the final cost raster is possible.
 
 The fact, that all touched False raster lead to more similar results compared to high resolution raster, is due to the fact, that the default level is relatively low.

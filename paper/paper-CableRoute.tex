@@ -41,6 +41,7 @@
 \newacronym{agg.}{agg.}{aggregated}
 \newacronym{rel}{rel}{relative}
 \newacronym{corr}{corr}{corrected}
+\newacronym{MCDA}{MCDA}{multi-criteria decision analysis}
 
 \begin{document}
 	\title{Web Processing - Standardised GIS Analyses for Cable Route Planning}
@@ -60,7 +61,10 @@
 	\renewcommand{\shortauthors}{Heiden}
 	
 	\begin{abstract}
-		add as final part
+		The least cost paths for a power line route from a power station near the German shore line is computed to a power station further inland.
+		Down sampling and clipping studied for a speed-up of the computation.
+		The path from clipped cost raster often matches the original path.
+		The speed-up of the clipping can not be known before hand.
 	\end{abstract}
 	
 	%%
@@ -70,37 +74,27 @@
 	\begin{CCSXML}
 		<ccs2012>
 		<concept>
-		<concept_id>10010520.10010553.10010562</concept_id>
-		<concept_desc>Computer systems organization~Embedded systems</concept_desc>
+		<concept_id>10010147.10010341</concept_id>
+		<concept_desc>Computing methodologies~Modeling and simulation</concept_desc>
 		<concept_significance>500</concept_significance>
 		</concept>
 		<concept>
-		<concept_id>10010520.10010575.10010755</concept_id>
-		<concept_desc>Computer systems organization~Redundancy</concept_desc>
-		<concept_significance>300</concept_significance>
-		</concept>
-		<concept>
-		<concept_id>10010520.10010553.10010554</concept_id>
-		<concept_desc>Computer systems organization~Robotics</concept_desc>
-		<concept_significance>100</concept_significance>
-		</concept>
-		<concept>
-		<concept_id>10003033.10003083.10003095</concept_id>
-		<concept_desc>Networks~Network reliability</concept_desc>
+		<concept_id>10002944.10011123.10011133</concept_id>
+		<concept_desc>General and reference~Estimation</concept_desc>
 		<concept_significance>100</concept_significance>
 		</concept>
 		</ccs2012>
 	\end{CCSXML}
 	
-	\ccsdesc[500]{Computer systems organization~Embedded systems}
-	\ccsdesc[300]{Computer systems organization~Redundancy}
-	\ccsdesc{Computer systems organization~Robotics}
-	\ccsdesc[100]{Networks~Network reliability}
+	\ccsdesc[500]{Computing methodologies~Modeling and simulation}
+	\ccsdesc[100]{General and reference~Estimation}
+
+
 	
 	%%
 	%% Keywords. The author(s) should pick words that accurately describe
 	%% the work being presented. Separate the keywords with commas.
-	\keywords{datasets, neural networks, gaze detection, text tagging}
+	\keywords{GIS, least cost path}
 	
 	\received{20 February 2007}
 	\received[revised]{12 March 2009}
@@ -119,22 +113,26 @@
 	\cite{suleiman_optimal_2015}.
 	For planing the additional routes for a power grid, additional aspects as legal regulations and acceptance
 	by the local population have to be taken in consideration.
-	Also technical aspects, as the effects on the grid stability might be further points to consider.\cite{schafer_understanding_2022}
+	Also technical aspects, as the effects on the grid stability might be further points to consider~\cite{schafer_understanding_2022}.
 	
-	Due to the increasing need for renewable energy wind off shore wind turbines are source which currently supplies 5.5~\% annual percentage in 2020 of the German energy mix.~\cite{noauthor_nettostromerzeugung_2021}
-	For wind energy in general highest efficiency can only be archived with high wind speeds. Highest wind speeds are reached along the cost lines in the north of Germany.
+	Due to the increasing need for renewable energy wind off shore wind turbines are source which currently supplies 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}
+.	For wind energy in general highest efficiency can only be archived with high wind speeds.
+	Highest wind speeds are reached along the cost lines in the north of Germany.
 	In contrast, most consumers, as industry are situated in south Germany.
 	Source and consumer have to be linked via new power lines.
 
-	Other methods as the multi-criteria decision analysis take further aspects and stakeholder as experts, public and decision maker and into consideration.\cite{bertsch_participatory_2016}
+	Other methods as the multi-criteria decision analysis take further aspects and stakeholder as experts, public and decision maker and into consideration~\cite{bertsch_participatory_2016}.
 	
 	For planning a possible route for a power line the least cost path algorithm is applied.
 	The least cost path algorithm is a Dijkstra algorithm applied on a raster map.
 	The vertices of the graph are the centers on neighboring pixels in al possible eight directions.
 	The weights of the edges are the local costs to travel from one pixel to the neighboring pixel.
 	The costs might be physical costs, as the local slope, but also can be composed on other factors as the acceptance rate for the land usage of a given class.
-	The least cost path algorithm consists of at least two sequential steps. 1) The first steps is to aggregate the costs of traveling from the starting point to a given set of end points. This steps generates the aggregated cost raster of the total cost that are needed to travel to a point, from the cost raster.
-	2) In the next step the back tracking, the route of the actual least cost path is calculated. For each ending point the path via the lowest cost neighbor is taken until arriving at the starting point.
+	The least cost path algorithm consists of at least two sequential steps.
+	1) The first steps is to aggregate the costs of traveling from the starting point to a given set of end points.
+	This steps generates the aggregated cost raster of the total cost that are needed to travel to a point, from the cost raster.
+	2) In the next step the back tracking, the route of the actual least cost path is calculated.
+	For each ending point the path via the lowest cost neighbor is taken until arriving at the starting point.
 	
 	\todo{Were to put the following part?}
 	The aggregation is implemented in a priority queue. 
@@ -145,22 +143,27 @@
 	
 
 	\section{Methods}\label{sec:methods}
-	
 	\input{methods}
 
 	\section{Results}\label{sec:results}
-	
 	\input{results}
-
+	
 	\section{Discussion}\label{sec:discussion}
 	\input{discussion}
 
 	\section{Related Works}\label{sec:related-works}
-
+	In contrast to GIS analysis, further effort can be done with a \acrfull{MCDA}\todo{Pohekar and Ramachandran 2004, Wang 2009, Riberio 2011}.
+	The uncertainties connected with \acrshort{MCDA} are data uncertainties, preferential uncertainties and model uncertainties.
+	These uncertainties are examined by a with a sensitivity analysis \todo{Eßer-Frey} or simulation~\cite{butler_simulation_1997}.
+	
+	The different models of the power market models span from not modeling the grid at all to models that includes Kirchhoffs laws.
+	However, the actual planning of power grids is computational complex and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
+	Some models include not only the grid of a nation alone~\cite{dietrich_will_2010}, but models do not include both model the expansion planing for a longer time period and the effect of power transition~\cite{bertsch_participatory_2016}.
+	But economic modeling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance play an important role~\cite{hauff_gesellschaftliche_2011}.
 
 	\section{Conclusion}\label{sec:conclusion}
 	When using the researched strategies, the on medium resolution raster, the computation for high resolution results might successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
-	\todo{Befragung: local population, relative weights per district?}
+	\todo{survey: local population, relative weights per district?}
 
 
 
@@ -171,7 +174,8 @@
 %%
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
-\bibliographystyle{ACM-Reference-Format}
+%%\bibliographystyle{ACM-Reference-Format}
+\bibliographystyle{unsrt}
 \bibliography{Web_Processing.bib}
 
 
