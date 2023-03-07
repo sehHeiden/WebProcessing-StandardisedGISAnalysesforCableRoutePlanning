@@ -23,13 +23,14 @@ As the original least cost path QGIS plug-in the used algorithm stops the least 
 This early stopping might result in suboptimal paths around the end points for some edge cases, where the connection via another neighbor might be more optimal.
 
 The set of rules that are used create the cost raster, includes a rule for creating a buffer around buildings  which is set to the level \textit{prohibited} areas.
-The resolution of the medium level raster needs to be high enough to crudely show every detail, Hence at least in the magnitude of the minimum object size plus twice its buffer, in this example in the range of at least 25~m or 10~m.
+The resolution of the medium level raster needs to be high enough to crudely show every detail, Hence at least in the magnitude of the minimum object size plus twice its buffer, in this example in the range of at least 25~m or 10~m to include the streets in all touched false raster.
+Other details as rivers and houses, ae already includes in lower resolution raster, because of the buffering.
 Although the overall result can change, due super position of objects and there buffer.
 Nevertheless, does higher resolution resemble, the geography more precise, but in addition show paths that are too small, to be taken.
-On the other hand, as the run from the starting point to the end point at a resolution of 2.5~m shows, new ways, that could not not be reached before, do hint inconsistencies of the rules that construct the cost raster.
+On the other hand, as the run from the starting point to the end point at a resolution of 2.5~m shows, new ways, that could not be reached before, do hint inconsistencies of the rules that construct the cost raster.
 
 Object and there buffer might leave a  path that, is smaller than 10~m resolution.
-So a second rule to find a good resolution, that is should be in the magnitude of the size of the structure  to be build.
+So a second rule to find a good resolution, that it should be in the magnitude of the size of the structure  to be build.
 While the used data set for buildings, also includes power poles, the area of the level \textit{preferential} power grid, includes isles of high costs. 
 In further works, these should be excluded.
 
@@ -63,4 +64,4 @@ For high resolution raster, this effect would still hold true, because the fact,
 
 Interpretation: Interpretation the Cost Paths are much nearer smaller, than 100~m!
 No problem because buffering is included in the cost raster.
-Not algorithmic speed-ups as pre-compilation, JIT, vector units, multi-core
+Not algorithmic speed-ups as pre-compilation, JIT, vector units, multi-core, weight range

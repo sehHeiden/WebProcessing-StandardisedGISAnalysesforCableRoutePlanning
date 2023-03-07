@@ -72,7 +72,7 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 			\draw[fill=blue] (10,0)--(10,5)--(11,5)--(11,4)--(15,4)--(15,1)--(13,1)--(13,0)--cycle;
 		\end{tikzpicture}%
 	}%
-	\caption{Graphical example for rastering a vector (left blue), to a raster (right blue) with weither all-touched False (above), or all touched True (below).}
+	\caption{Graphical example for rastering a vector (left blue), to a raster (right blue) with either all-touched False (above), or all touched True (below).}
 	\label{fig:alltouched}
 
 \end{figure}
@@ -102,12 +102,19 @@ Therefore, areas even farther away from the starting point have been explored fi
 \begin{figure}
 	\centering
 	
-	\subfloat[\centering Cost Raster.]{{\includegraphics[width=.45\linewidth]{./images/CostRasterExample.png} }}%
-	\qquad
-	\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.45\linewidth]{./images/AggregatedCosts.png} }}%
-	\qquad
-	\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPathExample.png} }}%
+	\subfloat[\centering Cost Raster.]{{\includegraphics[width=.30\linewidth]{./images/CostRasterExample_cut.png} }}%
+	\enskip
+	\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.30\linewidth]{./images/AggregatedCosts_cut.png} }}%
+	\enskip
+	\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.30\linewidth]{./images/LeastCostPathExample_cut.png} }}%
 
 	\caption{Figures of Cost raster and the resulting aggregated Costs and the least cost path for a resolution of 50~m.}
 	\label{fig:costs2path}
 \end{figure}
+
+	
+\todo{Were to put the following part?}
+The aggregation is implemented in a priority queue. 
+Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.
+The aggregation is implemented with early stopping. 
+After the last end point has been has got an aggregated cost the aggregation stops and the back tracking starts.

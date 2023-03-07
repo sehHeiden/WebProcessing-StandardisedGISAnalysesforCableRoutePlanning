@@ -107,40 +107,37 @@
 	
 	\section{Introduction}\label{sec:introduction}
 
-	Sometimes, finding the shortest path is not sufficient.
+	The German power system add a lot of renewable energy sources in the north, because wind energy reaches highest efficiency with high wind speeds.
+	At the same time old power plants e.g. nuclear, hard coal and lignite are going out off service~\cite{eser-frey_analyzing_2012}.
+	These older power plants were mainly situated in southern and central Germany. 
+	At the same time , the power sink industrial and private demand do not shift northwards.
+	Therefore, the renewable energies have to be transported from north to south which increases the congestion in the power grid. 
+	The amount of offshore wind power, that the German energy system can use, can be greatly increased by adding new power lines~\cite{leuthold_nodal_2005}.
+	
+	But for building power lines, finding the shortest path is not sufficient.
 	Additional parameters also have to be taken into consideration.
-	As the steepness of a road or the soil, play an important role for the building cost of a road or pipeline
-	\cite{suleiman_optimal_2015}.
-	For planing the additional routes for a power grid, additional aspects as legal regulations and acceptance
+	As the steepness of a road or the soil, play an important role for the building cost of a road or pipeline~\cite{suleiman_optimal_2015}.
+	For planing the additional routes for a power grid, further aspects as legal regulations and acceptance
 	by the local population have to be taken in consideration.
 	Also technical aspects, as the effects on the grid stability might be further points to consider~\cite{schafer_understanding_2022}.
 	
 	Due to the increasing need for renewable energy wind off shore wind turbines are source which currently supplies 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}
-.	For wind energy in general highest efficiency can only be archived with high wind speeds.
+.	
 	Highest wind speeds are reached along the cost lines in the north of Germany.
-	In contrast, most consumers, as industry are situated in south Germany.
-	Source and consumer have to be linked via new power lines.
 
 	Other methods as the multi-criteria decision analysis take further aspects and stakeholder as experts, public and decision maker and into consideration~\cite{bertsch_participatory_2016}.
 	
 	For planning a possible route for a power line the least cost path algorithm is applied.
 	The least cost path algorithm is a Dijkstra algorithm applied on a raster map.
 	The vertices of the graph are the centers on neighboring pixels in al possible eight directions.
-	The weights of the edges are the local costs to travel from one pixel to the neighboring pixel.
+	This enables to find routes on graphs that are not predefined like road notworks.
+	The weights between the edges are the local costs to travel from one pixel center to the neighboring pixel center.
 	The costs might be physical costs, as the local slope, but also can be composed on other factors as the acceptance rate for the land usage of a given class.
 	The least cost path algorithm consists of at least two sequential steps.
 	1) The first steps is to aggregate the costs of traveling from the starting point to a given set of end points.
 	This steps generates the aggregated cost raster of the total cost that are needed to travel to a point, from the cost raster.
 	2) In the next step the back tracking, the route of the actual least cost path is calculated.
 	For each ending point the path via the lowest cost neighbor is taken until arriving at the starting point.
-	
-	\todo{Were to put the following part?}
-	The aggregation is implemented in a priority queue. 
-	Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.
-	The aggregation is implemented with early stopping. 
-	After the last end point has been has got an aggregated cost the aggregation stops and the back tracking starts.
-	
-	
 
 	\section{Methods}\label{sec:methods}
 	\input{methods}
@@ -152,14 +149,21 @@
 	\input{discussion}
 
 	\section{Related Works}\label{sec:related-works}
-	In contrast to GIS analysis, further effort can be done with a \acrfull{MCDA}\todo{Pohekar and Ramachandran 2004, Wang 2009, Riberio 2011}.
-	The uncertainties connected with \acrshort{MCDA} are data uncertainties, preferential uncertainties and model uncertainties.
-	These uncertainties are examined by a with a sensitivity analysis \todo{Eßer-Frey} or simulation~\cite{butler_simulation_1997}.
+
 	
-	The different models of the power market models span from not modeling the grid at all to models that includes Kirchhoffs laws.
-	However, the actual planning of power grids is computational complex and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
-	Some models include not only the grid of a nation alone~\cite{dietrich_will_2010}, but models do not include both model the expansion planing for a longer time period and the effect of power transition~\cite{bertsch_participatory_2016}.
-	But economic modeling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance play an important role~\cite{hauff_gesellschaftliche_2011}.
+	
+	Older models are e.g. are optimizing the well fare, economic modeling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance more and more play an important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
+	
+	In contrast to a GIS analysis, these further factors can be studied done with a \acrfull{MCDA}~\cite{bertsch_participatory_2016}.
+
+	Stakeholder as decision maker can be included and combined with an expert system~\cite{bertsch_participatory_2016}.
+	
+	The uncertainties connected with \acrshort{MCDA} data uncertainties, preferential uncertainties and model uncertainties are examined by a with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
+	Both inter and intra criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
+		
+	The different models of the power system, that are used in the expert system span from not modeling the grid at all to models that includes Kirchhoffs laws~\cite{bertsch_participatory_2016}.
+	The calculation of a power system is complex, as changing one edge will change the flow in all parts of grid and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
+	Some models include not only the grid of a nation alone, but consider neighboring states or the overall European power system~\cite{dietrich_will_2010}.
 
 	\section{Conclusion}\label{sec:conclusion}
 	When using the researched strategies, the on medium resolution raster, the computation for high resolution results might successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
@@ -167,30 +171,30 @@
 
 
 
-\begin{acks}
-	$\ldots$
-\end{acks}
+%%\begin{acks}
+%%	$\ldots$
+%%\end{acks}
 
 %%
 %% The next two lines define the bibliography style to be used, and
 %% the bibliography file.
 %%\bibliographystyle{ACM-Reference-Format}
-\bibliographystyle{unsrt}
+\bibliographystyle{unsrtdin}
 \bibliography{Web_Processing.bib}
 
 
 %%
 %% If your work has an appendix, this is the place to put it.
-\appendix
+%%\appendix
 
-\section{Research Methods}\label{sec:research-methods}
+%%\section{Research Methods}\label{sec:research-methods}
 
-	\subsection{Part One}\label{subsec:part-one}
+%%	\subsection{Part One}\label{subsec:part-one}
 
-	\subsection{Part Two}\label{subsec:part-two}
+%%	\subsection{Part Two}\label{subsec:part-two}
 
 
-	\section{Online Resources}\label{sec:online-resources}
+%%	\section{Online Resources}\label{sec:online-resources}
 
 
 \end{document}
