@@ -61,7 +61,10 @@ The fact, that all touched False raster lead to more similar results compared to
 In cause the default level would rise, the effect probably would flip for low resolution raster.
 For high resolution raster, this effect would still hold true, because the fact, that the raster pixel center is used for sampling, reflects the original geometry better.
 
+The fact that the differences in the costs between the paths from the all touched false to the all touched true rasters stay almost constant over the different resolution is probably due to the fact that, the costs per resolution stays in narrow range of costs.
+This effect of the similar aggregated costs per resolution could also be seen in the testing paths, even when the paths changed strongly with the change of resolution or algorithm applied.
+Which might be a hint for an evenly spatial distribution of the costs.
 
-Interpretation: Interpretation the Cost Paths are much nearer smaller, than 100~m!
-No problem because buffering is included in the cost raster.
-Not algorithmic speed-ups as pre-compilation, JIT, vector units, multi-core, weight range
+The all touched true cost raster show every detail, but the sampling with all touched true increases the size of the features.
+The fact that the aggregated costs per resolution for all touched true rasters overestimates the costs when computing the path from a low resolution raster, might be due to the fact, that the values of the costs are un-evenly distributed, but that the high costs are much more frequent differ and the costs are exponential scaled exponentially.
+

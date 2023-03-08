@@ -13,36 +13,42 @@ Lower Saxony~\cite{noauthor_opengeodatani_2022}.
 In addition, local planning geodata for the land usage are taken
 from 'Metropolplaner' (Planing data Lower Saxony \& Bremen)~\cite{noauthor_metropolplaner_2022}.
 
-PyWPS~\cite{noauthor_welcome_2016} is used to offer the least cost path algorithm as a \acrfull{wps}.
+PyWPS~\cite{noauthor_welcome_2016} is used to provide the least cost path algorithm as a \acrfull{wps} in combination with flask~\cite{noauthor_flask_nodate}.
+As client Birdy~\cite{noauthor_birdy_nodate} connects to the \acrshort{wps}, sending the cost raster and receiving the resulting least cost path.
 The initial implementation of the least cost path algorithm is based on the implementation for the QGIS-Plugin
 'Least Cost Path'~\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} in version 1.0.
 
+
 The different layers from the different entities are optionally filtered, buffered and then rasterized.
 Filtering the layers of the files for special attributes enables to further differentiate.
-For examples makes it possible to differentiate between heath and uncultivated land.
+For examples makes it possible to differentiate between heath and uncultivated land in the land coverage.
 Adding a buffer can be used either used to convert a line objects as power grids and streets into a polygon with the
 correct physical width, or to add minimum distance from an existing of planed area to the new power grid.
 Each of theses rasterized layers are given a weight, or cost that expresses the cost of using land covered by this layer.
-The costs of all layers of is aggregated with the maximum function.
+The costs of all layers is aggregated with the maximum function.
 Thus, an area covered by multiple layers is uniformly used with the highest costs.
-For every area in the study area, that is not covered by any layer, is given the default cost.
+Any place in the study area, that is not covered by any layer and thus does not have a weight yet, is given the default cost.
+
 The costs have been grouped into different levels~(see table~\ref{tab:1}) starting from \textit{preferential} areas with
 very low costs, via \textit{no restriction}s, which is the default, used when no other layers are covering the local area,
 to \textit{restricted}, \textit{strongly restricted} and \textit{prohibited} areas with high costs.
-These higher costs resemble the degree how much a local area should be avoided, while routing the path.
+These higher costs resemble the degree how much a place of this cost should be avoided, while routing the path.
 The ratio of the higher costs to the lower costs directly translates into the additional diversion in pixels
-the algorithm is willing to go, for avoiding an area of high costs.
+the algorithm is willing to go, for avoiding an area of this high costs.
 Thus, as \textit{prohibited} areas describe a legal obligation, not to use these areas or only to the utmost minimum,
-the weight that resembles the costs for these types of areas, has to be especially high. \\
+the weight that resembles the costs for these types of areas, has to be especially high.\\
+
+All these layers are provided as vectors.
+While the least cost algorithm use raster data.
 The rasterization transforms a vector into a raster.
-The rasterization can be executed in to different ways.
+The rasterization can be executed in two different ways.
 In both ways, the rasterization can be imaged, as the old vector is layered over the new raster grid with the new
 given resolution and the new affine transformation and the coordinate reference system of the vector.
-Both rasterization techniques differ in how the pixels are selected, that describe, that a geo-object overlays the pixel.
-The pixels can either be described as overlaid with a geo-object, when either the center of that pixel is overlaid
+Both rasterization techniques differ in the selection of the pixel, that describe the original polygon.
+The pixels can be selected , if either the center of that pixel is overlaid
 by the geo-object, or any part of the pixel is overlaid.
-Hence, the version with any part overlaid is called all touched True.
-The version where a overlaid pixel center is require is thus called all touched False.
+The version with any part overlaid is called all touched True.
+The version where a overlaid pixel center is require is called all touched False.
 All touched False is considered the default (see figure~\ref{fig:alltouched}).
 \begin{figure}[!ht]
 	\centering
@@ -91,11 +97,14 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 		Preferential 		& 0.1					& \makecell[lt]{Power Grid,\\ Motorway and Railway Buffers}\\
 	\end{tabular}
 \end{table}
-The completed list of layers and the processing applied to them, can be found in \textbf{Supplement S1}.
 
-The whole stack of the cost raster, via the aggregated costs to the resulting least cost path can is shown with an example for a starting cost raster of 50~m resolution and a rasterization with all touched False (see \ref{fig:costs2path}).
-Because of the early stopping strategy used in the aggregation sub-paths with high costs have not been fully computed.
-Instead, the execution stops early after reaching the end point.
+The completed list of layers and their processing, can be found in \textbf{Supplement S1}.
+
+All three steps of the generation of the least cost path: generation of the cost raster, aggregation and back tracking is shown with an example for a starting cost raster of 50~m resolution and a rasterization with all touched False (see \ref{fig:costs2path}).
+
+The chosen implementation applies early stopping.
+Therefore, the costs for points that are not needed to try to connect to the end point are not aggregated.
+After an aggregated cost for every end point has been found, the aggregation stops and the back tracking starts.
 Because the end point ends at a power transformer, which is a building type, the paths ends at in a \textit{Prohibited} Area.
 Therefore, areas even farther away from the starting point have been explored first.
 
@@ -113,8 +122,6 @@ Therefore, areas even farther away from the starting point have been explored fi
 \end{figure}
 
 	
-\todo{Were to put the following part?}
-The aggregation is implemented in a priority queue. 
-Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.
-The aggregation is implemented with early stopping. 
-After the last end point has been has got an aggregated cost the aggregation stops and the back tracking starts.
+
+%% The aggregation is implemented in a priority queue. 
+%% Hence a point with a lower cost is evaluated earlier as a starting position to evaluate the cost of its neighbors, than a point with higher costs.

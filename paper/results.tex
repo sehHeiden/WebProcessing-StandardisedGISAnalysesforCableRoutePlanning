@@ -77,9 +77,9 @@ In addition, this tendency is depicted in figure~\ref{fig:paths_resolution} for 
 In contrast the largest distance between the paths (see equation~\ref{eq:2}) will be used, to estimate the minimum distance to the areas that still should be examined to grantee a, that at least cost path found in this limited space is still likely to be optimal.
 
 
-At the same time the differences in the aggregated costs stay constant.
-\todo{Interpretation} When normalize the aggregated costs by the resolution.
-Than On one hand it can be seen, that the all\_touched False under estimate the costs and that this tendency scales
+At the same time the differences in the aggregated costs stay almost constant.
+When normalize the aggregated costs by the resolution.
+On one hand it can be seen, that the all\_touched False under estimate the costs and that this tendency scales
 linear with the resolution.
 On the other hand, the all\_touched True least cost over estimates the aggregated costs on a linear scale of
 the resolution.
@@ -141,7 +141,7 @@ On the other side the length of the paths can increase, because with higher reso
 The zonal stat (see table~\ref{tab:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
 percentage of which costs levels are around the path.
 When using all\_touched True rasterization with higher resolution the tendency is to use a higher percentage of the
-\textit{Preferential Level} and less the\textit{NoRestriction} Level.\todo{Interpretation:}
+\textit{Preferential Level} and less the\textit{NoRestriction} Level.
 The ratio of the 100 m buffered least cost path, strongly shifted  to Levels lower costs.
 
 There is no strong tendency for the all\_touched False least cost paths.
@@ -289,7 +289,7 @@ The speed up from the clipping of the higher resolution raster depends on the am
 Bi-linear down sampling the of the high resolution raster to a medium resolution, did not result in any benefits compared to an original medium resolution raster.
 The resolution corrected aggregated costs of the least cost path from the down sampled raster are higher, than those, from the higher 5~m resolution raster and the medium 10~m resolution raster.
 In addition, is the distance, from this path to the path from the high resolution raster much higher, than the distance of path from the original 10~m resolution raster to the path from the 5~m resolution raster (see table~\ref{tab:6}).
-\todo{interpretation Why, down sampling so different???}
+\todo{interpretation: Why result from down sampling so different? Don't know.}
 
 \begin{table}[h!]
 	\caption{Length of the path, the resolution corrected costs and the mean distance to the path created from the 5~m resolution all touched false raster for the four control routes, for the reference path of constructed from the 5~m  and 10~m raster and the down 5~m to 10~m down sampled raster and the 5~m clipped raster.}
