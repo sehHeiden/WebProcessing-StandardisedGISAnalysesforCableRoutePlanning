@@ -1,4 +1,4 @@
-% !TeX spellcheck = en_US
+% !TeX spellcheck = en_GB
 
 \documentclass[acmtog]{acmart}
 \usepackage{amsmath}
@@ -61,10 +61,10 @@
 	\renewcommand{\shortauthors}{Heiden}
 	
 	\begin{abstract}
-		The least cost paths for a power line route from a power station is computed to a power station further inland.
-		Down sampling and clipping as studied as techniques to speed-up the computation.
-		The path from clipped cost raster often matches the original path.
-		The speed-up of the clipping can not be known before hand.
+		The least cost paths for a power line from a power station at the cost to a power station further inland are calculated.
+		Down-sampling and clipping are investigated as techniques to speed up the calculation.
+		The path from the clipped cost raster is often the same as the original path.
+		The speed-up of the clipping can not be known in advance.
 	\end{abstract}
 	
 	%%
@@ -107,38 +107,38 @@
 	
 	\section{Introduction}\label{sec:introduction}
 
-	The German power system adds a lot of renewable energy sources in the north, because wind energy reaches highest efficiency with high wind speeds.
-	At the same time old power plants e.g.\ nuclear, hard coal and lignite are going out off service~\cite{eser-frey_analyzing_2012}.
-	These older power plants were mainly situated in southern and central Germany. 
-	The power sink, which is industrial and private demand does not shift northwards.
-	Therefore, the renewable energies have to be transported from north to south which increases the congestion in the power grid. 
+	The German power system is adding a lot of renewable energy sources in the north, because wind energy reaches its highest efficiency with high wind speeds.
+	At the same time old power plants e.g.\ nuclear, hard coal and lignite are being phased out~\cite{eser-frey_analyzing_2012}.
+	These older power plants were mainly located in southern and central Germany. 
+	The energy sink,  industrial and private demand, is not shifting north.
+	Therefore, the renewable energy has to be transported from north to south which increases the congestion in the power grid. 
 	The amount of offshore wind power, that the German energy system can use, can be greatly increased by adding new power lines~\cite{leuthold_nodal_2005}.
 	
-	But for building power lines, finding the shortest path is not sufficient.
-	Additional parameters also have to be taken into consideration.
+	However, it is not enough to find the shortest route when building new power lines.
+	Other parameters have to be taken into consideration.
 	As the steepness of a road or the soil, play an important role for the building cost of a road or pipeline~\cite{suleiman_optimal_2015}.
-	For planing the additional routes for a power grid, further aspects as legal regulations and acceptance
+	When planing the additional routes for a power grid, further aspects such as legal regulations and acceptance
 	by the local population have to be taken in consideration.
 	Also technical aspects, as the effects on the grid stability are further points take into consideration~\cite{schafer_understanding_2022}.
 	
-	Due to the increasing need for renewable energy wind offshore wind turbines supply 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}.
+	Due to the increasing demand for renewable energy wind offshore wind turbines supply 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}.
 
-	Other methods as the \acrfull{MCDA}  consider further aspects as stakeholder, experts, public and decision maker~\cite{bertsch_participatory_2016} (see section~\ref{sec:related-works}).
+	Other methods such as the \acrfull{MCDA}  consider further aspects as stakeholder, experts, public and decision maker~\cite{bertsch_participatory_2016} (see section~\ref{sec:related-works}).
 	
-	For planning a possible route for a power line the least cost path algorithm is applied.
+	The least cost path algorithm is used to plan a possible route for a power line.
 	The least cost path algorithm is a Dijkstra algorithm~\cite{dijkstra_note_1959} applied on a raster map.
-	The vertices of the graph are the pixel centers, that are connected to the eight neighboring pixel centers via the edges.
-	This enables to find routes on graphs that are not predefined like road notworks.
-	The weights of the edges are the local costs to travel from one pixel center to the neighboring pixel center.
-	The costs might be physical costs, as the local slope, but also can be composed on other factors as the acceptance rate for the land usage of a given class.
-	The least cost path algorithm consists of at least two sequential steps.
-	1) The first step is to aggregate the costs of traveling from the starting point to a given set of end points.
-	This step generates the aggregated cost raster of traveling from the starting point to any point of the cost raster.
-	2) In the next step the back tracking, the route of the actual least cost path is calculated.
-	For each ending point the path via the lowest cost neighbor is taken until arriving at the starting point.
+	The vertices of the graph are the pixel centres, that are connected to the eight neighbouring pixel centres via the edges.
+	This makes it possible to find routes on graphs that are not predefined, such as road networks.
+	The weights of the edges are the local costs of travel from one pixel center to the neighbouring pixel center.
+	The costs can be physical costs, such as the local slope, but also can be composed of other factors as the acceptance rate for the land usage of a given class.
+	The Least Cost Path algorithm consists of at least two successive steps.
+	1) The first step is to aggregate the costs of travelling from the starting point to a given set of end points.
+	This step generates the aggregated cost raster of travelling from the starting point to any point of the cost raster.
+	2) In the next step the backtracking, the route of the actual Least Cost Path is calculated.
+	For each end point the path via the lowest cost neighbour is taken until the starting point is reached.
 	
-	Some implementations switch the role of start and ending points, so that either many starting points and one end point, or one end point and many endpoints can be used.
-	In some implementation there is a extra step between 1) and 2) that calculates cost-weight direction raster, that encodes the direction of the shortest
+	Some implementations switch the role of start and ending points, so that either many start points and one single end point, or one single end point and many end points can be used.
+	In some implementation there is an extra step between 1) and 2) that calculates cost-weight direction raster, that encodes the direction of the shortest
 	path to the starting point as integer values.
 
 	\section{Methods}\label{sec:methods}
@@ -154,7 +154,7 @@
 
 	
 	
-	Older models are e.g.\ are optimizing the well fare, economic modeling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance more and more play an important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
+	Older models are e.g.\ are optimizing the well fare, economic modelling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance more and more play an important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
 	
 	In contrast to a GIS analysis, these further factors can be studied done with a \acrfull{MCDA}~\cite{bertsch_participatory_2016}.
 
@@ -163,9 +163,9 @@
 	The uncertainties connected with \acrshort{MCDA} data uncertainties, preferential uncertainties and model uncertainties are examined by a with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
 	Both inter and intra criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
 		
-	The different models of the power system, that are used in the expert system span from not modeling the grid at all to models that includes Kirchhoffs laws~\cite{bertsch_participatory_2016}.
+	The different models of the power system, that are used in the expert system span from not modelling the grid at all to models that includes Kirchhoffs laws~\cite{bertsch_participatory_2016}.
 	The calculation of a power system is complex, as changing one edge will change the flow in all parts of grid and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
-	Some models include not only the grid of a nation alone, but consider neighboring states or the overall European power system~\cite{dietrich_will_2010}.
+	Some models include not only the grid of a nation alone, but consider neighbouring states or the overall European power system~\cite{dietrich_will_2010}.
 
 	\section{Conclusion}\label{sec:conclusion}
 	The cost of computation of the least cost path scales with the square of the resolution.

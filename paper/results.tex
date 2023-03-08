@@ -1,4 +1,4 @@
-% !TeX spellcheck = en_US
+% !TeX spellcheck = en_GB
 
 In this chapter we want to show the different cost raster, that were created from the very same set of layers,
 but computed for different resolutions.
@@ -29,14 +29,14 @@ All touched false will be a better description of the real size of the object.
 
 In contrast when the resolution the is much less, than the size of the object the described behavior changes.
 On one hand, while the area, of the pixel is increased for all touched True, also the area for which the cost is overestimated increases.
-On the other hand while the pixel size for all touched  False increases, not only the over estimated area increases for that pixel as describes for all touched true, but in addition the object is less probable situated in the center of the pixel.
-The consequence of the pixel is, that will decreasing resolution that object is not included in the rasterziation.
+On the other hand while the pixel size for all touched  False increases, not only the over estimated area increases for that pixel as describes for all touched true, but in addition the object is less probable situated in the centre of the pixel.
+The consequence of the pixel is, that will decreasing resolution that object is not included in the rasterisation.
 Hence, hence for all touched false lower resolution  leads ot a loss of information.
 Because the default is relative small compared the over effect is a underestimation of the costs.
 The figure~\ref{fig:costs_100m} shows for the resolution of 100 m, that while larger are still included in the map they appear to be much larger.
 On the contrary smaller objects might not be included.
 Objects that are small on in one dimension as streets will be included in a stochastic manner.
-Described by the likely of that a object of that sized overlaps with the pixel center.
+Described by the likely of that a object of that sized overlaps with the pixel centre.
 \begin{figure}
 	\centering
 
@@ -189,7 +189,7 @@ The aggregation of the costs and the back tracking of the least cost to find the
 The final least costs paths should between the least cost paths of the lower resolution, with a tendency to be nearer to the paths resulted by the all touched false rasterization.
 The first step is to optimize the calculation speed is, only to calculated the least cost paths for this smaller area.
 Another method, is to improve the prediction of the medium resolution itself and thus reduce the need for a computation in higher resolution.
-\subsubsection{Compare least cost paths, for overlay of both rasterizations}
+\subsubsection{Compare least cost paths, for overlay of both rasterisations}
 
 As all touched true rasterization overestimates and all touched true underestimates the real costs.
 A weighted mean will describe the real costs more precise.
@@ -204,7 +204,7 @@ The time needed for the back tracking stays unchanged.
 The optimal ratio of overlaying all touched false and all touched true cost raster for 10~m resolution is estimated via the resulting least cost path. 
 The mean distance of least cost paths for different ratio has been estimated to the path from the all touched false raster of the next higher (5~m) resolution. 
 Table~\ref{tab:4} shows, that distance decreases with the higher ratio from 1:1, 2:1, 4:1 and than increases with higher ratio 8:1, 16:1 and so on.
-In addition, the distances to the original paths from the all touched false and all touched true raster change with the applied ratio of the overlayed raster.
+In addition, the distances to the original paths from the all touched false and all touched true raster change with the applied ratio of the superimposed raster.
 So that, a lower ratio increases the similarity to the path of the all touched true raster, the similarity to the paths from the all touched false raster increases with the ratio.
 
 \begin{table}[h!]
@@ -270,8 +270,8 @@ This small path is a power line next to road between which build a cone in a pro
 The street and the protected landscape area are both restricted areas, while the power line is preferential.
 This showing, that the way the cost raster is created in the first place can play a vital role, in the end result.
 So that a nuance, can cause a detour.
-When this behavior occurs, the polygon can not grantee to include the least cost path.
-Therefore this polygon should be overlayed with a polygon around the shortest path.
+When this behaviour occurs, the polygon can not grantee to include the least cost path.
+Therefore this polygon should be overlapped with a polygon around the shortest path.
 
 
 %\subsubsection{Restrict search to reachable points}

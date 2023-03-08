@@ -1,4 +1,4 @@
-% !TeX spellcheck = en_US
+% !TeX spellcheck = en_GB
 As shown, the need for computation time increases with the power of two with the resolution. 
 Similarly, the usage of main memory increases. 
 Which in tern limits the processable data points and resolution.
@@ -20,7 +20,7 @@ While this method reduces the calculation time and usage of main memory, the bac
 
 
 As the original least cost path QGIS plug-in the used algorithm stops the least aggregation of the costs after the final end point has been found.
-This early stopping might result in suboptimal paths around the end points for some edge cases, where the connection via another neighbor might be more optimal.
+This early stopping might result in suboptimal paths around the end points for some edge cases, where the connection via another neighbour might be more optimal.
 
 The set of rules that are used create the cost raster, includes a rule for creating a buffer around buildings  which is set to the level \textit{prohibited} areas.
 The resolution of the medium level raster needs to be high enough to crudely show every detail, Hence at least in the magnitude of the minimum object size plus twice its buffer, in this example in the range of at least 25~m or 10~m to include the streets in all touched false raster.
@@ -54,12 +54,12 @@ When the \textit{prohibited} level is used as the highest level.
 Then higher levels are \textit{prohibited} within the concept.
 This an area even more \textit{prohibited}, when it is included in two different rules of the level?
 On the other side, This aggregation is unable to differentiate between these nuances, as  the sum function is.
-This way, one can differential between, different sublevels.
+This way, one can differential between, different sub-levels.
 One consequence is, that a small mediation between high and low single cost raster, in the final cost raster is possible.
 
 The fact, that all touched False raster lead to more similar results compared to high resolution raster, is due to the fact, that the default level is relatively low.
 In cause the default level would rise, the effect probably would flip for low resolution raster.
-For high resolution raster, this effect would still hold true, because the fact, that the raster pixel center is used for sampling, reflects the original geometry better.
+For high resolution raster, this effect would still hold true, because the fact, that the raster pixel centre is used for sampling, reflects the original geometry better.
 
 The fact that the differences in the costs between the paths from the all touched false to the all touched true rasters stay almost constant over the different resolution is probably due to the fact that, the costs per resolution stays in narrow range of costs.
 This effect of the similar aggregated costs per resolution could also be seen in the testing paths, even when the paths changed strongly with the change of resolution or algorithm applied.
