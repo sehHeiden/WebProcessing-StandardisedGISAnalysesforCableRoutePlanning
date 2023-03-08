@@ -11,7 +11,7 @@ similar paths as if the paths were computed from a high resolution raster.
 The cost raster contains all the costs as weights for the geographic region of the study area.
 The regions outside the study area are given, a no-data value and will not be use for the calculation of the least cost path.
 It is decided to use the maximum value, for any place in the raster, that is covered by several rules at the same time.
-When the resolution that is use for the rasterization is smaller than the object size, than the effect of the rasterization with all touched True or False is limited.
+When the resolution that is use for the rasterisation is smaller than the object size, than the effect of the rasterisation with all touched True or False is limited.
 For all touched True any part of the pixel that is covered by the object, will attribute that whole pixel to the object.
 Thus, the object appears to be halve a pixel size larger in all directs.
 As can be seen in figure~\ref{fig:costs_5m} that shows a detailed view of the costs for village of Beverstedt.
@@ -46,10 +46,10 @@ Described by the likely of that a object of that sized overlaps with the pixel c
 	\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 100~m.}
 	\label{fig:costs_100m}
 \end{figure}
-Thus, with having larger areas and more objects, with higher costs, all touched True rasterization might more likely lead to longer roots and more likely in blocking the  direct spatial path.
+Thus, with having larger areas and more objects, with higher costs, all touched True rasterisation might more likely lead to longer roots and more likely in blocking the  direct spatial path.
 
 \subsection{Least Cost Paths}\label{subsec:least-cost-paths}
-For each resolution the costs paths were estimated for the rasterization with setting all\_touched False
+For each resolution the costs paths were estimated for the rasterisation with setting all\_touched False
 and all\_touched True.
 
 The hypothetical path starts at a transformer about 6~km north the container terminal Bremerhaven and then end at a transformer in the south east of the Osterholz county. 
@@ -122,7 +122,7 @@ Therefore, the difference for the normalized least cost paths is reduced on scal
 	\end{tabular}
 \end{table*}
 
-Comparing the all\_touched True rasterization and all\_touched False for the same resolution in contrast with the paths of all\_touched False rasterization at the
+Comparing the all\_touched True rasterisation and all\_touched False for the same resolution in contrast with the paths of all\_touched False rasterisation at the
 different resolutions the later paths are more similar.
 The mean average distance between the 100 m resolution run and the 5 m resolution run is 257.97 m.
 
@@ -140,7 +140,7 @@ On the other side the length of the paths can increase, because with higher reso
 
 The zonal stat (see table~\ref{tab:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
 percentage of which costs levels are around the path.
-When using all\_touched True rasterization with higher resolution the tendency is to use a higher percentage of the
+When using all\_touched True rasterisation with higher resolution the tendency is to use a higher percentage of the
 \textit{Preferential Level} and less the\textit{NoRestriction} Level.
 The ratio of the 100 m buffered least cost path, strongly shifted  to Levels lower costs.
 
@@ -191,7 +191,7 @@ The first step is to optimize the calculation speed is, only to calculated the l
 Another method, is to improve the prediction of the medium resolution itself and thus reduce the need for a computation in higher resolution.
 \subsubsection{Compare least cost paths, for overlay of both rasterisations}
 
-As all touched true rasterization overestimates and all touched true underestimates the real costs.
+As all touched true rasterisation overestimates and all touched true underestimates the real costs.
 A weighted mean will describe the real costs more precise.
 As present work indicates, that the weight should favor the all touched false raster.
 The best weight should be the percentage of the pixel, which is covered by the object, but this can not be computed in this work.
