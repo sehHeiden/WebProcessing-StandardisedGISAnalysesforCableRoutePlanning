@@ -5,7 +5,7 @@ The study area are the counties of Cuxhaven and Osterholz in the state of Lower 
 Areas protected by different European and National conservation laws are provided by the German Environment Agency
 as \acrfull{wfs}~\cite{noauthor_schutzgebiete_2015}.
 
-The nationwide land coverage (ATKIS) with a scale of 1:250000 are provided by the Federal Agency for Cartography
+The national land coverage (ATKIS) with a scale of 1:250000 are provided by the Federal Agency for Cartography
 and Geodesy~\cite{noauthor_digitales_2021}.
 The national power grid (tags: 'power': line) has been retrieved via OpenStreetMap~\cite{boeing_osmnx_2017}.
 Local data as houses at Level of Detail 1 are provided by the State Office for Geoinformation and Land Surveying of
@@ -55,11 +55,11 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 
 	\resizebox{8cm}{!}{
 		\begin{tikzpicture}
-			\node[draw] at (0,6.5) {\huge all touched false};
+			\node[draw] at (0,6.5) {\Huge all\_touched=false};
 			\draw[step=1cm,gray,very thin] (-1.9,-1.9) grid (5.9,5.9);
-			\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.2,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
+			\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.3,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
 
-			\draw[ultra thick,->, red] (6.5, 2) --node[above=1mm] {\huge rasterization} (8.5, 2);
+			\draw[ultra thick,->, red] (6.5, 2) --node[above=1mm] {\Huge rasterisation} (8.5, 2);
 
 			\draw[step=1cm,gray,very thin] (9.1,-1.9) grid (16.9,5.9);
 			\draw[fill=blue] (11,0)--(11,2)--(10,2)--(10,3)--(11,3)--(11,4)--(12,4)--(12,3)--(13,3)--(13,4)--(14,4)--(14,2)--(13,2)--(13,1)--(12,1)--(12,0)--cycle;
@@ -68,11 +68,11 @@ All touched False is considered the default (see figure~\ref{fig:alltouched}).
 	\vspace*{5mm}
 	\resizebox{8cm}{!}{
 		\begin{tikzpicture}
-			\node[draw] at (0,6.5) {\huge all touched true};
+			\node[draw] at (0,6.5) {\Huge all\_touched=true};
 			\draw[step=1cm,gray,very thin] (-1.9,-1.9) grid (5.9,5.9);
-			\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.2,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
+			\draw[fill=blue, thick] (-0.2, 0.2)--(-0.6, 3.1)--(-0.3,4.1)--(1.2,3.4)--(2.8,3.6)--(3.2, 2.6)--(3.4, 2.1)--(1.8,1.3)--(1.2, 0.1)--cycle;
 
-			\draw[ultra thick,->, red] (6.5, 2) --node[above=1mm] {\huge rasterization} (8.5, 2);
+			\draw[ultra thick,->, red] (6.5, 2) --node[above=1mm] {\Huge rasterisation} (8.5, 2);
 
 			\draw[step=1cm,gray,very thin] (9.1,-1.9) grid (16.9,5.9);
 			\draw[fill=blue] (10,0)--(10,5)--(11,5)--(11,4)--(15,4)--(15,1)--(13,1)--(13,0)--cycle;

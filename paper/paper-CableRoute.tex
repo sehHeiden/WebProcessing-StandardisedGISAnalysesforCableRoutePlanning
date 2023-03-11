@@ -33,14 +33,6 @@
 
 \newacronym{wfs}{wfs}{Web Feature Service}
 \newacronym{wps}{wps}{Web Processing Service}
-\newacronym{res}{res}{resolution}
-\newacronym{r}{r}{ratio}
-\newacronym{al}{al}{all touched}
-\newacronym{t}{t}{True}
-\newacronym{f}{f}{False}
-\newacronym{agg.}{agg.}{aggregated}
-\newacronym{rel}{rel}{relative}
-\newacronym{corr}{corr}{corrected}
 \newacronym{MCDA}{MCDA}{multi-criteria decision analysis}
 
 \begin{document}
@@ -96,9 +88,9 @@
 	%% the work being presented. Separate the keywords with commas.
 	\keywords{GIS, least cost path}
 	
-	\received{20 February 2007}
-	\received[revised]{12 March 2009}
-	\received[accepted]{5 June 2009}
+	\received{14 March 2023}
+	%%\received[revised]{12 March 2009}
+	%%\received[accepted]{5 June 2009}
 	
 	%%
 	%% This command processes the author and affiliation and title
@@ -123,7 +115,7 @@
 	
 	Due to the increasing demand for renewable energy wind offshore wind turbines supply 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}.
 
-	Other methods such as the \acrfull{MCDA}  consider further aspects as stakeholder, experts, public and decision maker~\cite{bertsch_participatory_2016} (see section~\ref{sec:related-works}).
+	Other methods such as \acrfull{MCDA} consider further aspects as stakeholder, experts, public and decision maker~\cite{bertsch_participatory_2016} (see section~\ref{sec:related-works}).
 	
 	The least cost path algorithm is used to plan a possible route for a power line.
 	The least cost path algorithm is a Dijkstra algorithm~\cite{dijkstra_note_1959} applied on a raster map.
@@ -152,38 +144,34 @@
 
 	\section{Related Works}\label{sec:related-works}
 
+	The different models of the power system, that are used in the expert system range from not modelling the grid at all to models that include Kirchhoffs laws~\cite{bertsch_participatory_2016}.
+	The calculation of a power system is complex, because changing one edge changes the flow in all parts of grid and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
+	Some models consider not only the grid of one nation, but consider neighbouring states or the whole European power system~\cite{dietrich_will_2010}.	
+	Older national power grid models are e.g.\ are optimising the well fare, but economic modelling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance play an increasingly important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
 	
+	In contrast to a GIS analysis, these other factors can be studied done with a \acrfull{MCDA}~\cite{bertsch_participatory_2016}.
+	Stakeholders as decision makers can be included and combined with an expert system~\cite{bertsch_participatory_2016}.
 	
-	Older models are e.g.\ are optimizing the well fare, economic modelling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance more and more play an important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
-	
-	In contrast to a GIS analysis, these further factors can be studied done with a \acrfull{MCDA}~\cite{bertsch_participatory_2016}.
-
-	Stakeholder as decision maker can be included and combined with an expert system~\cite{bertsch_participatory_2016}.
-	
-	The uncertainties connected with \acrshort{MCDA} data uncertainties, preferential uncertainties and model uncertainties are examined by a with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
-	Both inter and intra criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
+	The uncertainties associated with \acrshort{MCDA} data uncertainties, preferential uncertainties and model uncertainties are investigated by a with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
+	Both inter- and intra-criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
 		
-	The different models of the power system, that are used in the expert system span from not modelling the grid at all to models that includes Kirchhoffs laws~\cite{bertsch_participatory_2016}.
-	The calculation of a power system is complex, as changing one edge will change the flow in all parts of grid and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
-	Some models include not only the grid of a nation alone, but consider neighbouring states or the overall European power system~\cite{dietrich_will_2010}.
-
 	\section{Conclusion}\label{sec:conclusion}
-	The cost of computation of the least cost path scales with the square of the resolution.
+	The cost of computing of the Least Cost Path scales with the square of the resolution.
 	The difference between the aggregated costs of the paths per resolution computed from the all touched false raster and the all touched true raster only shows a linear decrease.
-	Hence, the gain in precision per compute time decreases.
-	The presented methods tried to circumvent this bottleneck.
-	When using the researched strategies, on medium resolution raster, the computation for high resolution results might successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
-	The paths might change very strongly even with small changes in total costs.
-	Hence to develop an alternative backtracking algorithm that, that generates a set of possible paths within a corridor of costs might be a good strategy, to offer alternative routes and show variations between these routes at the same time.
-	An alternative method for future methods, would be to specify a range of costs and compute the aggregation of the costs and superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
-	This in turn increases the computation time again.
+	Therefore, the gain in accuracy per compute time decreases.
+	The presented methods have attempted to circumvent this bottleneck.
+	When these strategies are applied to a medium resolution raster, the compute time for high resolution results can successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
+	The paths can change significantly even for a small change in total cost.
+	Therefore, to develop an alternative backtracking algorithm, that generates a corridor of costs might be a good strategy, to offer alternative paths and at the same time show variations between these paths.
+	An alternative for future methods, would be to specify a range of costs and compute the aggregation of the costs and superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
+	This again increases the computation time.
 	
-	In an actual search for least cost path a survey might be used as method to estimate the costs.
-	When the sample size of the survey is large enough, the
-	weights might take local differences relative acceptance into consideration.
+	In an actual search for Least Cost Path search, a survey could be used as a method to estimate the costs.
+	If the sample size of the survey is large enough, the
+	weights could take  into account local differences in relative acceptance.
 	
-	Only changes in the algorithm have been applied in the search for a speed-up.
-	There a still other methods as just-in-time compilation.
+	Only changes in the algorithm have been applied in the search for acceleration.
+	Therefore, other methods such as just-in-time compilation have not been tested.
 
 
 %%\begin{acks}

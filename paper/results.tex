@@ -1,96 +1,81 @@
 % !TeX spellcheck = en_GB
 
-In this chapter we want to show the different cost raster, that were created from the very same set of layers,
-but computed for different resolutions.
-From this different raster the cost paths are calculated and compared.
-In the last step the raster with lower resolution were used to calculate in a way, that they shall result in
-similar paths as if the paths were computed from a high resolution raster.
+In this chapter we want to show the different cost rasters, that were created from the same set of layers at different resolutions.
+The Least Cost Path is estimated from this set of rasters.
+In the last step the Least Cost Path is computed from the lower resolution rasters and compared with the Least Cost Paths computed from a high resolution raster.
 
 \subsection{Cost Raster}\label{subsec:cost-raster}
 
-The cost raster contains all the costs as weights for the geographic region of the study area.
-The regions outside the study area are given, a no-data value and will not be use for the calculation of the least cost path.
-It is decided to use the maximum value, for any place in the raster, that is covered by several rules at the same time.
-When the resolution that is use for the rasterisation is smaller than the object size, than the effect of the rasterisation with all touched True or False is limited.
+The cost raster contains all the costs for the geographical region of the study area.
+%%The surrounding of the study area, uses a no-data value and will not be use for the calculation of the Least Cost Path.
+The different cost layers in the study area are aggregated by the maximum function.
+If the resolution is higher than the object size, then the effect of the rasterisation with all touched True or False is limited.
 For all touched True any part of the pixel that is covered by the object, will attribute that whole pixel to the object.
-Thus, the object appears to be halve a pixel size larger in all directs.
-As can be seen in figure~\ref{fig:costs_5m} that shows a detailed view of the costs for village of Beverstedt.
-Due to the maximum aggregation of the costs, the average cost of the raster of all touched true will be over estimated.
-All touched false will be a better description of the real size of the object.
+This makes the object appear a halve a pixel size larger in all directs.
+As can be seen in figure~\ref{fig:costs_5m}, which shows a detailed view of the costs for the village of Beverstedt.
+ %% Due to the maximum aggregation of the costs, the average cost of the raster of all touched true will be over estimated.
+The rasterisation with all touched false will be a better description of the real size of the object, for high resolution.
 \begin{figure}
 	\centering
 
-	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alT.png} }}%
+	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alT_v2_small.png} }}%
 	\qquad
-	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alF.png} }}%
+	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alF_v2_small.png} }}%
 	\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 5~m.}
 	\label{fig:costs_5m}
 \end{figure}
 
-In contrast when the resolution the is much less, than the size of the object the described behavior changes.
-On one hand, while the area, of the pixel is increased for all touched True, also the area for which the cost is overestimated increases.
-On the other hand while the pixel size for all touched  False increases, not only the over estimated area increases for that pixel as describes for all touched true, but in addition the object is less probable situated in the centre of the pixel.
-The consequence of the pixel is, that will decreasing resolution that object is not included in the rasterisation.
-Hence, hence for all touched false lower resolution  leads ot a loss of information.
-Because the default is relative small compared the over effect is a underestimation of the costs.
-The figure~\ref{fig:costs_100m} shows for the resolution of 100 m, that while larger are still included in the map they appear to be much larger.
-On the contrary smaller objects might not be included.
-Objects that are small on in one dimension as streets will be included in a stochastic manner.
-Described by the likely of that a object of that sized overlaps with the pixel centre.
+In contrast, if the resolution is smaller, than the object-size this behaviour changes.
+In general, while the area, of the pixel increases for all touched True, the area for which the cost is overestimated also increases.
+As the pixel size for all touched  False increases, not only does the overestimated area increases, but in addition the object is less probable situated in the centre of the pixel. 
+Therefore, object is sampled at random.
+Hence, all touched false leads to a loss of information for smaller objects.
+\todo{Put this part into Discussion?} Since the default cost is much smaller than the average cost, this method underestimates the cost.
+The figure~\ref{fig:costs_100m} shows, that for the resolution of 100 m, that larger objects are still included in the map, but appear to be larger.
+But smaller objects, such as roads, are not fully or randomly included.
 \begin{figure}
 	\centering
 
-	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alT.png} }}%
+	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alT_v2_small.png} }}%
 	\qquad
-	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alF.png} }}%
+	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alF_v2_small.png} }}%
 	\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 100~m.}
 	\label{fig:costs_100m}
 \end{figure}
-Thus, with having larger areas and more objects, with higher costs, all touched True rasterisation might more likely lead to longer roots and more likely in blocking the  direct spatial path.
+\todo{Put this part into Discussion?}Thus, with having larger areas and more objects, with higher costs, all touched True rasterisation might more likely lead to longer roots and more likely to block the  direct spatial path.
 
 \subsection{Least Cost Paths}\label{subsec:least-cost-paths}
-For each resolution the costs paths were estimated for the rasterisation with setting all\_touched False
-and all\_touched True.
+For each resolution the Least Cost Paths were estimated from the all\_touched False and all\_touched True rasters.
 
-The hypothetical path starts at a transformer about 6~km north the container terminal Bremerhaven and then end at a transformer in the south east of the Osterholz county. 
+For the study, a start point were chosen at a transformer about 6~km north of the container terminal Bremerhaven and an end point at a transformer in the southeast of the Osterholz county. 
 
-The distance of both paths is calculated with the mean minimum distance.
-For every vertex $P_i$ in the path $L_1$ the minimum between the vertex and the path $L_2$
-is computed and afterwards the minimum distances are averaged (see equation~\ref{eq:1}).
+The distance of Least Cost Paths of the all touched false to the paths of the all touched true raster is calculated by the mean minimum distance.
+For each vertex $P_i$ in the path $L_1$ the minimum distance between the vertex and the path $L_2$
+is calculated and then the minimum distances are averaged (see equation~\ref{eq:1}).
 \begin{equation}
 	\label{eq:1}
-	d_{mean} = \frac{1}{|L_1|} \sum_{i=1}^{n} d_{min}(p_i, L_2) \bigg\vert p_i \in L_1
+	d_{mean} = \frac{1}{|L_1|} \sum_{i=1}^{n} d_{min}(p_i, L_2) \Bigr\vert p_i \in L_1
 \end{equation}
-This equation is used, to measure the extent of similarity between the paths.
+This equation is used, to measure the degree of similarity between the paths.
 
-\begin{equation}
-\label{eq:2}
-d_{max} = max(\sum_{i=1}^{n} d_{min}(p_i, L_2)) \bigg\vert p_i \in L_1
-\end{equation}
-
-Hence, the mean minimum euclidean distance between the two paths can used to compute
-the similarity.
-As different table~\ref{tab:2} shows the distance between the two paths decreases
+Table~\ref{tab:2} shows the distance between the two paths decreases
 with increasing resolution.
 In addition, this tendency is depicted in figure~\ref{fig:paths_resolution} for the calculated cost paths of 5~m and 100~m resolutions.
 
-In contrast the largest distance between the paths (see equation~\ref{eq:2}) will be used, to estimate the minimum distance to the areas that still should be examined to grantee a, that at least cost path found in this limited space is still likely to be optimal.
 
-
-At the same time the differences in the aggregated costs stay almost constant.
-When normalize the aggregated costs by the resolution.
-On one hand it can be seen, that the all\_touched False under estimate the costs and that this tendency scales
-linear with the resolution.
-On the other hand, the all\_touched True least cost over estimates the aggregated costs on a linear scale of
+At the same time, the differences in the aggregated costs per resolution remain almost constant.
+On one hand it can be seen, that the all\_touched False underestimates the costs and that this tendency scales
+linearly with the resolution.
+On the other hand, the all\_touched True least cost overestimates the aggregated costs on a linear scale of
 the resolution.
-Therefore, the difference for the normalized least cost paths is reduced on scale by the resolution.
+
 
 \begin{figure}
 	\centering
 
-	\subfloat[\centering resolution of 5 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_5m.pdf} }}%
+	\subfloat[\centering resolution of 5 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_5m_v2_small.png} }}%
 	\qquad
-	\subfloat[\centering resolution of 100 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_100m.pdf} }}%
+	\subfloat[\centering resolution of 100 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_100m_v2_small.png} }}%
 	\caption{Figures of the least cost paths. Contrasting the paths for different resolutions. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
 	\label{fig:paths_resolution}
 \end{figure}
@@ -98,69 +83,63 @@ Therefore, the difference for the normalized least cost paths is reduced on scal
 \begin{figure}
 	\centering
 
-	\subfloat[\centering all touched false.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_F.pdf} }}%
+	\subfloat[\centering all touched false.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_F_v2_small.png} }}%
 	\qquad
-	\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T.pdf} }}%
+	\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T_v2_small.png} }}%
 
 	\caption{Figures of the least cost paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all\_touched. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
 	\label{fig:paths_alltouched}
 \end{figure}
 
 \begin{table*}[t]
-	\caption{Least cost paths as length for the different \acrfull{res} of the raster, including the mean minimum distance and the maximum minimum distance and the \acrfull{agg.} costs. From the \acrshort{agg.} costs the differences of the \acrshort{agg.} costs and the \acrfull{corr} \acrshort{agg.} by resolution are given.} 
+	\caption{Least cost paths as length for the different resolution of the raster, including the mean minimum distance and the maximum minimum distance and the agg. costs. From the agg. costs the differences of the agg. costs and the agg. costs per resolution are given.} 
 	\label{tab:2}
 	\centering
 	\begin{tabular}{ r  r  r  r  r  r  r  r  r  r}
-		\acrshort{res} /m & $l_{\acrshort{al}=\acrshort{f}} /m$ & $l_{\acrshort{al}=\acrshort{t}} /m$ & $d_{mean}$ /m & $d_{max}/m$ & \acrshort{agg.}  $ cost_{\acrshort{al}=\acrshort{f}}$ & \acrshort{agg.}  $ cost_{\acrshort{al}=\acrshort{t}}$ &  $\Delta $ costs & \acrshort{corr} \acrshort{agg.} $costs_{\acrshort{al}=\acrshort{f}}$ & \acrshort{corr} \acrshort{agg.} $costs_{\acrshort{al}=\acrshort{t}} $ \\
+		res /m & $l_{al=f} /m$ & $l_{al=t} /m$ & $d_{mean}$ /m & $d_{max}/m$ & agg.  $ cost_{al=f}$ & agg. $ cost_{al=t}$ &  $\Delta $ costs & agg. $costs_{al=f} /m$ & agg. $costs_{al=t} /m$ \\
 		\hline
-		5 	& 76136.27	& 78002.00 &  126.04 & 1065.00 & 18665.923 & 19616.756 & -850.00 & 93329.60 &  97584.77 \\
-		10 	& 75430.10 	& 77936.57 &  277.92 & 1590.00 &  8931.245 &  9731.175 & -799.95 & 89312.45 &  97311.75 \\
-		25 	& 75422.85 	& 78422.85 &  313.75 & 1621.15 &  3354.869 &  3872.656 & -517.78 & 83871.73 &  96816.40 \\
-		50 	& 76135.02	& 70619,95 & 1140.01 & 4950.00 &  1409.023 &  2300.073 & -891.05 & 70451.15 & 115003.65 \\
-		100 & 76283.80	& 74120.73 & 1946.41 & 6016.64 &   640.516 &  1572.268 & -931.70 & 64051.60 & 167226.80 \\
+		5 	& 76136.3	& 78002.0 &  126.0 & 1065.0 & 18665.9 & 19616.8 & -850.00 & 93329.6 &  97584.8 \\
+		10 	& 75430.1 	& 77936.6 &  277.9 & 1590.0 &  8931.2 &  9731.2 & -799.95 & 89312.5 &  97311.8 \\
+		25 	& 75422.9 	& 78422.9 &  313.8 & 1621.2 &  3354.9 &  3872.7 & -517.78 & 83871.7 &  96816.4 \\
+		50 	& 76135.0	& 70620.0 & 1140.0 & 4950.0 &  1409.0 &  2300.1 & -891.05 & 70451.2 & 115003.7 \\
+		100 & 76283.8	& 74120.7 & 1946.4 & 6016.6 &   640.5 &  1572.3 & -931.70 & 64051.6 & 167226.8 \\
 
 	\end{tabular}
 \end{table*}
 
-Comparing the all\_touched True rasterisation and all\_touched False for the same resolution in contrast with the paths of all\_touched False rasterisation at the
-different resolutions the later paths are more similar.
-The mean average distance between the 100 m resolution run and the 5 m resolution run is 257.97 m.
+When estimating distance between the Least Costs Paths from all\_touched True rasterisation and all\_touched False at the same resolution 
+the mean minimum distance between the 100~m resolution paths is 1946.41~m and between the 5~m resolution paths is 126.04~m.
+The similarity for the all touched False paths is higher, than for the all touched true raster.
+The distance for the 100~m path to the 5~m resolution path is 243.42~m for all touched false and 2109.44~m for all touched true.
 
-The similarity of all all\_touched False runs is higher than, the similar between the all\_touched False and all\_touched True runs with the same resolution, except for the highest resolution.
+When comparing the similarity between the all touched false paths themselves and the similarity between the all touched false rasters to the all touched true rasters of the same resolution: The similarity in between the all all\_touched False paths is higher than, than for most paths of same resolution.
+Namely except for the highest resolution.
 
-Hence, in an overall perspective paths of the all\_touched False runs stay in a
-similar region, while paths of the all\_touched True coverage strongly to the paths all\_touched False runs.
-This behaviour is depicted in figure~\ref{fig:paths_alltouched}.
-On a more detailed level, it can be seen, that also the Paths of all\_touched 	converges the all\_touched True path.
-But the extent is smaller.
-The length of the the paths only differs to a maximum of about 10 \%.
-The least path distance for higher resolutions can be lower, because new paths, between regions that are forbidden
-in higher resolution can open.
-On the other side the length of the paths can increase, because with higher resolution more vertices will be used.
+This behaviour is shown in figure~\ref{fig:paths_alltouched}.
+On a more detailed level, it can be seen, that the paths of all\_touched False also converge directly to the all touched True paths, but the extent is smaller.
+The length of the paths only differs by a maximum of about 10 \%.
+On the other hand, side the length of the paths can increase, because with more vertices are used with higher resolution.
 
-The zonal stat (see table~\ref{tab:3}) for a buffer of 100 m (5 m) around the path has been used, to estimate the
-percentage of which costs levels are around the path.
-When using all\_touched True rasterisation with higher resolution the tendency is to use a higher percentage of the
-\textit{Preferential Level} and less the\textit{NoRestriction} Level.
-The ratio of the 100 m buffered least cost path, strongly shifted  to Levels lower costs.
+The zonal stat (see table~\ref{tab:3}) for a buffer of 100~m (5~m) around the path has been used, to estimate the
+percentage of each costs levels around the path.
+When using all\_touched True rasterisation at higher resolution, the tendency is to use a higher percentage of the
+\textit{Preferential Level} and less of the\textit{NoRestriction} Level.
+The ratio of the 100~m buffered Least Cost Path, strongly shifted  to Levels lower costs.
 
 There is no strong tendency for the all\_touched False least cost paths.
 
 \subsection{Execution time}\label{subsec:execution-time}
 
-In theory, the execution time should increase with the square of the resolution, because higher resolutions result in a higher number of pixels and thus data points the aggregated costs needs to be calculated for. 
+In theory, the execution time increases with the square of the resolution, because higher resolutions result in a higher number of pixels and thus data points the aggregated costs needs to be calculated for. 
 A full logarithmic fit for several repetitions of the execution shows, that the execution time scales with power of $2.1997  \pm 0.007$ of the inverse resolution. 
-With the caveat of a low number of samples this can equally be success fully be fitted to a second degree polynomial of the inverse resolution with a $r^2$ for the test set of 0.99 and a the squared inverse of the resolution with a $r^2$ for the test set of 0.99.
-Hence, the order of magnitude
 
 The total execution time consists of two parts. 
 The aggregation of the costs and the back tracking of the least cost to find the path.
-% \todo{back tacking scales with number of points.}
 
 \setlength{\tabcolsep}{10pt}
 
 \begin{table*}[t]
-	\caption{\acrfull{r} of Category percentages of each least cost path for a buff of 100 m (5 m) around the least cost path.}
+	\caption{resolution (r) of Category percentages of each least cost path for a buff of 100 m (5 m) around the least cost path.}
 	\label{tab:3}
 	\centering
 	\begin{tabular}{ r  r  r r  r r  r r  r r  r r}
@@ -186,26 +165,27 @@ The aggregation of the costs and the back tracking of the least cost to find the
 
 \subsection{Faster Processing of the Cost Path Algorithm}\label{subsec:faster-processing-of-the-cost-path-algorithm}
 
-The final least costs paths should between the least cost paths of the lower resolution, with a tendency to be nearer to the paths resulted by the all touched false rasterization.
-The first step is to optimize the calculation speed is, only to calculated the least cost paths for this smaller area.
+The first step is to optimise the computational speed, by a reduced area.
 Another method, is to improve the prediction of the medium resolution itself and thus reduce the need for a computation in higher resolution.
+
 \subsubsection{Compare least cost paths, for overlay of both rasterisations}
 
-As all touched true rasterisation overestimates and all touched true underestimates the real costs.
-A weighted mean will describe the real costs more precise.
-As present work indicates, that the weight should favor the all touched false raster.
-The best weight should be the percentage of the pixel, which is covered by the object, but this can not be computed in this work.
-Thus, the best weight has to be searched.
-An alternative might be to compute the cost raster in higher resolution, but than to reproject the to a smaller resolution with a using a (linear) interpolation of the of the weights.
+For the example paths shown, all touched true rasterisation overestimates the true costs and all touched true underestimates them.
 
-While the aggregated thus can be speed up.
+A weighted average of the costs could therefore be a more accurate measure and make estimated medium resolution Least Cost Path more similar, to high resolution paths.
+As all example show, the weighting should favour the all touched false raster.
+\todo{move to discussion/conclussion:}The best weight should be the percentage of the pixels, which is covered by the object, but this can not be calculated in this work.
+An alternative would be to compute the cost raster at a high resolution and reproject them to a medium resolution by a (linear) interpolation of the weights.
+
+\todo{move to planning:}This will speed-up the aggregation.
 The time needed for the back tracking stays unchanged.
 
-The optimal ratio of overlaying all touched false and all touched true cost raster for 10~m resolution is estimated via the resulting least cost path. 
-The mean distance of least cost paths for different ratio has been estimated to the path from the all touched false raster of the next higher (5~m) resolution. 
-Table~\ref{tab:4} shows, that distance decreases with the higher ratio from 1:1, 2:1, 4:1 and than increases with higher ratio 8:1, 16:1 and so on.
-In addition, the distances to the original paths from the all touched false and all touched true raster change with the applied ratio of the superimposed raster.
-So that, a lower ratio increases the similarity to the path of the all touched true raster, the similarity to the paths from the all touched false raster increases with the ratio.
+The optimal ratio of overlaying all touched false and all touched true cost raster for 10~m resolution is estimated via similarity of the resulting Least Cost Path to the path of the original high Resolution raster. 
+The mean distance of Least Cost Paths for different ratio is estimated to the path from the all touched false raster of the higher (5~m) resolution. 
+Table~\ref{tab:4} shows, that the distance decreases, with increasing ratio (1:1, 2:1, 4:1) and after this optimum is reached, increases with increasing ratio (8:1, 16:1 and so on).
+Comparing  the similarity of the paths from the rasters of the different ratios to normal paths with 10~m resolution, paths with a higher ratio of all touched true is nearer to the all touched true paths.
+Paths with a ratio in favour of all touched false are much closer to the all touched false paths.
+
 
 \begin{table}[h!]
 	\caption{Length of the path computed from the overlaying of all touched false and true raster and the mean distance of the paths to the paths calculated from the all touched false 5~m resolution  and all touched false and true raster of 10~m resolution.}
@@ -215,14 +195,14 @@ So that, a lower ratio increases the similarity to the path of the all touched t
 		r & $d_{5~al=f}$ /m &  $d_{10~al=f}$ /m & $d_{10~al=t}$ /m \\
 		\hline
 		
-		  1:1  &    119.6 &  285.50 &  47.21\\
-		  2:1  &    97.11 &  263.51 &  74.19\\
-		  4:1  &    40.13 &  206.38 & 100.16\\
-		  8:1  &    41.73 &  169.02 & 137.34\\
-		 16:1  &    56.69 &  153.32 & 152.71\\
-		 32:1  &    56.69 &  145.56 & 162.09\\
-		 64:1  &   163.48 &   10.61 & 272.36\\
-	  % 128:1  &   163.82 &   10.29 & 276.71\\
+		  1:1  &    119.6 &  285.5 &  47.2\\
+		  2:1  &    97.1 &  263.5 &  74.2\\
+		  4:1  &    40.1 &  206.4 & 100.2\\
+		  8:1  &    41.7 &  169.0 & 137.3\\
+		 16:1  &    56.7 &  153.3 & 152.72\\
+		 32:1  &    56.7 &  145.6 & 162.1\\
+		 64:1  &   163.5 &   10.6 & 272.4\\
+	  % 128:1  &   163.80 &   10.3 & 276.7\\
 		
 	\end{tabular}
 \end{table}
@@ -230,13 +210,12 @@ So that, a lower ratio increases the similarity to the path of the all touched t
 
 \subsubsection{Compare least cost paths, for down sampled cost paths}
 
-As an alternative to the super position of the all touched true and false raster for the same resolution, the all touched false raster was down sampled to 10~m, 25~m, 50~m and 100~m with bi-linear interpolation.
-With this method smaller structures still can be seen in the cost raster, although the resolution is reduced.
-The distances of the paths that are computed from the bi-linear down sampled  5~m resolution raster (all touched false) is from table~\ref{tab:5} shows, that a low distance to path of the 5~m resolution raster was only obtained when down sampling to a resolution not to low.
-Only when down sampling to a resolution of 10~m, is the computed path considerable close to the path from the higher resolution raster.
-Is holds true, but to a much reduced extend to the path computed from the raster, that was down sampled to a resolution of 25~m.
+As an alternative to the superposition of the all touched true and false rasters for the same resolution, the all touched false raster is down-sampling to 10~m, 25~m, 50~m and 100~m (with bi-linear) interpolation.
+With this method, smaller structures can still be fully seen in the cost raster, although the resolution is reduced.
+The distances of the paths that are computed from the bi-linear down sampled raster to the path of the original 5~m resolution (all touched false) shows (see table~\ref{tab:5}), that only down-sampling to a resolution of 10~m, produces a path that is relatively close the high resolution path.
+
 The opposite is true for the lower resolution raster which is more similar to paths computed from the all touched true cost raster.
-For every path from a down sampled raster is more similar to a path computed from an all touched true raster, than an all touched false raster, although the all touched false raster of the 5 m resolution was used for down sampling.
+Every path from a down sampled raster is more similar to a path computed from an all touched true raster, than an all touched false raster, although the all touched false raster of the 5 m resolution was used for down sampling.\todo{interpretation all touched true and downsampling, both show all details, but downsampling, more similar to original geometry}
 
 \begin{table}[h!]
 	\caption{Length of the path computed from the bi-linear down sampled raster and the mean distance of the paths from the down sampled raster to the paths calculated from the all touched true and all touched false raster of the same resolution as the down sampled raster.}
@@ -246,10 +225,10 @@ For every path from a down sampled raster is more similar to a path computed fro
 		res /m & l /m  & $d_{5~m}$ /m &  $d_{al=f}$ /m & $d_{al=t}$ /m \\
 		\hline
 		
-		10  & 75980.62 &   59.34 &  219.35 & 143.63\\
-		25  & 70205.27 &  385.79 &  558.12 & 432.77\\
-		50  & 69217.86 &  730.82 &  693.42 & 255.70\\
-		100 & 66667.87 &  1681.3 & 1605.63 & 400.55\\
+		10  & 75980.6 &    59.3 &  219.4 & 143.6\\
+		25  & 70205.3 &   385.8 &  558.1 & 432.8\\
+		50  & 69217.9 &   730.8 &  693.4 & 255.7\\
+		100 & 66667.9 &  1681.3 & 1605.6 & 400.6\\
 		
 	\end{tabular}
 \end{table}
@@ -258,65 +237,71 @@ For every path from a down sampled raster is more similar to a path computed fro
 % \subsubsection{Restrict search to a minimum sized bounding box}
 \subsubsection{Restrict search to a buffered around the least cost paths}
 
-Construct a polygon form the two lines.
-Buffer the polygon with twice the max minimum path distance.
 
 
-This enabled the possibility  to run a 2.5~m resolution cost raster and clip it to the extent of the polygon. 
-This clipped 2.5~m raster for all touched true did only slightly change the path. 
-While the all touched False raster, leads to a totally new segment at the end of the path. 
-Due to the small resolution, that a small path with the extent of about 2.5 m width became passable.
-This small path is a power line next to road between which build a cone in a protected landscape area.
-The street and the protected landscape area are both restricted areas, while the power line is preferential.
-This showing, that the way the cost raster is created in the first place can play a vital role, in the end result.
+Construct a polygon from the two Least Cost Paths (all touched true and all touched false of the same resolution).
+Buffer the polygon with twice the maximum  minimum path distance  (see equation~\ref{eq:2}).
+\begin{equation}
+	\label{eq:2}
+	d_{max} = max(\sum_{i=1}^{n} d_{min}(p_i, L_2)) \Bigr\vert p_i \in L_1
+\end{equation}
+
+
+This provided the possibility  to run a 2.5~m resolution cost raster and clip it to the extent of the polygon. 
+This clipped 2.5~m raster for all touched true changed the path only slightly change. 
+
+The all touched False raster, on the other hand, leads to a completely new previously unused subroute at the end of the path.
+Due to the low resolution a small path became passable.
+This small path is a power line next to road between protected landscape areas.
+The road and the protected landscape area are both \textit{restricted} areas, while the power line is \textit{preferred}.
+This shows, that the way the cost raster is created in the first place can play a crucial role, in the end result.
 So that a nuance, can cause a detour.
-When this behaviour occurs, the polygon can not grantee to include the least cost path.
-Therefore this polygon should be overlapped with a polygon around the shortest path.
+When this behaviour occurs, the polygon may not include the Least Cost Path.
+\todo{move: discussion}This polygon should therefore be overlapped with a polygon around the shortest path.
 
 
 %\subsubsection{Restrict search to reachable points}
 %For this purpose the aggregated cost as to converted back into a raster.
 
 \subsubsection{Examine the proposed solutions}
-To broaden the view and verify the current result, four different routes should be found with the presented strategies applied.
-Two paths form the starting point to two new points in the south east of the investigated area and two paths from the north, north east of the investigates area to the ending point.
+To broaden the view and verify the result, e.g.\ start and end points, four different routes should be found using the above strategies.
+Two routes should be found form the start point to two new points in the south east of the investigated area and two routes should be found from the north and north east of the study area to the end point.
 
+For three of the four routes, the Least Cost Path estimation from the clipped raster, was able to calculated exactly the same result.
+For the fourth path, the Least Cost Path from the 5~m resolution raster was clipped out by the buffer around the 50~m resolution paths.
+The speed up from the clipping of the higher resolution raster depends on the number of pixels that, have been clipped. 
 
-For three of the four routes the least cost path computation from the clipped raster, was able to compute the expected result.
-For the forth path, the
-least cost path from the 5~m resolution raster was out side of the buffer around the least cost path from the 50~m resolution raster.
-The speed up from the clipping of the higher resolution raster depends on the amount of pixels that, have been clipped. 
 Bi-linear down sampling the of the high resolution raster to a medium resolution, did not result in any benefits compared to an original medium resolution raster.
-The resolution corrected aggregated costs of the least cost path from the down sampled raster are higher, than those, from the higher 5~m resolution raster and the medium 10~m resolution raster.
-In addition, is the distance, from this path to the path from the high resolution raster much higher, than the distance of path from the original 10~m resolution raster to the path from the 5~m resolution raster (see table~\ref{tab:6}).
-\todo{interpretation: Why result from down sampling so different? Don't know.}
+The aggregated cost per resolution of the Least Cost Path from the down-sampled raster is higher, than that from the higher resolution 5~m raster and the normal medium resolution 10~m raster.
+In addition, the distance from these paths to the high resolution path  is greater, than the distance from the original 10~m resolution path to the 5~m resolution path (see table~\ref{tab:6}).
+\todo{interpretation: Why is the down-sampling result so different? Don't know.}
 
 \begin{table}[h!]
 	\caption{Length of the path, the resolution corrected costs and the mean distance to the path created from the 5~m resolution all touched false raster for the four control routes, for the reference path of constructed from the 5~m  and 10~m raster and the down 5~m to 10~m down sampled raster and the 5~m clipped raster.}
 	\label{tab:6}
 	\centering
-	\begin{tabular}{ r  r  r  r  r}
+	\begin{tabular}{ r @{\hspace*{3mm}}  r  r  r  r}
 		Route & Method & $length /m$ & $costs_{al=f}$ & $d_{mean}$ /m \\
 		\hline
-		P1-E & 5~m 			& 107889.58 & 208547.79 &        \\
-		 	 & Clipped 		& 107889.58 & 208547.79 &   0.0  \\
-		 	 & Down			&  96754.20 & 212910.95 & 628.05 \\
-		 	 & 10~m 		& 107232.94 & 203010.15 & 103.49 \\
+		P1-E & 5~m 			& 107889.6 & 208547.8 &        \\
+		 	 & Clipped 		& 107889.6 & 208547.8 &   0.0  \\
+		 	 & Down			&  96754.2 & 212911.0 & 628.1 \\
+		 	 & 10~m 		& 107232.9 & 203010.2 & 103.5 \\
 		\hline
-		P2-E & 5~m 			& 103706.41 & 155567.86 &        \\
-		 	 & Clipped 		& 103706.41 & 155567.86 &   0.00 \\
-		 	 & Down 	    &  92403.29 & 158238.58	& 639.88 \\
-		 	 & 10~m 		& 104249.94 & 149899.72 & 177.68 \\
+		P2-E & 5~m 			& 103706.4 & 155567.9 &        \\
+		 	 & Clipped 		& 103706.4 & 155567.9 &   0.0 \\
+		 	 & Down 	    &  92403.3 & 158238.6	& 639.9 \\
+		 	 & 10~m 		& 104249.9 & 149899.7 & 177.7 \\
 		\hline
-		S-P3 & 5~m 			& 102187.09 & 34503.81 	&         \\
-			 & Clipped 		&  90377.39 & 37926.14 	& 4465.37 \\
-			 & Down 	    &  94125.55 & 37574.93 	&  742.41 \\
-			 & 10~m 		& 102461.58 & 32445.96 	&   81.18 \\
+		S-P3 & 5~m 			& 102187.1 & 34503.8 	&         \\
+			 & Clipped 		&  90377.1 & 37926.1 	& 4465.4 \\
+			 & Down 	    &  94125.6 & 37574.9 	&  742.4 \\
+			 & 10~m 		& 102461.6 & 32446.0 	&   81.2 \\
 		\hline
-		S-P4 & 5~m 			& 96449.22 	& 33865.53 	&  		\\
-		 	 & Clipped 		& 96449.22 	& 33865.53 	& 0.00 	\\
-			 & Down 		& 87861.12 	& 36462.72 	& 796.40\\
-			 & 10~m 		& 96739.47 	& 31899.31	& 83.46 \\
+		S-P4 & 5~m 			& 96449.2 	& 33865.5 	&  		\\
+		 	 & Clipped 		& 96449.2 	& 33865.5 	& 0.0 	\\
+			 & Down 		& 87861.1 	& 36462.7 	& 796.4\\
+			 & 10~m 		& 96739.5 	& 31899.3	& 83.5 \\
 
 		
 	\end{tabular}
