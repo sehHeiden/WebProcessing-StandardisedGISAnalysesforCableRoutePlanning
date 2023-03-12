@@ -53,7 +53,7 @@
 	\renewcommand{\shortauthors}{Heiden}
 	
 	\begin{abstract}
-		Least Cost Paths for a power line from a power station at the cost to a power station further inland are calculated.
+		Least Cost Paths for a power line from a power station at the shore line to a power station further inland are calculated.
 		Downsampling and clipping are investigated as techniques to speed up the calculation.
 		The paths from the clipped cost raster often are the same as the original paths.
 		The speed-up of the clipping can not be known in advance.
@@ -86,7 +86,7 @@
 	%%
 	%% Keywords. The author(s) should pick words that accurately describe
 	%% the work being presented. Separate the keywords with commas.
-	\keywords{GIS, least cost path}
+	\keywords{GIS, Least Cost Path}
 	
 	\received{14 March 2023}
 	%%\received[revised]{12 March 2009}
@@ -107,23 +107,23 @@
 	The amount of offshore wind power, that the German energy system can use, can be greatly increased by adding new power lines~\cite{leuthold_nodal_2005}.
 	
 	However, it is not enough to find the shortest route when building new power lines.
-	Other parameters have to be taken into consideration.
-	As the steepness of a road or the soil, play an important role for the building cost of a road or pipeline~\cite{suleiman_optimal_2015}.
+	Other parameters have to be taken into consideration, as the steepness of a road or the soil for example, play an important role for the building cost of a road or pipeline~\cite{suleiman_optimal_2015}.
 	When planing the additional routes for a power grid, further aspects such as legal regulations and acceptance
-	by the local population have to be taken in consideration.
+	by the local population have to kept in mind.
 	Also technical aspects, as the effects on the grid stability are further points to take into consideration~\cite{schafer_understanding_2022}.
 	
-	Due to the increasing demand for renewable energy wind offshore wind turbines supply 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}.
+	Due to the increasing demand for renewable energy wind offshore wind turbines supplied 5.5~\% annual percentage in 2020 of the German energy mix~\cite{noauthor_nettostromerzeugung_2021}.
 
-	The different models the power systems, that are used in the expert system range from not modelling the grid at all to models that include Kirchhoffs laws~\cite{bertsch_participatory_2016}.
-	The calculation of a power system is complex, because changing one edge changes the flow in all parts of grid and the actual grid data are confidential~\cite{bertsch_participatory_2016}.
+	 The physical modulation in the power systems models, range from not modelling the grid at all to models  The use of Kirchhoffs laws~\cite{bertsch_participatory_2016}.
+	The calculation of a power system is complex, because changing one edge changes the flow in all parts of grid.
+	Besides, the actual grid data are confidential~\cite{bertsch_participatory_2016}.
 	Some models not only consider the grid of one nation, but consider neighbouring states or the whole European power system~\cite{dietrich_will_2010}.	
 	Older power grid models are e.g.\ optimising the well fare, but economic modelling is not sufficient for planning modern routes, as the aspect of environmental sustainability, security of supply and the public acceptance play an increasingly important role~\cite{hauff_gesellschaftliche_2011} in modern planning.
 	
 	In contrast to a GIS analysis, these other factors can be studied done with a \acrfull{MCDA}~\cite{bertsch_participatory_2016}.
 	Stakeholders as decision makers can be included and combined with an expert system~\cite{bertsch_participatory_2016}.
 	
-	The uncertainties associated with \acrshort{MCDA} data uncertainties, preferential uncertainties and model uncertainties are investigated by a with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
+	The uncertainties associated with \acrshort{MCDA} are data uncertainties, preferential uncertainties and model uncertainties are investigated with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
 	Both inter- and intra-criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
 	
 	\section{Methods}\label{sec:methods}
@@ -137,13 +137,13 @@
 		
 	\section{Conclusion}\label{sec:conclusion}
 	The cost of computing of the Least Cost Path scales with the square of the resolution.
-	The difference between the aggregated costs of the paths per resolution computed from the all touched false raster and the all touched true raster only shows a linear decrease.
+	The difference between the aggregated costs of the paths per resolution computed from the all~touched set to False raster True raster only shows a linear decrease.
 	Therefore, the gain in accuracy per compute time decreases.
-	The presented methods have attempted to circumvent this bottleneck.
-	When these strategies are applied to a medium resolution raster, the compute time for high resolution results can successfully be reduced, without compromising the run time for worse distances to the least cost path from the high resolution raster.
+	The presented methods attempt to circumvent this bottleneck.
+	When these strategies are applied to a medium resolution raster, the compute time for high resolution results can successfully be reduced, without compromising the run time for worse distances to the Least Cost Path from the high resolution raster.
 	The paths can change significantly even for a small change in total cost.
 	Therefore, to develop an alternative backtracking algorithm, that generates a corridor of costs might be a good strategy, to offer alternative paths and at the same time show variations between these paths.
-	An alternative for future methods, would be to specify a range of costs and compute the aggregation of the costs and superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
+	An alternative would be to specify a range of costs and compute the aggregation of the costs and superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
 	This again increases the computation time.
 	
 	In an actual search for Least Cost Path search, a survey could be used as a method to estimate the costs.
