@@ -2,15 +2,15 @@
 
 In this chapter we want to show the different cost rasters, that were created from the same set of layers at different resolutions.
 The Least Cost Path is estimated from this set of rasters.
-In the last step the Least Cost Path is computed from the lower resolution rasters and compared with the Least Cost Paths computed from a high resolution raster.
+In the last step the Least Cost Path is computed from the medium resolution rasters and compared with the Least Cost Paths computed from a high resolution raster.
 
 \subsection{Cost Raster}\label{subsec:cost-raster}
 
 The cost raster contains all the costs for the geographical region of the study area.
 %%The surrounding of the study area, uses a no-data value and will not be use for the calculation of the Least Cost Path.
-The different cost layers in the study area are aggregated by the maximum function.
-If the resolution is higher than the object size, then the effect of the rasterisation with all touched True or False is limited.
-For all touched True any part of the pixel that is covered by the object, will attribute that whole pixel to the object.
+The different intermediate cost rasters in the study area are aggregated by the maximum function.
+If the resolution is higher than the object size, then the effect of setting all touched to True or False is limited.
+If all touched is set to True and any part of the pixel that is covered by the object, the whole pixel is attributed to the object.
 This makes the object appear a halve a pixel size larger in all directs.
 As can be seen in figure~\ref{fig:costs_5m}, which shows a detailed view of the costs for the village of Beverstedt.
  %% Due to the maximum aggregation of the costs, the average cost of the raster of all touched true will be over estimated.
@@ -21,7 +21,7 @@ The rasterisation with all touched false will be a better description of the rea
 	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alT_v2_small.png} }}%
 	\qquad
 	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_5m_alF_v2_small.png} }}%
-	\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 5~m.}
+	\caption{Part of the cost raster. Contrasting the for different settings of all touched at a resolution of 5~m.}
 	\label{fig:costs_5m}
 \end{figure}
 
@@ -39,7 +39,7 @@ But smaller objects, such as roads, are not fully or randomly included.
 	\subfloat[\centering All touched: True.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alT_v2_small.png} }}%
 	\qquad
 	\subfloat[\centering All touched: False.]{{\includegraphics[width=.45\linewidth]{./images/CostRaster_100m_alF_v2_small.png} }}%
-	\caption{Figures of the cost raster. Contrasting the for different values in all touched at a resolution of 100~m.}
+	\caption{Part of the cost raster. Contrasting the different settings for all touched at a resolution of 100~m.}
 	\label{fig:costs_100m}
 \end{figure}
 \todo{Put this part into Discussion?}Thus, with having larger areas and more objects, with higher costs, all touched True rasterisation might more likely lead to longer roots and more likely to block the  direct spatial path.
@@ -76,7 +76,7 @@ the resolution.
 	\subfloat[\centering resolution of 5 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_5m_v2_small.png} }}%
 	\qquad
 	\subfloat[\centering resolution of 100 m.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_100m_v2_small.png} }}%
-	\caption{Figures of the least cost paths. Contrasting the paths for different resolutions. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
+	\caption{Figures of the Least Cost Paths. Contrasting the paths for different resolutions. Paths with all touched set to False are indicated by dashed lines and True are indicated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
 	\label{fig:paths_resolution}
 \end{figure}
 
@@ -87,7 +87,7 @@ the resolution.
 	\qquad
 	\subfloat[\centering all touched true.]{{\includegraphics[width=.45\linewidth]{./images/LeastCostPaths_al_T_v2_small.png} }}%
 
-	\caption{Figures of the least cost paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all\_touched. Paths computed from all touched false raster are indicated by dashed lines. Results from all touched True are indicuated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
+	\caption{Figures of the Least Cost Paths. Contrasting the changes of the least cost paths for the different results, depending on the parameter all touched. Paths setting all touched to False are indicated by dashed lines and True are indicated by continuous lines. Higher resolutions are indicated by the color green, lower resolutions by the color red. Using OpenStreetMaps as base map.}
 	\label{fig:paths_alltouched}
 \end{figure}
 
