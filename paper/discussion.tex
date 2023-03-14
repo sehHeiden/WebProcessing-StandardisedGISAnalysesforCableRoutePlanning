@@ -28,7 +28,7 @@ Early stopping may result in suboptimal paths around the end points for some edg
 The set of rules, that are used to create the intermediate cost raster, includes a rule to create buffer around buildings which is set to the level \textit{prohibited} areas.
 In all touched set to False rasters, the resolution of the medium level raster needs to be high enough to show every detail.
 At least in the magnitude of the minimum object size plus twice its buffer.
-This is true for the 10~m resolution raster and less true for the 25~m resolution raster, that misses some details for roads for all touched false raster.
+This is true for the 10~m resolution raster and less true for the 25~m resolution raster, that misses some details for roads for all touched False raster.
 Other details such as rivers and houses, are already included in the lower resolution raster, due to larger buffers.
 The raster with all~touched set to False might miss some objects, but the missing chance is propotional to the object size and the extent of overestimation is reduced.
 The Least Cost Path algorithm searches for an optimal path as a line.
@@ -59,7 +59,7 @@ This can be done by a nansum- / nanmean-function, if the nodata value is set to 
 The disadvantage of aggregation with the maximum function is, that this aggregation is unable to distinguish between nuances of different overlapping intermediate costs.
 On sum or average aggregated rasters, one can distinguish between, different sublevels.
 
-The fact that all touched false rasters produce more similar results than high resolution raster, is probably due to the fact, that the default level is relatively low.
+The fact that all touched False rasters produce more similar results than high resolution raster, is probably due to the fact, that the default level is relatively low.
 As the default level increases, the effect would probably be reduced for low resolution rasters.
 For low resolution raster, the effect would still be present, because the fact, that the raster pixel centre is used for sampling, reflects the original geometry better.
 
@@ -67,5 +67,5 @@ This effect of the similar aggregated costs per resolution could also be seen in
 This could be an indication of an even spatial distribution of the costs.
 
 The all~touched set to True cost raster shows every detail, but the sampling with all~touched set to True increases the size of the features.
-The fact that the aggregated costs per resolution for all touched true rasters overestimate the costs when computing the path from a low resolution raster, might be due to the fact, that the high costs are much more frequent, because the costs are exponential scaled.
+The fact that the aggregated costs per resolution for all touched True rasters overestimate the costs when computing the path from a low resolution raster, might be due to the fact, that the high costs are much more frequent, because the costs are exponential scaled.
 
