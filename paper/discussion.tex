@@ -13,9 +13,10 @@ While this method reduces the computation time and memory usage, the backtrackin
 
 For b), two methods have been used to increase the similarity of the paths computed from the medium resolution raster, to the path of the highest resolution raster.
 These methods are used as surrogates for the more complex calculation of the Least Cost Path with the higher resolution.
-In the first method a bi-linear downsampling of the higher resolution raster has been applied and in the second method, the all touched set to False and True raster were averaged in different ratios, to compute the optimum weighted cost raster.
+In the first method a bi-linear downsampling of the higher resolution raster has been applied and in the second method, the all~touched set to False and True raster were averaged in different ratios, to compute the optimum weighted cost raster.
 While the second method of using an averaged raster, a higher similarity to the path from the highest resolution raster, the downsampling method is simpler and does not need to be optimised for the given cost.
 This disadvantage could be reduced by normalising the costs.
+The fact that downsampling leads to paths that are closer to all~touched True, can be attributed, to the fact, that all objects are included similar to all~touched True.
 
 This shows, that the way the cost raster is created in the first place can play a crucial role, in the end result.
 So that a nuance, can cause a detour.
