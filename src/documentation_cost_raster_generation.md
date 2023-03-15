@@ -51,7 +51,7 @@ Positional Arguments:
 * 'save_dir'  - Save folder for the cost raster and used to add a sub folder for the layer raster.
 
 Optional (named) Parameters:
-* '--resolution' - Resolution for the rasterization. Optional defaults to 1000 m.
+* '--resolution' - Resolution for the rasterisation. Optional defaults to 1000 m.
 * '--all_touched' - Will be set to True, whe all_touched is set, and False when not set.
 * '--crs' - Optional integer of the EPSG-CODE of the Reference system. Will be set to EPSG:3157  (Google Pseudo Mercator) when not set.
 

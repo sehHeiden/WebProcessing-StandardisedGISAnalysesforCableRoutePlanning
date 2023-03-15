@@ -9,18 +9,22 @@
 \usepackage{tikz}
 \usepackage{graphicx}
 \usepackage{makecell}
+\usepackage{hyperref}
 
-
+\makeatletter
 \AtBeginDocument{%
+	\hypersetup{
+		pdftitle = {\@title},
+		pdfauthor = {\@author}
+	}
 	\providecommand\BibTeX{{%
 			Bib\TeX}}}
+\makeatother
 
 \setcopyright{acmcopyright}
-\copyrightyear{2022}
-\acmYear{2022}
+\copyrightyear{2023}
+\acmYear{2023}
 \acmDOI{XXXXXXX.XXXXXXX}
-
-
 
 
 %%
@@ -34,6 +38,7 @@
 \newacronym{wfs}{wfs}{Web Feature Service}
 \newacronym{wps}{wps}{Web Processing Service}
 \newacronym{MCDA}{MCDA}{multi-criteria decision analysis}
+
 
 \begin{document}
 	\title{Web Processing - Standardised GIS Analyses for Cable Route Planning}
@@ -53,7 +58,9 @@
 	\renewcommand{\shortauthors}{Heiden}
 	
 	\begin{abstract}
-		Least Cost Paths for a power line from a power station at the shore line to a power station further inland are calculated.
+		A lot of wind energy is produced in the north of Germany. The power has to be transported further inland. To reduce congestion in the power system, new power lines have to be installed.
+		A potential path for a power line from the northern shore is planned using the Least Cost Path algorithm.
+		The planning is implemented in Python and provided via a \acrfull{wps} with PyWPS~\cite{noauthor_welcome_2016} and flask~\cite{noauthor_flask_nodate}.
 		Downsampling and clipping are investigated as techniques to speed up the calculation.
 		The paths from the clipped cost raster often are the same as the original paths.
 		The speed-up of the clipping can not be known in advance.
@@ -88,7 +95,7 @@
 	%% the work being presented. Separate the keywords with commas.
 	\keywords{GIS, Least Cost Path}
 	
-	\received{14 March 2023}
+	\received{15 March 2023}
 	%%\received[revised]{12 March 2009}
 	%%\received[accepted]{5 June 2009}
 	
@@ -97,7 +104,7 @@
 	%% information and builds the first part of the formatted document.
 	\maketitle
 	
-	\section{Introduction}\label{sec:introduction}
+	\section{Introduction and Objectives}\label{sec:introduction}
 
 	The German power system is adding renewable energy sources in the north, where wind energy plants reach their highest efficiency, due to higher wind speeds.
 	At the same time old power plants e.g.\ nuclear, hard coal and lignite are being phased out~\cite{eser-frey_analyzing_2012}.
@@ -126,6 +133,9 @@
 	The uncertainties associated with \acrshort{MCDA} are data uncertainties, preferential uncertainties and model uncertainties are investigated with a sensitivity analysis~\cite{bertsch_participatory_2016} or simulation~\cite{butler_simulation_1997}.
 	Both inter- and intra-criteria preferential uncertainties~\cite{bertsch_sensitivity_2007} can be considered.
 	
+	This paper aims to find potential paths for power lines by using the Least Cost Path algorithm. Land usage and planning data are used to estimate the costs arising by using the local area. The task was to provide the Least Cost Path using a \acrfull{wps}. 
+	Beyond that, methods to reduce the needed compute power for finding the Least Cost Path had to be studied.
+	
 	\section{Methods}\label{sec:methods}
 	\input{methods}
 
@@ -136,19 +146,19 @@
 	\input{discussion}
 		
 	\section{Conclusion}\label{sec:conclusion}
-	The cost of computing of the Least Cost Path scales with the square of the resolution.
-	The difference between the aggregated costs of the paths per resolution computed from the all~touched set to False raster True raster only shows a linear decrease.
+	The computing costs of the Least Cost Path scales with the square of the resolution.
+	The difference between the aggregated costs of the paths per resolution computed from the all~touched set to False raster and the all~touched set to True raster only shows a linear decrease.
 	Therefore, the gain in accuracy per compute time decreases.
 	The presented methods attempt to circumvent this bottleneck.
-	When these strategies are applied to a medium resolution raster, the compute time for high resolution results can successfully be reduced, without compromising the run time for worse distances to the Least Cost Path from the high resolution raster.
+	When these strategies are applied to a medium resolution raster, the compute time for high resolution results can successfully be reduced without compromising the run time for worse distances to the Least Cost Path from the high resolution raster.
 	The paths can change significantly even for a small change in total cost.
-	Therefore, to develop an alternative backtracking algorithm, that generates a corridor of costs might be a good strategy, to offer alternative paths and at the same time show variations between these paths.
-	An alternative would be to specify a range of costs and compute the aggregation of the costs and superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
+	Therefore, developing an alternative backtracking algorithm, that generates a corridor of costs might be a good strategy to offer alternative paths and at the same time show variations between these paths.
+	An alternative would be to specify a range of costs and compute the aggregation of the costs and than superimpose these aggregations and compute the path by backtracking from the superimposed cost raster. 
 	This again increases the computation time.
 	
-	In an actual search for Least Cost Path search, a survey could be used as a method to estimate the costs.
+	In an actual search for the Least Cost Path of a power, a survey could be used as a method to estimate the costs.
 	If the sample size of the survey is large enough, the
-	weights could take  into account local differences in relative acceptance.
+	weights could take into account local differences in relative acceptance.
 	
 	Only changes in the algorithm have been applied in the search for acceleration.
 	Therefore, other methods such as just-in-time compilation have not been tested.

@@ -1,6 +1,6 @@
 % !TeX spellcheck = en_GB
 
-The Least Cost Path algorithm is used to plan a possible route for a power line.
+The Least Cost Path algorithm is used to plan a potential, cost-optimised route for a power line.
 The Least Cost Path algorithm is a Dijkstra algorithm~\cite{dijkstra_note_1959} applied on a raster map.
 The vertices of the graph are the pixel centres, that are connected to the eight neighbouring pixel centres via the edges.
 This makes it possible to find routes on graphs that are not predefined, such as road networks.
@@ -29,10 +29,11 @@ Lower Saxony~\cite{noauthor_opengeodatani_2022}.
 In addition, local planning geodata for the land use are taken
 from 'Metropolplaner' (Planning data Lower Saxony \& Bremen)~\cite{noauthor_metropolplaner_2022}.
 
-PyWPS~\cite{noauthor_welcome_2016} is used to provide the Least Cost Path algorithm as a \acrfull{wps} in combination with flask~\cite{noauthor_flask_nodate}.
-As client Birdy~\cite{noauthor_birdy_nodate} connects to the \acrshort{wps}, sends the cost raster and receives the resulting Least Cost Path.
+PyWPS~\cite{noauthor_welcome_2016} is used to provide the Least Cost Path algorithm as a \acrshort{wps} in combination with flask~\cite{noauthor_flask_nodate}.
+As client, Birdy~\cite{noauthor_birdy_nodate} connects to the \acrshort{wps}, sends the cost raster, starting point, end points and receives the resulting Least Cost Path.
 The initial implementation of the Least Cost Path algorithm is based on the implementation for the QGIS-Plugin
-'Least Cost Path'~\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} in version 1.0, but refactored to optionally export the aggregated costs.
+'Least Cost Path'~\cite{noauthor_leastcostpathdijkstra_algorithmpy_2022} in version 1.0, but refactored to optionally export the aggregated costs in a command line tool.
+On top, the \acrshort{wps} provides the complete Least Cost Path algorithm as a single capability.
 
 In order to compute intermediate cost raster the different vector layers of the different entities are optionally filtered, buffered and then rasterised.
 Filtering the layers of the vector files for special attributes enables further differentiation.
@@ -65,7 +66,7 @@ by the geo-object, or any part of the pixel is overlaid.
 Setting all~touched to True implies the version with any part of the pixel selected.
 The version, where an overlapped pixel centre is required, is setting the parameter all~touched to False.
 All~touched set to False is considered the default (see figure~\ref{fig:alltouched}).
-\begin{figure}[!ht]
+\begin{figure}[!t]
 	\centering
 
 	\resizebox{8cm}{!}{
@@ -98,7 +99,7 @@ All~touched set to False is considered the default (see figure~\ref{fig:alltouch
 
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[t!]
 	\caption{Used levels of costs, the applied numerical equivalent and example layer this cost have been used for.}
 	\label{tab:1}
 	\centering

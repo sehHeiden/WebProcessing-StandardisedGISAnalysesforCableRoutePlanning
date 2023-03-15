@@ -90,7 +90,7 @@ Setting all~touched to False underestimates and to True overestimates the costs.
 	\label{tab:2}
 	\centering
 	\begin{tabular}{ r  r  r  r  r  r  r  r  r  r}
-		res /m & $l_{al=f} /m$ & $l_{al=t} /m$ & $d_{mean}$ /m & $d_{max}/m$ & agg.  $ cost_{al=f}$ & agg. $ cost_{al=t}$ &  $\Delta $ costs & agg. $costs_{al=f} /m$ & agg. $costs_{al=t} /m$ \\
+		res /m & $l_{al=f} /m$ & $l_{al=t} /m$ & $d_{mean}$ /m & $d_{max}/m$ & agg.  $ cost_{al=f}$ & agg. $ cost_{al=t}$ &  $\Delta $ costs & agg. $costs_{al=f} \times m$ & agg. $costs_{al=t} \times m$ \\
 		\hline
 		5 	& 76136.3	& 78002.0 &  126.0 & 1065.0 & 18665.9 & 19616.8 & -850.00 & 93329.6 &  97584.8 \\
 		10 	& 75430.1 	& 77936.6 &  277.9 & 1590.0 &  8931.2 &  9731.2 & -799.95 & 89312.5 &  97311.8 \\
@@ -199,9 +199,9 @@ Paths with a ratio in favour of all~touched False are much closer to the all~tou
 
 \subsubsection{Compare Least Cost Paths from downsampled cost raster}
 
-As an alternative to the superposition of the rasters of same resolution, a high resolution (5~m) all~touched False raster is downsampled to 10~m, 25~m, 50~m and 100~m (bi-linear) interpolation.
+As an alternative to the superposition of the rasters of same resolution, a high resolution (5~m) all touched False raster is downsampled to 10~m, 25~m, 50~m and 100~m (bi-linear) interpolation.
 
-The distances from the paths that are computed from the bi-linear downsampled raster to the path of the original 5~m resolution (all~touched False) shows, that only downsampling to a resolution of 10~m produces a path that is relatively close the high resolution paths(see table~\ref{tab:5}).
+The distances from the paths that are computed from the bi-linear downsampled raster to the path of the original 5~m resolution (all touched False) shows, that only downsampling to a resolution of 10~m produces a path that is relatively close the high resolution paths (see table~\ref{tab:5}).
 
 The opposite is true for the lower resolution raster which is more similar to paths computed from the all~touched True cost raster.
 Every path from a downsampled raster is more similar to a path computed from an all~touched set to True raster, than to an all~touched set to False raster, although the all~touched set to False raster of the 5 m resolution was used for downsampling.
@@ -261,10 +261,10 @@ The speed up from the clipping of the higher resolution raster depends on the nu
 Bi-linear downsampling the of the high resolution raster to a medium resolution did not result in any benefits compared to an original medium resolution raster.
 The aggregated cost per resolution of the Least Cost Path from the downsampled raster is higher than the normal medium resolution 10~m raster.
 In addition, the distance from these paths to the high resolution path  is greater than the distance from the original 10~m resolution path to the 5~m resolution path (see table~\ref{tab:6}).
-\todo{interpretation: Why is the downsampling result so different? Don't know.}
+%%\todo{interpretation: Why is the downsampling result so different? Don't know.}
 
-\begin{table}[h!]
-	\caption{Length (l) of the path, the aggregated costs per resolution and the mean minimum distance ($d_{mean}$) to the path created from the 5~m resolution all~touched False raster for the four control routes, for the reference path constructed from the 5~m  and 10~m raster and the from 5~m to 10~m downsampled raster and the 5~m clipped raster for the routes point1 to end point (P1-E), point2 to end point (P2-E), start point to point3 (S-P3) and start point to point4 (S-P4).}
+\begin{table}[ht!]
+	\caption{Length (l) of the path, the aggregated costs per resolution and the mean minimum distance ($d_{mean}$) to the path created from the 5~m resolution all~touched False raster for the four control routes. For the reference path constructed from 5~m  and 10~m raster and from 5~m to 10~m downsampled raster and 5~m clipped raster for the routes point1 to end point (P1-E), point2 to end point (P2-E), starting point to point3 (S-P3) and starting point to point4 (S-P4).}
 	\label{tab:6}
 	\centering
 	\begin{tabular}{ r @{\hspace*{3mm}}  r  r  r  r}
