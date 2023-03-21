@@ -1,0 +1,142 @@
+% !TeX spellcheck = en_GB
+\documentclass[usenames,dvipsnames,aspectratio=169]{beamer}
+\usetheme{Szeged}
+\usecolortheme{beaver}
+\usepackage{tikz}
+\usepackage{subfig}
+\setbeamertemplate{navigation symbols}{}
+\usepackage{xcolor}
+
+\title{Web Processing - Standardized GIS Analyses for Cable Route Planning}
+\author{Sebastian Heiden}
+\institute{Harz University of Applied Sciences}
+\date{December 02, 2022}
+\begin{document}
+	
+	
+	
+	\begin{frame}[plain]
+		\includegraphics[scale=0.21]{images/3-HSH-Logo-RGB-en.png}
+		\maketitle
+	\end{frame}
+	
+	
+	\section{Review \& Topics}
+	\begin{frame}{Review \& Topics}
+		
+		\begin{minipage}[t]{0.48\textwidth}
+			Review
+			\begin{itemize}
+				\item Rasterisation
+				\item Cost Raster
+				\item Cost Paths
+				\item PyWPS (Start)
+			\end{itemize}
+		\end{minipage}
+		\hfill	
+		\begin{minipage}[t]{0.48\textwidth}
+			Topics
+			\begin{itemize}
+				\item Web Processing Service (Concluded)
+				\item From Cost Raster to Least Cost Path
+				\item Comparing Paths
+				\item Speed-Up
+				\begin{itemize}
+					\item Clipping
+					\item Down Sampling
+					\item Super Position Medium Resolution
+					\item Validation
+				\end{itemize}
+				
+			\end{itemize}
+		\end{minipage}
+		
+	\end{frame}
+	
+	
+	\section{Web Processing Service (Concluded)}
+	\begin{frame}{Web Processing Service (Concluded)}
+		\begin{itemize}
+		\item goals: 
+		\begin{itemize}
+			\item use wps as a simple, standardized way
+			\item optimize search algorithm
+		\end{itemize}
+		\item current: 
+		\begin{itemize}
+			\item testing PyWPS\footnote{https://pywps.readthedocs.io/en/latest/index.html}
+			\item cost path (open Dijkstra implementation - QGIS-plugin)\footnote{https://github.com/Gooong/LeastCostPath}
+		\end{itemize}
+	\end{itemize}
+	\end{frame}
+	
+	\section{From Cost Raster to Least Cost Path}
+	\begin{frame}{From Cost Raster to Least Cost Path}
+		\begin{figure}
+			\centering
+			\subfloat[\centering Cost Raster.]{{\includegraphics[width=.30\linewidth]{images/maps/CostRasterExample_cut.png} }}%
+			\enskip
+			\subfloat[\centering Aggregated Cost Raster.]{{\includegraphics[width=.30\linewidth]{images/maps/AggregatedCosts_cut.png} \label{fig:aggregation}}}%
+			\enskip
+			\subfloat[\centering Least Cost Path.]{{\includegraphics[width=.30\linewidth]{images/maps/LeastCostPathExample_cut.png} }}%
+			
+			\caption{Figures of the cost raster and the resulting aggregated costs and the Least Cost Path for a resolution of 50~m, all~touched set to False.}
+			\label{fig:costs2path}
+		\end{figure}
+	\end{frame}
+	
+	\section{Comparing Paths}
+	\begin{frame}{Comparing: Map}
+		\begin{figure}
+			\centering
+			
+			\subfloat[\centering all touched False.]{{\includegraphics[width=.45\linewidth]{images/maps/LeastCostPaths_al_F_v2_small.png} }}%
+			\qquad
+			\subfloat[\centering all touched True.]{{\includegraphics[width=.45\linewidth]{images/maps/LeastCostPaths_al_T_v2_small.png} }}%
+			
+			\caption{Figures of the Least Cost Paths, depending on the parameter all~touched. All~touched False: dashed lines, True: continuous lines. Higher resolutions: green, lower resolutions: red.}
+			\label{fig:paths_alltouched}
+		\end{figure}
+	\end{frame}
+
+	\begin{frame}{Comparing: Costs}
+		\begin{table}[t]
+			\caption{Least Cost Paths: length~(l) for the different resolutions~(res), including the mean minimum distance~($d_{mean}$), agg. costs and the agg. costs per resolution.} 
+			\label{tab:2}
+			\centering
+			\begin{tabular}{ r  r  r  r  r  r   }
+				res /m & $l_{al=f} /m$ & $l_{al=t} /m$ & $d_{mean}$ /m  & agg. $costs_{al=f} \times m$ & agg. $costs_{al=t} \times m$ \\
+				\hline
+				5 	& 76136.3	& 78002.0 &  126.0  & 93329.6 &  97584.8 \\
+				10 	& 75430.1 	& 77936.6 &  277.9  & 89312.5 &  97311.8 \\
+				25 	& 75422.9 	& 78422.9 &  313.8  & 83871.7 &  96816.4 \\
+				50 	& 76135.0	& 70620.0 & 1140.0  & 70451.2 & 115003.7 \\
+				100 & 76283.8	& 74120.7 & 1946.4  & 64051.6 & 167226.8 \\
+			\end{tabular}
+		\end{table}
+	\end{frame}
+
+\section{Speed-Up}
+	\begin{frame}{Speed-Up: Clipping}
+		\begin{figure}
+			\centering
+			
+			\subfloat[\centering 50~m Resolution.]{{\includegraphics[width=.45\linewidth]{images/maps/LeastCostPath_50m_small.png} }}%
+			\qquad
+			\subfloat[\centering 5~m, Clipped.]{{\includegraphics[width=.45\linewidth]{images/maps/LeastCostPath_5m_false_clipped_small.png} }}%
+			
+			\caption{Figures of the Least Cost Paths, on the cost raster with 50~m resolution and the computed paths, used to clip the high resolution raster.}
+			\label{fig:clipping}
+		\end{figure}
+	\end{frame}
+
+
+	\begin{frame}{Speed-Up: Down Sampling}
+	\end{frame}
+
+	\begin{frame}{Speed-Up:Super Position Medium Resolution}
+	\end{frame}
+
+	\begin{frame}{Speed-Up:Validation}
+	\end{frame}
+\end{document}
